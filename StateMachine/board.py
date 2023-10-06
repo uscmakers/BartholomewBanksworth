@@ -20,7 +20,8 @@ class Board:
             p = Player(False)
             self.mPlayers.append(p)
         self.mPlayers.append(Player(True)) # ai
-        # for player in 
+        for player in self.mPlayers:
+            player.NamePlayer()
     
     def run(self):
         round = 1
