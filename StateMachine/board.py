@@ -7,13 +7,20 @@ class Board:
         self.mNumPlayers = mNumPlayers
         self.mPlayers = []
         self.mTiles = []
-        for _ in range(self.mNumPlayers):
-            self.mPlayers.append(Player())
     
     def init(self):
-        # TODO: initialize mTiles to be a list of tiles representing the board
-        # TODO: initialize mTiles to be a list of tiles representing the board
-        return
+        self.init_players()
+        self.init_board()
+    
+    def init_board(self):
+        pass
+
+    def init_players(self):
+        for i in range(self.mNumPlayers-1): # humans
+            p = Player(False)
+            self.mPlayers.append(p)
+        self.mPlayers.append(Player(True)) # ai
+        # for player in 
     
     def run(self):
         round = 1
