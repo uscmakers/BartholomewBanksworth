@@ -1,3 +1,5 @@
+import const
+
 class Player:
     def __init__(self, mIsAi: bool):
         # PLAYER INFO
@@ -6,7 +8,7 @@ class Player:
         self.mPlayerName = ""
 
         # MONEY INFO
-        self.mBalance = 0  #TODO: decide starting balance 
+        self.mBalance = const.STARTING_BALANCE
         self.mNetWorth = self.mBalance
 
         # PROPERTY INFO
