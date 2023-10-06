@@ -1,4 +1,4 @@
-from BartholomewBanksworth.StateMachine.player import Player
+from player import Player
 class Tile:
     def __init__(self, mTileName, mCost, mSet):
         self.mTileName = mTileName
