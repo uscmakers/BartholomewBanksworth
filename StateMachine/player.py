@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, mIsAi):
+    def __init__(self, mIsAi: bool):
         # PLAYER INFO
         self.mPos = 0
         self.mIsAi = mIsAi
