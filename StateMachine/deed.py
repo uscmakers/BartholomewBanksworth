@@ -9,7 +9,7 @@ class Deed(Tile):
         self.mOwner = None
 
     def action(self, name, mPlayer: Player):
-        if mPlayer.mAI: # AI, so make decisions for the player
+        if mPlayer.mIsAi: # AI, so make decisions for the player
             if mPlayer.mBalance >= self.mCost:
                 if self.mOwner is None: # if the deed is unowned
                     self.purchase(self, mPlayer)
