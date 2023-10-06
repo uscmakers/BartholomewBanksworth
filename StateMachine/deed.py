@@ -2,7 +2,8 @@ from BartholomewBanksworth.StateMachine.tile import Tile
 from BartholomewBanksworth.StateMachine.player import Player
 
 class Deed(Tile):
-    def __init__(self, mCost, mSet):
+    def __init__(self, mCost, mSet, mName):
+        super().__init__(self, mName)
         self.mCost = mCost
         self.mSet = mSet
         self.mOwner = None
