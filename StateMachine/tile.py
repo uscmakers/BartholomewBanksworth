@@ -1,4 +1,7 @@
-from BartholomewBanksworth.StateMachine.player import Player
+from player import Player
 class Tile:
-    def action(self, player: Player):
+    def __init__(self, mName):
+        self.mName = mName
+    
+    def action(self, mPlayer: Player):
         pass
