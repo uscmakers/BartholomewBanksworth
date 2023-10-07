@@ -4,11 +4,23 @@ from player import Player
 from tile import Tile
 from earningSpace import EarningSpace
 
+from tile import Tile
+from earningSpace import EarningSpace
+from deed import Deed
+
+# TILES
+
+Go = EarningSpace("Go", 200)
+IncomeTax = EarningSpace("Income Tax", -200)
+FreeParking = EarningSpace("Free Parking", 0)
+Boardwalk = Deed("Boardwalk", 400, "Blue")
+# TODO: Add board tiles here!
+
 class Board:
     def __init__(self, mNumPlayers: int):
         self.mNumPlayers = mNumPlayers
-        self.mPlayers = [Player]
-        self.mTiles = [Tile]
+        self.mPlayers = []
+        self.mTiles = []
     
     # INITIALIZATION
     
@@ -17,10 +29,8 @@ class Board:
         self.init_board()
     
     def init_board(self):
-        # irith just put this here as an example!
-        go = EarningSpace("Go", 200)
-        incomeTax = EarningSpace("Income Tax", -200)
-        self.mTiles = [go, incomeTax] 
+        # TODO: initialize array using pre-defined tiles (global variables)
+        self.mTiles = [Go, Boardwalk, IncomeTax]
 
     def init_players(self):
         for i in range(self.mNumPlayers-1): # humans
@@ -34,9 +44,9 @@ class Board:
     
     def run(self):
         round = 1
-        gameOver = False
         while True:
             print("Round " + round + ":")
+            player : Player
             for player in self.mPlayers:
                 dice, rollSum = self.rollDice(player)
                 if dice[0] == dice[1]: # doubles check
@@ -56,8 +66,8 @@ class Board:
                     self.mPlayers.remove(player)
                     print(player.mPlayerName + " is bankrupt!")
                     continue
-            if gameOver: 
-                break
+                if player.mInJail: # jail check
+                    continue
             round += 1
     
     def rollDice(self, player: Player): # simulates rolling two dice
