@@ -31,6 +31,7 @@ class Board:
     def init_board(self):
         # TODO: initialize array using pre-defined tiles (global variables)
         self.mTiles = [Go, Boardwalk, IncomeTax]
+        self.mTotalSpaces = len(self.mTiles)
 
     def init_players(self):
         for i in range(self.mNumPlayers-1): # humans
@@ -45,7 +46,7 @@ class Board:
     def run(self):
         round = 1
         while True:
-            print("Round " + round + ":")
+            print("Round " + str(round) + ":")
             player : Player
             for player in self.mPlayers:
                 dice, rollSum = self.rollDice(player)
@@ -55,13 +56,13 @@ class Board:
                         player.mPos = const.JAIL_SPACE
                         player.mInJail = True
                         continue
-                if (player.mPos + rollSum) >= const.TOTAL_SPACES: # passed go check
+                if (player.mPos + rollSum) >= self.mTotalSpaces: # passed go check
                     player.mBalance += const.GO_MONEY
                     print(player.mPlayerName + " passed go!")
-                player.mPos = (player.mPos + rollSum) % const.TOTAL_SPACES # move player appropriate number of spaces
+                player.mPos = (player.mPos + rollSum) % self.mTotalSpaces # move player appropriate number of spaces
                 tile = self.mTiles[player.mPos]
-                print(player.mPlayerName + " landed on " + tile.mName + "!")
-                tile.action()
+                print(player.mPlayerName + " landed on " + tile.mTileName + "!")
+                tile.action(player)
                 if player.mBalance < 0: # bankruptcy check
                     self.mPlayers.remove(player)
                     print(player.mPlayerName + " is bankrupt!")
@@ -73,5 +74,5 @@ class Board:
     def rollDice(self, player: Player): # simulates rolling two dice
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
-        print(player.mPlayerName + " rolled a " + sum + "!")
+        print(player.mPlayerName + " rolled a " + str(sum) + "!")
         return dice, sum

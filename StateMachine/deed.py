@@ -3,7 +3,7 @@ from player import Player
 
 class Deed(Tile):
     def __init__(self, mTileName, mCost, mSet):
-        super().__init__(self, mTileName)
+        super().__init__(mTileName)
         self.mCost = mCost
         self.mSet = mSet
         self.mOwner = None
@@ -20,7 +20,7 @@ class Deed(Tile):
         else: # user, so user should make decisions
             if self.mOwner is None:
                 choice = input("Would you like to purchase the property? (yes/no)")
-                if choice is "yes":
+                if choice == "yes":
                     self.purchase(mPlayer)
             elif self.mOwner == mPlayer: # deed is owned by yourself
                 print("This is your own property!")
@@ -36,4 +36,4 @@ class Deed(Tile):
         # base implementation (default rent without accounting for monopolies or upgrades or railroad/utility rules)
         mPlayer.mBalance -= self.mCost
         self.mOwner.mBalance += self.mCost
-        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + self.mCost + "!")
+        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(self.mCost) + "!")
