@@ -45,9 +45,9 @@ class Board:
     # RUN LOOP
     
     def run(self):
-        round = 1
+        turn = 1
         while True:
-            print("Round " + str(round) + ":")
+            print("Turn " + str(turn) + ":")
             player : Player
             for player in self.mPlayers:
                 print("\n" + player.mPlayerName + "'s turn:\n")
