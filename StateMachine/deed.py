@@ -1,30 +1,31 @@
-from BartholomewBanksworth.StateMachine.tile import Tile
-from BartholomewBanksworth.StateMachine.player import Player
+from tile import Tile
+from player import Player
 
 class Deed(Tile):
-    def __init__(self, mCost, mSet, mName):
-        super().__init__(self, mName)
+    def __init__(self, mTileName, mCost, mSet):
+        super().__init__(mTileName)
         self.mCost = mCost
         self.mSet = mSet
         self.mOwner = None
 
-    def action(self, name, mPlayer: Player):
+    def action(self, mPlayer: Player):
         if mPlayer.mIsAi: # AI, so make decisions for the player
-            if mPlayer.mBalance >= self.mCost:
-                if self.mOwner is None: # if the deed is unowned
-                    self.purchase(self, mPlayer)
-                else: # deed is owned
-                    self.pay(self, mPlayer)
+            if self.mOwner is None: # if the deed is unowned
+                if mPlayer.mBalance >= self.mCost: # if AI has enough money
+                    self.purchase(mPlayer)
+            elif self.mOwner == mPlayer: # deed is owned by yourself
+                print("Nothing happens!")
+            else: # deed is owned by another player
+                self.pay(mPlayer)
         else: # user, so user should make decisions
             if self.mOwner is None:
                 choice = input("Would you like to purchase the property? (yes/no)")
-                if choice is "yes":
-                    self.purchase(self, mPlayer)
-            else: # deed is owned
-                print(mPlayer.mPlayerName + "landed on" + super().mTileName)
-                print(self.mCost + "has been paid from" + mPlayer.mPlayerName + "to" + self.mOwner)
-                mPlayer.mBalance -= self.mCost
-                self.mOwner.mBalance += self.mCost
+                if choice == "yes":
+                    self.purchase(mPlayer)
+            elif self.mOwner == mPlayer: # deed is owned by yourself
+                print("This is your own property!")
+            else: # deed is owned by another player
+                self.pay(mPlayer)
                     
 
     def purchase(self, mPlayer: Player):
@@ -32,4 +33,7 @@ class Deed(Tile):
         mPlayer.mBalance -= self.mCost
 
     def pay(self, mPlayer: Player):
-        pass
+        # base implementation (default rent without accounting for monopolies or upgrades or railroad/utility rules)
+        mPlayer.mBalance -= self.mCost
+        self.mOwner.mBalance += self.mCost
+        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(self.mCost) + "!")

@@ -1,12 +1,14 @@
+import const
+
 class Player:
-    def __init__(self, mIsAi):
+    def __init__(self, mIsAi: bool):
         # PLAYER INFO
         self.mPos = 0
         self.mIsAi = mIsAi
         self.mPlayerName = ""
 
         # MONEY INFO
-        self.mBalance = 0  #TODO: decide starting balance 
+        self.mBalance = const.STARTING_BALANCE
         self.mNetWorth = self.mBalance
 
         # PROPERTY INFO
@@ -27,8 +29,8 @@ class Player:
             if deed.mHouseCount != 0:
                 self.mNetWorth += (deed.mHouseCount * deed.mHouseCost)
 
-    def NamePlayer(self):
+    def NamePlayer(self, i: int):
         if not self.mIsAi:
-            self.mPlayerName = input("Enter Player Name: ")
+            self.mPlayerName = input("Enter name for Player " + str(i) + ":")
         else :
             self.mPlayerName = "Bartholomew Banksworth"
