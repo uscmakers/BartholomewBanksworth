@@ -2,11 +2,13 @@ from tile import Tile
 from player import Player
 
 class Deed(Tile):
-    def __init__(self, mTileName, mCost, mSet):
+    def __init__(self, mTileName, mCost, mSet, mRent):
         super().__init__(mTileName)
         self.mCost = mCost
         self.mSet = mSet
         self.mOwner = None
+        # TODO: add rent calculate function
+        self.mRent = mRent
 
     def action(self, mPlayer: Player):
         if mPlayer.mIsAi: # AI, so make decisions for the player
@@ -36,6 +38,6 @@ class Deed(Tile):
 
     def pay(self, mPlayer: Player):
         # base implementation (default rent without accounting for monopolies or upgrades or railroad/utility rules)
-        mPlayer.mBalance -= self.mCost
-        self.mOwner.mBalance += self.mCost
-        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(self.mCost) + "!")
+        mPlayer.mBalance -= self.mRent
+        self.mOwner.mBalance += self.mRent
+        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(self.mRent) + "!")
