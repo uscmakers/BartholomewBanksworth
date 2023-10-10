@@ -19,7 +19,7 @@ class Deed(Tile):
                 self.pay(mPlayer)
         else: # user, so user should make decisions
             if self.mOwner is None:
-                choice = input("Would you like to purchase the property? (yes/no)")
+                choice = input("Would you like to purchase the property? (yes/no) ")
                 if choice == "yes":
                     self.purchase(mPlayer)
             elif self.mOwner == mPlayer: # deed is owned by yourself
@@ -31,6 +31,8 @@ class Deed(Tile):
     def purchase(self, mPlayer: Player):
         self.mOwner = mPlayer
         mPlayer.mBalance -= self.mCost
+        self.mOwner.mDeedOwned.append(self)
+        print(mPlayer.mPlayerName + " purchased " + self.mTileName + " for $" + str(self.mCost) + "!")
 
     def pay(self, mPlayer: Player):
         # base implementation (default rent without accounting for monopolies or upgrades or railroad/utility rules)

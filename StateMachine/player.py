@@ -31,6 +31,6 @@ class Player:
 
     def NamePlayer(self, i: int):
         if not self.mIsAi:
-            self.mPlayerName = input("Enter name for Player " + str(i) + ":")
+            self.mPlayerName = input("Enter name for Player " + str(i) + ": ")
         else :
             self.mPlayerName = "Bartholomew Banksworth"
