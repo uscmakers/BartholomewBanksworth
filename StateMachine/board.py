@@ -13,7 +13,7 @@ from deed import Deed
 Go = EarningSpace("Go", 200)
 IncomeTax = EarningSpace("Income Tax", -200)
 FreeParking = EarningSpace("Free Parking", 0)
-Boardwalk = Deed("Boardwalk", 400, "Blue")
+Boardwalk = Deed("Boardwalk", 400, "Blue", 50)
 # TODO: Add board tiles here!
 
 class Board:
