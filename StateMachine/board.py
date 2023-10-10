@@ -47,10 +47,26 @@ class Board:
     def run(self):
         round = 1
         while True:
-            print("Round " + str(round) + ":\n")
+            print("Round " + str(round) + ":")
             player : Player
             for player in self.mPlayers:
-                print(player.mPlayerName + "'s turn:\n")
+                print("\n" + player.mPlayerName + "'s turn:\n")
+                if player.mTurnsInJail == 3: # out-of-jail check
+                    player.mTurnsInJail = 0
+                    print(player.mPlayerName + " is out of jail!")
+                elif player.mTurnsInJail > 0: # in-jail check
+                    print(player.mPlayerName + " is in jail!")
+                    if player.mNumJailFree > 0: # get out of jail free card
+                        choice = input("Would you like to use your get out of jail free card? (yes/no) ")
+                        if choice == "yes":
+                            player.mTurnsInJail = 0
+                            player.mNumJailFree -= 1
+                        else:    
+                            player.mTurnsInJail += 1
+                            continue
+                    else:
+                        player.mTurnsInJail += 1
+                        continue
                 rolled = False
                 while True:
                     command = input("Type a command, or type help: ")
@@ -66,7 +82,7 @@ class Board:
                             player.mContinuousDoubles += 1
                             if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
                                 player.mPos = const.JAIL_SPACE
-                                player.mInJail = True
+                                player.mTurnsInJail = 1
                                 break
                         if (player.mPos + rollSum) >= self.mTotalSpaces: # passed go check
                             player.mBalance += const.GO_MONEY
@@ -99,9 +115,6 @@ class Board:
                         self.mPlayers.remove(player)
                         print(player.mPlayerName + " is bankrupt!")
                         continue
-                print()
-                if player.mInJail: # jail check
-                    continue
             round += 1
     
     def rollDice(self, player: Player): # simulates rolling two dice

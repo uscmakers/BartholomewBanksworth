@@ -17,7 +17,7 @@ class Player:
         self.mHotelOwned = 0
 
         # JAIL INFO
-        self.mInJail = False
+        self.mTurnsInJail = 0
         self.mNumJailFree = 0
         self.mContinuousDoubles = 0
 
