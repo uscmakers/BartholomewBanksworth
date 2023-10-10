@@ -38,8 +38,8 @@ class Board:
             p = Player(False)
             self.mPlayers.append(p)
         self.mPlayers.append(Player(True)) # ai
-        for player in self.mPlayers: # name each player
-            player.NamePlayer()
+        for i in range(len(self.mPlayers)): # name each player
+            self.mPlayers[i].NamePlayer(i+1)
     
     # RUN LOOP
     

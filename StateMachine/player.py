@@ -29,8 +29,8 @@ class Player:
             if deed.mHouseCount != 0:
                 self.mNetWorth += (deed.mHouseCount * deed.mHouseCost)
 
-    def NamePlayer(self):
+    def NamePlayer(self, i: int):
         if not self.mIsAi:
-            self.mPlayerName = input("Enter Player Name: ")
+            self.mPlayerName = input("Enter name for Player " + str(i) + ":")
         else :
             self.mPlayerName = "Bartholomew Banksworth"
