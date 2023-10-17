@@ -22,32 +22,42 @@ GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
 GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
 
 #define GPIO pins
-magnet = 18 # Step GPIO Pin
+magnet1 = 18 #  GPIO Pin for magnet 1
+magnet2 = 23 #  GPIO pin for magnet 2
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(magnet,GPIO.OUT) # set enable pin as output
+GPIO.setup(magnet1,GPIO.OUT) # set enable pin as output for magnet 1
+GPIO.setup(magnet2,GPIO.OUT) # set enable pin as output for magnet 2
+
 
 ###########################
 # Actual motor control
 ###########################
 #
 while True:
+    """
     mymotortest.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                      50, # number of steps
                      .0105, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
-    GPIO.output(magnet, GPIO.HIGH)
+                     """
+    GPIO.output(magnet1, GPIO.HIGH)
+    GPIO.output(magnet2, GPIO.HIGH)
+
     time.sleep(5)
-    GPIO.output(magnet, GPIO.LOW)
+    GPIO.output(magnet1, GPIO.LOW)
+    GPIO.output(magnet2, GPIO.LOW)
+    """
      mymotortest.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     50, # number of steps
                     .0105, # step delay [sec]
                     False, # True = print verbose output 
                     .05) 
+                """
     time.sleep(5)
 
 
