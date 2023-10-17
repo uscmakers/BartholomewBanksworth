@@ -4,7 +4,7 @@ from player import Player
 class Railroad(Deed):
     def __init__(self, mTileName, mCost, mSet, mRent):
         super().__init__(mTileName, mCost, mSet, mRent)
-        self.mNumRail
+        self.mNumRail = 1
     
     def CalculateRailroadRent(self) -> int:
         if self.mNumRail == 1:

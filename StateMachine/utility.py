@@ -1,4 +1,3 @@
-from board import Board
 from deed import Deed
 from player import Player
 

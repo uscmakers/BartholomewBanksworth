@@ -1,6 +1,5 @@
 from deed import Deed
 from player import Player
-
 class Property(Deed):
     def __init__(self, mTileName, mCost, mSet, mRent, mHouseCost, mOneHouseRent, mTwoHouseRent, mThreeHouseRent, mFourHouseRent, mFiveHouseRent):
         super().__init__(mTileName, mCost, mSet, mRent)
@@ -35,9 +34,9 @@ class Property(Deed):
     
     def BuildHouse(self):
         mCanBuild = False
-        if None:
+        # if None:
         # if CheckMonopoly():
-            if (self.mNumHouse < 5):
+        #    if (self.mNumHouse < 5):
         # Treat fifth house as hotel
     
     # TODO: complete function
