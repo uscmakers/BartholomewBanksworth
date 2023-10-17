@@ -34,3 +34,7 @@ class Player:
             self.mPlayerName = input("Enter name for Player " + str(i) + ": ")
         else :
             self.mPlayerName = "Bartholomew Banksworth"
+
+    def GoToJail(self):
+        self.mPos = const.JAIL_SPACE
+        self.mTurnsInJail = 1
