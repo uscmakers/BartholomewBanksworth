@@ -6,6 +6,10 @@ from earningSpace import EarningSpace
 
 from tile import Tile
 from earningSpace import EarningSpace
+from property import Property
+from railroad import Railroad
+from utility import Utility
+from goToJail import GoToJail
 from deed import Deed
 
 # TILES
@@ -14,6 +18,22 @@ Go = EarningSpace("Go", 200)
 IncomeTax = EarningSpace("Income Tax", -200)
 LuxuryTax = EarningSpace("Luxury Tax", -100)
 FreeParking = EarningSpace("Free Parking", 0)
+GotoJail = GoToJail("Go To Jail")
+
+KentuckyAvenue = Property("Kentucky Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
+IndianaAvenue = Property("Indiana Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
+IllinoisAvenue = Property("Illinois Avenue", 240, "red", 20, 150, 100, 300, 750, 925, 1100)
+BoRR = Railroad("B&O Railroad", 200, "railroad", 25)
+AtlanticAvenue = Property("Atlantic Avenue", 260, "yellow", 22, 150, 110, 330, 800, 975, 1150)
+VentnorAvenue = Property("Ventnor Avenue", 260, "yellow", 22, 150, 110, 330, 800, 975, 1150)
+WaterWorks = Utility("Water Works", 150, "utility")
+MarvinGardens = Property("Marvin Gardens", 280, "yellow", 24, 150, 120, 360, 850, 1025, 1200)
+PacificAvenue = Property("Pacific Avenue", 300, "green", 26, 200, 130, 390, 900, 1100, 1275)
+NorthCarolinaAvenue = Property("North Carolina Avenue", 300, "green", 26, 200, 130, 390, 900, 1100, 1275)
+PennsylvaniaAvenue = Property("Pennsylvania Avenue", 320, "green", 28, 200, 150, 450, 1000, 1200, 1400)
+ShortLine = Railroad("Short Line", 200, "railroad", 25)
+ParkPlace = Property("Park Place", 350, "darkblue", 35, 175, 500, 1100, 700, 1300, 1500)
+Boardwalk = Property("Boardwalk", 400, "darkblue", 50, 150, 200, 600, 1400, 1700, 2000)
 
 class Board:
     def __init__(self, mNumPlayers: int):
@@ -75,8 +95,8 @@ class Board:
                         if rolled: break
                         print("You haven't rolled yet!")
                     elif command == "roll":
-                        dice, rollSum = self.rollDice(player)
                         rolled = True
+                        dice, rollSum = self.rollDice(player)
                         if dice[0] == dice[1]: # doubles check
                             player.mContinuousDoubles += 1
                             if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
