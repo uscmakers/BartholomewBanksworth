@@ -15,6 +15,17 @@ IncomeTax = EarningSpace("Income Tax", -200)
 LuxuryTax = EarningSpace("Luxury Tax", -100)
 FreeParking = EarningSpace("Free Parking", 0)
 
+SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
+                "utility": [ElectricCompany, WaterWorks],
+                "brown": [MediterraneanAvenue, BalticAvenue],
+                "lightblue": [OrientalAvenue, VermontAvenue, ConnecticutAvenue],
+                "pink": [CharlesPlace, StatesAvenue, VirginiaAvenue],
+                "orange": [JamesPlace, TennesseeAvenue, NewYorkAvenue],
+                "red": [KentuckyAvenue, IndianaAvenue, IllinoisAvenue],
+                "yellow": [AtlanticAvenue, VentnorAvenue, MarvinGardens],
+                "green": [PacificAvenue, NorthCarolinaAvenue, PennsylvaniaAvenue],
+                "darkblue": [ParkPlace, Boardwalk]}
+
 class Board:
     def __init__(self, mNumPlayers: int):
         self.mNumPlayers = mNumPlayers
@@ -29,7 +40,10 @@ class Board:
     
     def initBoard(self):
         # TODO: initialize array using pre-defined tiles (global variables)
-        self.mTiles = [Go, Boardwalk, IncomeTax]
+        self.mTiles = [Go, MediterraneanAvenue, CommunityChest, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, Chance, VermontAvenue, ConnecticutAvenue, Jail,
+                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, CommunityChest, TennesseeAvenue, NewYorkAvenue, FreeParking,
+                       KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GoToJail,
+                       PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
         self.mTotalSpaces = len(self.mTiles)
 
     def initPlayers(self):
