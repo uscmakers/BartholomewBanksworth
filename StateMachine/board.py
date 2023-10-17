@@ -11,6 +11,9 @@ from railroad import Railroad
 from utility import Utility
 from goToJail import GoToJail
 from deed import Deed
+from property import Property
+from railroad import Railroad
+from utility import Utility
 
 # TILES
 
@@ -19,7 +22,20 @@ IncomeTax = EarningSpace("Income Tax", -200)
 LuxuryTax = EarningSpace("Luxury Tax", -100)
 FreeParking = EarningSpace("Free Parking", 0)
 GotoJail = GoToJail("Go To Jail")
-
+MediterraneanAvenue = Property("Mediterranean Avenue", 60, "brown", 2, 50, 10, 30, 90, 160, 250)
+BalticAvenue = Property("Baltic Avenue", 60, "brown", 4, 50, 20, 60, 180, 320, 450)
+ReadingRR = Railroad("Reading Railroad", 200, "railroad", 25)
+OrientalAvenue = Property("Oriental Avenue", 100, "lightblue", 6, 50, 30, 90, 270, 400, 550)
+VermontAvenue = Property("Vermont Avenue", 100, "lightblue", 6, 50, 30, 90, 270, 400, 550)
+ConnecticutAvenue = Property("Connecticut Avenue", 120, "lightblue", 8, 40, 100, 300, 450, 600, 550)
+CharlesPlace = Property("St. Charles Place", 140, "pink", 10, 100, 50, 150, 450, 625, 750)
+ElectricCompany = Utility("Electric Company", 150, "utility")
+StatesAvenue = Utility("States Avenue", 140, "pink", 10, 100, 50, 150, 450, 625, 750)
+VirginiaAvenue = Utility("Virginia Avenue", 160, "pink", 12, 100, 60, 180, 500, 700, 900)
+PennsylvaniaRR = Utility("Pennsylvania Railroad", 200, "railroad", 25)
+JamesPlace = Utility("St. James Place", 180, "orange", 14, 100, 70, 200, 550, 750, 950)
+TennesseeAvenue = Utility("Tennessee Avenue", 180, "orange", 14, 100, 70, 200, 550, 750, 950)
+NewYorkAvenue = Utility("New York Avenue", 200, "orange", 16, 100, 80, 220, 600, 800, 1000)
 KentuckyAvenue = Property("Kentucky Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
 IndianaAvenue = Property("Indiana Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
 IllinoisAvenue = Property("Illinois Avenue", 240, "red", 20, 150, 100, 300, 750, 925, 1100)
