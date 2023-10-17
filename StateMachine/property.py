@@ -2,26 +2,19 @@ from deed import Deed
 from player import Player
 
 class Property(Deed):
-    def __init__(self, mTileName, mCost, mSet, mRent, mHouseCost):
+    def __init__(self, mTileName, mCost, mSet, mRent, mHouseCost, mOneHouseRent, mTwoHouseRent, mThreeHouseRent, mFourHouseRent, mFiveHouseRent):
         super().__init__(mTileName, mCost, mSet, mRent)
         # HOUSE INFO
         self.mNumHouse = 0
         self.mHouseCost = mHouseCost
 
         # RENT BASED ON HOUSE COUNT
-        self.mOneHouseRent = 0
-        self.mTwoHouseRent = 0
-        self.mThreeHouseRent = 0
-        self.mFourHouseRent = 0
-        self.mFiveHouseRent = 0 #hotel
-    
-    def InitRent(self, mOneHouseRent, mTwoHouseRent, mThreeHouseRent, mFourHouseRent, mFiveHouseRent):
         self.mOneHouseRent = mOneHouseRent
         self.mTwoHouseRent = mTwoHouseRent
         self.mThreeHouseRent = mThreeHouseRent
         self.mFourHouseRent = mFourHouseRent
-        self.mFiveHouseRent = mFiveHouseRent
-        
+        self.mFiveHouseRent = mFiveHouseRent #hotel
+    
     
     def CalculatePropertyRent(self) -> int:
         if self.mNumHouse == 0:
@@ -39,6 +32,13 @@ class Property(Deed):
             return self.mFourHouseRent
         elif self.mNumHouse == 5:
             return self.mFiveHouseRent
+    
+    def BuildHouse(self):
+        mCanBuild = False
+        if None:
+        # if CheckMonopoly():
+            if (self.mNumHouse < 5):
+        # Treat fifth house as hotel
     
     # TODO: complete function
     # def CheckMonopoly() -> bool:
