@@ -89,7 +89,6 @@ class Board:
         self.mPlayers.append(Player(True)) # ai
         for i in range(len(self.mPlayers)): # name each player
             self.mPlayers[i].NamePlayer(i+1)
-        print()
     
     def initCards(self):
         # TODO: maybe need something here idk
@@ -111,20 +110,24 @@ class Board:
                     print(player.mPlayerName + " is in jail!")
                     if player.mNumJailFree > 0: # get out of jail free card
                         if player.mIsAi:
-                            # player.useGetOutOfJailFree()
-                            pass
+                            player.UseGetOutOfJailFree()
                         else:
                             choice = input("Would you like to use your get out of jail free card? (yes/no) ")
                             if choice == "yes":
-                                print(player.mPlayerName + " used their get out of jail free card and is out of jail!")
-                                player.mTurnsInJail = 0
-                                player.mNumJailFree -= 1
+                                player.UseGetOutOfJailFree()
                             else:    
                                 player.mTurnsInJail += 1
                                 continue
                     elif player.mBalance >= const.JAIL_FEE:
-                        # TODO
-                        pass
+                        if player.mIsAi:
+                            player.PayJailFee()
+                        else:
+                            choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
+                            if choice == "yes":
+                                player.PayJailFee()
+                            else:    
+                                player.mTurnsInJail += 1
+                                continue
                     else:
                         player.mTurnsInJail += 1
                         continue
@@ -154,22 +157,30 @@ class Board:
                             pass
                         elif command == "build":
                             pass
+                        elif command == "exit":
+                            return
                         else:
                             print("Not a valid command. Type help to see list of valid commands.")
                         if player.mBalance < 0: # bankruptcy check
                             self.mPlayers.remove(player)
                             print(player.mPlayerName + " is bankrupt!")
                             break
+                player.mContinuousDoubles = 0
             turn += 1
     
     def turn(self, player: Player):
-        tile = self.roll(player) # roll dice and move player to appropriate space
-        # TODO: physically move player using motor code
-        if player.mTurnsInJail == 0: tile.action(player, self) # execute action when land on space
+        while True:
+            tile, doubles = self.roll(player) # roll dice and move player to appropriate space
+            # TODO: physically move player using motor code
+            if player.mTurnsInJail == 0: tile.action(player, self) # execute action when land on space
+            if not doubles: break
     
     def roll(self, player: Player): # roll dice and move player to appropriate space
+        doubles = False
         dice, rollSum = self.rollDice(player)
         if dice[0] == dice[1]: # doubles check
+            doubles = True
+            print(player.mPlayerName + " rolled doubles!")
             player.mContinuousDoubles += 1
             if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
                 player.mPos = const.JAIL_SPACE
@@ -182,7 +193,7 @@ class Board:
         player.mPos = (player.mPos + rollSum) % self.mTotalSpaces # move player appropriate number of spaces
         tile = self.mTiles[player.mPos]
         print(player.mPlayerName + " landed on " + tile.mTileName + "!")
-        return tile
+        return tile, doubles
     
     def rollDice(self, player: Player): # simulates rolling two dice
         dice = (random.randint(1,6), random.randint(1,6))
@@ -208,4 +219,5 @@ class Board:
         print("build = build houses/hotels")
         print("trade = trade with another player")
         print("end = end your turn")
+        print("exit = exit the game")
         print("help = see this list of commands")
