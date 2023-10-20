@@ -38,3 +38,12 @@ class Player:
     def GoToJail(self):
         self.mPos = const.JAIL_SPACE
         self.mTurnsInJail = 1
+    
+    def PayJailFee(self):
+        print(self.mPlayerName + " paid $" + str(const.JAIL_FEE) + " to get out of jail!")
+        self.mBalance -= const.JAIL_FEE
+    
+    def UseGetOutOfJailFree(self):
+        print(self.mPlayerName + " used their get out of jail free card!")
+        self.mTurnsInJail = 0
+        self.mNumJailFree -= 1
