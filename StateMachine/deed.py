@@ -41,3 +41,16 @@ class Deed(Tile):
         mPlayer.mBalance -= self.mRent
         self.mOwner.mBalance += self.mRent
         print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(self.mRent) + "!")
+
+    # find number of deeds owned from a set
+    # to check for monopoly use
+    # if (len(SetToDeedMap[self.mSet]) == CountDeedOwned(self, player)) then is a monopoly
+    def CountDeedOwned(self, player: Player) -> int:
+        # fix circular import
+        from board import SetToDeedMap
+
+        count = 0
+        for property in SetToDeedMap[self.mSet]:
+            if player == property.mOwner:
+                count += 1
+        return count

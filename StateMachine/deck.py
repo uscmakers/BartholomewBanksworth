@@ -21,6 +21,6 @@ class Deck(Tile):
         else:
             print("Only options are 'community chest' or 'chance'")
 
-    def action(self, player):
-        self.mList[self.mTop].action(player)
+    def action(self, player, board):
+        self.mList[self.mTop].action(player, board)
         self.mTop = self.mTop + 1

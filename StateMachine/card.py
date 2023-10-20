@@ -1,4 +1,4 @@
-from board import Board
+# from board import Board
 from player import Player
 
 class Card:
@@ -99,7 +99,7 @@ class Card:
         else:
             print("INCORRECT inputType GIVEN TO CARD, should be 0-27")
         
-    def action(self, player : Player):
+    def action(self, player : Player, board):
         if (player.mPos > self.mFixedPosition or player.mPos + self.mDeltaPosition > 39) and self.mSpecial is not "Jail":
             player.mBalance += 200
         player.mPos = self.mFixedPosition
@@ -112,12 +112,18 @@ class Card:
         elif self.mSpecial == "25 and 100":
             pass
         elif self.mSpecial == "Chairman":
-            pass
+            for currPlayer in board.mPlayers:
+                if currPlayer is not player:
+                    player.mBalance -= 50
+                    currPlayer.mBalance += 50
         elif self.mSpecial == "GetOut":
             player.mNumJailFree = player.mNumJailFree + 1
         elif self.mSpecial == "Jail":
             player.mTurnsInJail = 1
         elif self.mSpecial == "Birthday":
-            pass
+            for currPlayer in board.mPlayers:
+                if currPlayer is not player:
+                    player.mBalance += 10
+                    currPlayer.mBalance -= 10
         elif self.mSpecial == "40 and 115":
             pass

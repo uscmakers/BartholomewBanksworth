@@ -7,5 +7,4 @@ class GoToJail(Tile):
         super().__init__(mTileName)
 
     def action(self, mPlayer: Player):
-        mPlayer.mPos = const.JAIL_SPACE
-        mPlayer.mInJail = True
+        mPlayer.GoToJail()
