@@ -1,6 +1,5 @@
 from deed import Deed
 from player import Player
-from board import SetToDeedMap
 
 class Railroad(Deed):
     def __init__(self, mTileName, mCost, mSet, mRent):

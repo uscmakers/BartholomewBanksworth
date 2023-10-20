@@ -1,7 +1,5 @@
-from board import Board
 from deed import Deed
 from player import Player
-from board import SetToDeedMap
 
 class Utility(Deed):
     def __init__(self, mTileName, mCost, mSet, mRent = None):

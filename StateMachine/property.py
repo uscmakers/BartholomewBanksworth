@@ -1,6 +1,5 @@
 from deed import Deed
 from player import Player
-from board import Board
 from board import SetToDeedMap
 from const import AVAILABLE_HOUSE, AVAILABLE_HOTEL
 
