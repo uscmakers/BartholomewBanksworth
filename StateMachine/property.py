@@ -3,7 +3,6 @@ from player import Player
 from board import SetToDeedMap
 from const import AVAILABLE_HOUSE, AVAILABLE_HOTEL
 
-
 class Property(Deed):
     def __init__(self, mTileName, mCost, mSet, mRent, mHouseCost, mOneHouseRent, mTwoHouseRent, mThreeHouseRent, mFourHouseRent, mFiveHouseRent):
         super().__init__(mTileName, mCost, mSet, mRent)
@@ -42,3 +41,4 @@ class Property(Deed):
                     if self != property and (self.mNumHouse - property.mNumHouse == 0 or self.mNumHouse - property.mNumHouse == -1):
                         mCanBuild = True
         return mCanBuild
+
