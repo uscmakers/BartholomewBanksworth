@@ -69,12 +69,13 @@ class Board:
     def init(self):
         self.initPlayers()
         self.initBoard()
+        self.initCards()
     
     def initBoard(self):
-        self.mTiles = [Go, MediterraneanAvenue, """CommunityChest""", BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, """Chance""", VermontAvenue, ConnecticutAvenue, VisitJail,
-                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, """CommunityChest""", TennesseeAvenue, NewYorkAvenue, FreeParking,
-                       KentuckyAvenue, """Chance""", IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
-                       PacificAvenue, NorthCarolinaAvenue, """CommunityChest""", PennsylvaniaAvenue, ShortLine, """Chance""", ParkPlace, LuxuryTax, Boardwalk]
+        self.mTiles = [Go, MediterraneanAvenue, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, VermontAvenue, ConnecticutAvenue, VisitJail,
+                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, TennesseeAvenue, NewYorkAvenue, FreeParking,
+                       KentuckyAvenue, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
+                       PacificAvenue, NorthCarolinaAvenue, PennsylvaniaAvenue, ShortLine, ParkPlace, LuxuryTax, Boardwalk]
         self.mTotalSpaces = len(self.mTiles)
 
     def initPlayers(self):
@@ -86,6 +87,10 @@ class Board:
             self.mPlayers[i].NamePlayer(i+1)
         print()
     
+    def initCards(self):
+        # TODO: shuffle chance and community chest decks
+        pass
+    
     # RUN LOOP
     
     def run(self):
@@ -94,75 +99,103 @@ class Board:
             print("Turn " + str(turn) + ":")
             player : Player
             for player in self.mPlayers:
-                print("\n" + player.mPlayerName + "'s turn:\n")
+                print(player.mPlayerName + "'s turn:")
                 if player.mTurnsInJail == 3: # out-of-jail check
                     player.mTurnsInJail = 0
                     print(player.mPlayerName + " is out of jail!")
                 elif player.mTurnsInJail > 0: # in-jail check
                     print(player.mPlayerName + " is in jail!")
                     if player.mNumJailFree > 0: # get out of jail free card
-                        choice = input("Would you like to use your get out of jail free card? (yes/no) ")
-                        if choice == "yes":
-                            player.mTurnsInJail = 0
-                            player.mNumJailFree -= 1
-                        else:    
-                            player.mTurnsInJail += 1
-                            continue
+                        if player.mIsAi:
+                            # player.useGetOutOfJailFree()
+                            pass
+                        else:
+                            choice = input("Would you like to use your get out of jail free card? (yes/no) ")
+                            if choice == "yes":
+                                print(player.mPlayerName + " used their get out of jail free card and is out of jail!")
+                                player.mTurnsInJail = 0
+                                player.mNumJailFree -= 1
+                            else:    
+                                player.mTurnsInJail += 1
+                                continue
+                    elif player.mBalance >= const.JAIL_FEE:
+                        # TODO
+                        pass
                     else:
                         player.mTurnsInJail += 1
                         continue
-                rolled = False
-                while True:
-                    command = input("Type a command, or type help: ")
-                    if command == "help":
-                        self.helpMenu()
-                    elif command == "end":
-                        if rolled: break
-                        print("You haven't rolled yet!")
-                    elif command == "roll":
-                        rolled = True
-                        dice, rollSum = self.rollDice(player)
-                        if dice[0] == dice[1]: # doubles check
-                            player.mContinuousDoubles += 1
-                            if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
-                                player.mPos = const.JAIL_SPACE
-                                player.mTurnsInJail = 1
-                                break
-                        if (player.mPos + rollSum) >= self.mTotalSpaces: # passed go check
-                            player.mBalance += const.GO_MONEY
-                            print(player.mPlayerName + " passed go and earned $200!")
-                        player.mPos = (player.mPos + rollSum) % self.mTotalSpaces # move player appropriate number of spaces
-                        # TODO: insert move motor code here
-                        tile = self.mTiles[player.mPos]
-                        print(player.mPlayerName + " landed on " + tile.mTileName + "!")
-                        tile.action(player)
-                    elif command == "stats":
-                        print(player.mPlayerName)
-                        print("Balance: $" + str(player.mBalance))
-                        print("Properties:")
-                        if len(player.mDeedOwned) == 0:
-                            print("(None)")
+                if player.mIsAi:
+                    self.turn(player)
+                    # TODO: AI can build
+                    # TODO: AI can trade
+                    self.stats(player)
+                else:
+                    rolled = False
+                    while True:  
+                        command = input("Type a command, or type help: ")
+                        if command == "help":
+                            self.helpMenu()
+                        elif command == "end":
+                            if rolled: break
+                            print("You haven't rolled yet!")
+                        elif command == "roll":
+                            if rolled:
+                                print("You already rolled!")
+                            else:
+                                rolled = True
+                                self.turn(player)
+                        elif command == "stats":
+                            self.stats(player)
+                        elif command == "trade":
+                            pass
+                        elif command == "build":
+                            pass
                         else:
-                            d : Deed
-                            for d in player.mDeedOwned:
-                                print(d.mTileName)
-                    elif command == "trade":
-                        pass
-                    elif command == "build":
-                        pass
-                    else:
-                        print("Not a valid command. Type help to see list of valid commands.")
-                    if player.mBalance < 0: # bankruptcy check
-                        self.mPlayers.remove(player)
-                        print(player.mPlayerName + " is bankrupt!")
-                        continue
+                            print("Not a valid command. Type help to see list of valid commands.")
+                        if player.mBalance < 0: # bankruptcy check
+                            self.mPlayers.remove(player)
+                            print(player.mPlayerName + " is bankrupt!")
+                            break
             turn += 1
+    
+    def turn(self, player: Player):
+        tile = self.roll(player) # roll dice and move player to appropriate space
+        # TODO: physically move player using motor code
+        if player.mTurnsInJail == 0: tile.action(player) # execute action when land on space
+    
+    def roll(self, player: Player): # roll dice and move player to appropriate space
+        dice, rollSum = self.rollDice(player)
+        if dice[0] == dice[1]: # doubles check
+            player.mContinuousDoubles += 1
+            if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
+                player.mPos = const.JAIL_SPACE
+                player.mTurnsInJail = 1
+                print(player.mPlayerName + " rolled three consecutive doubles! Go to jail!")
+                return None
+        if (player.mPos + rollSum) >= self.mTotalSpaces: # passed go check
+            player.mBalance += const.GO_MONEY
+            print(player.mPlayerName + " passed go and earned $200!")
+        player.mPos = (player.mPos + rollSum) % self.mTotalSpaces # move player appropriate number of spaces
+        tile = self.mTiles[player.mPos]
+        print(player.mPlayerName + " landed on " + tile.mTileName + "!")
+        return tile
     
     def rollDice(self, player: Player): # simulates rolling two dice
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
-        print(player.mPlayerName + " rolled a " + str(sum) + "!")
+        print(player.mPlayerName + " rolled " + str(sum) + "!")
         return dice, sum
+    
+    def stats(self, player: Player): # print stats
+        print(player.mPlayerName + "'s stats:")
+        print("Balance: $" + str(player.mBalance))
+        print("Properties:")
+        if len(player.mDeedOwned) == 0:
+            print("(None)")
+        else:
+            d : Deed
+            for d in player.mDeedOwned:
+                print(d.mTileName)
     
     def helpMenu(self): # print help menu
         print("Help menu:")
