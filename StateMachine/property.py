@@ -1,6 +1,5 @@
 from deed import Deed
 from player import Player
-from board import SetToDeedMap
 from const import AVAILABLE_HOUSE, AVAILABLE_HOTEL
 
 class Property(Deed):
@@ -18,6 +17,9 @@ class Property(Deed):
         self.mFiveHouseRent = mFiveHouseRent  # hotel
 
     def CalculatePropertyRent(self, player: Player = None) -> int:
+        # circular import issue fix
+        from board import SetToDeedMap
+        
         if self.mNumHouse == 0:
             return self.mRent
         elif len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(self, player):
@@ -34,6 +36,9 @@ class Property(Deed):
             return self.mFiveHouseRent
         
     def BuildHouse(self, player: Player = None) -> bool:
+        # circular import issue fix
+        from board import SetToDeedMap
+        
         mCanBuild = False
         if AVAILABLE_HOUSE != 0 and len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(self, player) and self.mSet != "railroad" and self.mSet != "utility":
             if self.mNumHouse < 4 or (self.mNumHouse < 5 and AVAILABLE_HOTEL != 0):
@@ -41,4 +46,3 @@ class Property(Deed):
                     if self != property and (self.mNumHouse - property.mNumHouse == 0 or self.mNumHouse - property.mNumHouse == -1):
                         mCanBuild = True
         return mCanBuild
-
