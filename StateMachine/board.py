@@ -14,6 +14,7 @@ from deed import Deed
 from property import Property
 from railroad import Railroad
 from utility import Utility
+from deck import Deck
 
 # TILES
 
@@ -50,6 +51,8 @@ PennsylvaniaAvenue = Property("Pennsylvania Avenue", 320, "green", 28, 200, 150,
 ShortLine = Railroad("Short Line", 200, "railroad", 25)
 ParkPlace = Property("Park Place", 350, "darkblue", 35, 175, 500, 1100, 700, 1300, 1500)
 Boardwalk = Property("Boardwalk", 400, "darkblue", 50, 150, 200, 600, 1400, 1700, 2000)
+CommunityChest = Deck("Community Chest")
+Chance = Deck("Chance")
 
 SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
                 "utility": [ElectricCompany, WaterWorks],
