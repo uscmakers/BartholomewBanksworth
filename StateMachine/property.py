@@ -1,5 +1,8 @@
 from deed import Deed
 from player import Player
+from board import SetToDeedMap
+from const import AVAILABLE_HOUSE, AVAILABLE_HOTEL
+
 class Property(Deed):
     def __init__(self, mTileName, mCost, mSet, mRent, mHouseCost, mOneHouseRent, mTwoHouseRent, mThreeHouseRent, mFourHouseRent, mFiveHouseRent):
         super().__init__(mTileName, mCost, mSet, mRent)
@@ -12,14 +15,12 @@ class Property(Deed):
         self.mTwoHouseRent = mTwoHouseRent
         self.mThreeHouseRent = mThreeHouseRent
         self.mFourHouseRent = mFourHouseRent
-        self.mFiveHouseRent = mFiveHouseRent #hotel
-    
-    
-    def CalculatePropertyRent(self) -> int:
+        self.mFiveHouseRent = mFiveHouseRent  # hotel
+
+    def CalculatePropertyRent(self, player: Player = None) -> int:
         if self.mNumHouse == 0:
             return self.mRent
-        # elif CheckMonopoly()
-        elif None:
+        elif len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(self, player):
             return self.mRent * 2
         elif self.mNumHouse == 1:
             return self.mOneHouseRent
@@ -31,19 +32,13 @@ class Property(Deed):
             return self.mFourHouseRent
         elif self.mNumHouse == 5:
             return self.mFiveHouseRent
-    
-    def BuildHouse(self):
+        
+    def BuildHouse(self, player: Player = None) -> bool:
         mCanBuild = False
-        # if None:
-        # if CheckMonopoly():
-        #    if (self.mNumHouse < 5):
-        # Treat fifth house as hotel
-    
-    # TODO: complete function
-    # def CheckMonopoly() -> bool:
-        # Brainstorm
-        # use the mOwner variable and the constructed dictionary
-        # Have list of lists with each set as a sub list and then check this
-        # list against the deed owned list of player with a counter to compare
-        # against the length of the sublist to check if a monopoly or not
-        # instead of a list of lists use a dictionary to store each set
+        if AVAILABLE_HOUSE != 0 and len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(self, player) and self.mSet != "railroad" and self.mSet != "utility":
+            if self.mNumHouse < 4 or (self.mNumHouse < 5 and AVAILABLE_HOTEL != 0):
+                for property in SetToDeedMap[self.mSet]:
+                    if self != property and (self.mNumHouse - property.mNumHouse == 0 or self.mNumHouse - property.mNumHouse == -1):
+                        mCanBuild = True
+        return mCanBuild
+
