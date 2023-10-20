@@ -85,7 +85,6 @@ class Board:
         self.mPlayers.append(Player(True)) # ai
         for i in range(len(self.mPlayers)): # name each player
             self.mPlayers[i].NamePlayer(i+1)
-        print()
     
     def initCards(self):
         # TODO: shuffle chance and community chest decks
@@ -150,6 +149,8 @@ class Board:
                             pass
                         elif command == "build":
                             pass
+                        elif command == "exit":
+                            return
                         else:
                             print("Not a valid command. Type help to see list of valid commands.")
                         if player.mBalance < 0: # bankruptcy check
@@ -204,4 +205,5 @@ class Board:
         print("build = build houses/hotels")
         print("trade = trade with another player")
         print("end = end your turn")
+        print("exit = exit the game")
         print("help = see this list of commands")
