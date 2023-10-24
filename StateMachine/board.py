@@ -9,6 +9,8 @@ from railroad import Railroad
 from utility import Utility
 from goToJail import GoToJail
 from jail import Jail
+from deck import Deck
+from typing import List
 
 # TILES
 
@@ -46,6 +48,8 @@ PennsylvaniaAvenue = Property("Pennsylvania Avenue", 320, "green", 28, 200, 150,
 ShortLine = Railroad("Short Line", 200, "railroad", 25)
 ParkPlace = Property("Park Place", 350, "darkblue", 35, 175, 500, 1100, 700, 1300, 1500)
 Boardwalk = Property("Boardwalk", 400, "darkblue", 50, 150, 200, 600, 1400, 1700, 2000)
+CommunityChest = Deck("Community Chest")
+Chance = Deck("Chance")
 
 SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
                 "utility": [ElectricCompany, WaterWorks],
@@ -61,7 +65,7 @@ SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
 class Board:
     def __init__(self, mNumPlayers: int):
         self.mNumPlayers = mNumPlayers
-        self.mPlayers = []
+        self.mPlayers : List[Player] = []
         self.mTiles = []
     
     # INITIALIZATION
@@ -87,7 +91,7 @@ class Board:
             self.mPlayers[i].NamePlayer(i+1)
     
     def initCards(self):
-        # TODO: shuffle chance and community chest decks
+        # TODO: maybe need something here idk
         pass
     
     # RUN LOOP
@@ -168,7 +172,7 @@ class Board:
         while True:
             tile, doubles = self.roll(player) # roll dice and move player to appropriate space
             # TODO: physically move player using motor code
-            if player.mTurnsInJail == 0: tile.action(player) # execute action when land on space
+            if player.mTurnsInJail == 0: tile.action(player, self) # execute action when land on space
             if not doubles: break
     
     def roll(self, player: Player): # roll dice and move player to appropriate space
