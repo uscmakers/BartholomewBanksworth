@@ -172,7 +172,7 @@ class Board:
         while True:
             tile, doubles = self.roll(player) # roll dice and move player to appropriate space
             # TODO: physically move player using motor code
-            if player.mTurnsInJail == 0: tile.action(player, self) # execute action when land on space
+            if player.mTurnsInJail == 0: tile.action(player) # execute action when land on space
             if not doubles: break
     
     def roll(self, player: Player): # roll dice and move player to appropriate space
