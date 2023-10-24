@@ -1,4 +1,3 @@
-# from board import Board
 from player import Player
 
 class Card:
@@ -61,7 +60,7 @@ class Card:
             self.mName = "Bank error in your favor. Collect $200"
             self.mDeltaBalance += 200
         elif inputType == 16:
-            self.mName = "Doctor’s fee. Pay $50"
+            self.mName = "Doctor's fee. Pay $50"
             self.mDeltaBalance -= 50
         elif inputType == 17:
             self.mName = "From sale of stock you get $50"
@@ -102,7 +101,7 @@ class Card:
     def action(self, player : Player, board):
         if (player.mPos > self.mFixedPosition or player.mPos + self.mDeltaPosition > 39) and self.mSpecial is not "Jail":
             player.mBalance += 200
-        player.mPos = self.mFixedPosition
+        if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
         player.mPos += self.mDeltaPosition
         player.mBalance += self.mDeltaBalance
         if self.mSpecial == "NextRailroad":
@@ -127,3 +126,4 @@ class Card:
                     currPlayer.mBalance -= 10
         elif self.mSpecial == "40 and 115":
             pass
+        # TODO: physically move the player, call action for spot you land on
