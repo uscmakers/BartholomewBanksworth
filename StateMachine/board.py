@@ -48,8 +48,13 @@ PennsylvaniaAvenue = Property("Pennsylvania Avenue", 320, "green", 28, 200, 150,
 ShortLine = Railroad("Short Line", 200, "railroad", 25)
 ParkPlace = Property("Park Place", 350, "darkblue", 35, 175, 500, 1100, 700, 1300, 1500)
 Boardwalk = Property("Boardwalk", 400, "darkblue", 50, 150, 200, 600, 1400, 1700, 2000)
-CommunityChest = Deck("Community Chest")
-Chance = Deck("Chance")
+CommunityChest = Deck("Community Chest", True)
+Chance = Deck("Chance", True)
+
+Tiles = [Go, MediterraneanAvenue, CommunityChest, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, Chance, VermontAvenue, ConnecticutAvenue, VisitJail,
+                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, CommunityChest, TennesseeAvenue, NewYorkAvenue, FreeParking,
+                       KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
+                       PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
 
 SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
                 "utility": [ElectricCompany, WaterWorks],
@@ -73,26 +78,19 @@ class Board:
     def init(self):
         self.initPlayers()
         self.initBoard()
-        self.initCards()
     
     def initBoard(self):
-        self.mTiles = [Go, MediterraneanAvenue, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, VermontAvenue, ConnecticutAvenue, VisitJail,
-                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, TennesseeAvenue, NewYorkAvenue, FreeParking,
-                       KentuckyAvenue, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
-                       PacificAvenue, NorthCarolinaAvenue, PennsylvaniaAvenue, ShortLine, ParkPlace, LuxuryTax, Boardwalk]
-        self.mTotalSpaces = len(self.mTiles)
+        self.mTiles = Tiles
 
     def initPlayers(self):
+        # initialize players and add to player list
         for i in range(self.mNumPlayers-1): # humans
             p = Player(False)
             self.mPlayers.append(p)
         self.mPlayers.append(Player(True)) # ai
-        for i in range(len(self.mPlayers)): # name each player
-            self.mPlayers[i].NamePlayer(i+1)
-    
-    def initCards(self):
-        # TODO: maybe need something here idk
-        pass
+        for i in range(len(self.mPlayers)): 
+            self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
+            self.mPlayers[i].NamePlayer(i+1) # name each player
     
     # RUN LOOP
     
@@ -162,8 +160,10 @@ class Board:
                             # if can build, check if enough balance, then build, increment house count
                             # else say cannot build, return to help menu
                             pass
-                        elif command == "exit":
-                            return
+                        elif command == "quit":
+                            ans = input("Are you sure you want to quit the game? Your progress won't be saved. (yes/no) ")
+                            if ans == "yes":
+                                return
                         else:
                             print("Not a valid command. Type help to see list of valid commands.")
                         if player.mBalance < 0: # bankruptcy check
@@ -176,7 +176,7 @@ class Board:
     def turn(self, player: Player):
         while True:
             tile, doubles = self.roll(player) # roll dice and move player to appropriate space
-            # TODO: physically move player using motor code
+            # TODO: physically move player to tile
             if player.mTurnsInJail == 0: tile.action(player) # execute action when land on space
             if not doubles: break
     
@@ -188,14 +188,14 @@ class Board:
             print(player.mPlayerName + " rolled doubles!")
             player.mContinuousDoubles += 1
             if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
-                player.mPos = const.JAIL_SPACE
+                player.mPos = 10
                 player.mTurnsInJail = 1
                 print(player.mPlayerName + " rolled three consecutive doubles! Go to jail!")
                 return None
-        if (player.mPos + rollSum) >= self.mTotalSpaces: # passed go check
+        if (player.mPos + rollSum) >= 40: # passed go check
             player.mBalance += const.GO_MONEY
             print(player.mPlayerName + " passed go and earned $200!")
-        player.mPos = (player.mPos + rollSum) % self.mTotalSpaces # move player appropriate number of spaces
+        player.mPos = (player.mPos + rollSum) % 40 # move player appropriate number of spaces
         tile = self.mTiles[player.mPos]
         print(player.mPlayerName + " landed on " + tile.mTileName + "!")
         return tile, doubles
@@ -204,7 +204,7 @@ class Board:
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, sum
+        return dice, 7 #sum
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
@@ -224,5 +224,5 @@ class Board:
         print("build = build houses/hotels")
         print("trade = trade with another player")
         print("end = end your turn")
-        print("exit = exit the game")
+        print("quit = quit the game")
         print("help = see this list of commands")

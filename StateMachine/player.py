@@ -21,6 +21,9 @@ class Player:
         self.mNumJailFree = 0
         self.mContinuousDoubles = 0
 
+    def InitPlayerList(self, mPlayerList):
+        self.mPlayerList = mPlayerList
+
     def CalculateNetWorth(self):
         self.mNetWorth = self.mBalance
 
@@ -36,7 +39,8 @@ class Player:
             self.mPlayerName = "Bartholomew Banksworth"
 
     def GoToJail(self):
-        self.mPos = const.JAIL_SPACE
+        self.mPos = 10
+        # TODO: physically move player to jail
         self.mTurnsInJail = 1
     
     def PayJailFee(self):
