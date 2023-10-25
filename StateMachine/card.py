@@ -1,5 +1,5 @@
 from player import Player
-
+import const
 class Card:
     def __init__(self, inputType):
         self.mFixedPosition = -1
@@ -16,7 +16,7 @@ class Card:
             self.mName = "Advance to St. Charles Place. If you pass Go, collect $200"
             self.mFixedPosition = 11
         elif inputType == 3: # NEED TWO OF THESE IN CHANCE
-            self.mName = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled" # SPECIAL
+            self.mName = "Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay owner twice the rental to which they are otherwise entitled" # SPECIAL
             self.mSpecial = "NextRailroad"
         elif inputType == 4:
             self.mName = "Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown." # SPECIAL
@@ -52,7 +52,6 @@ class Card:
             self.mSpecial = "GetOut"
         elif inputType == 14:
             self.mName = "Go to Jail. Go directly to Jail, do not pass Go, do not collect $200" # SPECIAL
-            self.mFixedPosition = 10
             self.mSpecial = "Jail"
         # CHANCE & COMMUNITY CHANCE CARDS END
         # COMMUNITY CHEST EXCLUSIVE CARDS BEGIN
@@ -98,32 +97,53 @@ class Card:
         else:
             print("INCORRECT inputType GIVEN TO CARD, should be 0-27")
         
-    def action(self, player : Player, board):
-        if (player.mPos > self.mFixedPosition or player.mPos + self.mDeltaPosition > 39) and self.mSpecial != "Jail":
-            player.mBalance += 200
+    def action(self, player : Player, playerList):
+        from board import Tiles
+        print(self.mName)
+        oldPos = player.mPos
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
         player.mPos += self.mDeltaPosition
         player.mBalance += self.mDeltaBalance
         if self.mSpecial == "NextRailroad":
-            pass
+            if player.mPos >= 5 and player.mPos < 15:
+                self.mFixedPosition = 15
+            elif player.mPos >= 15 and player.mPos < 25:
+                self.mFixedPosition = 25
+            elif player.mPos >= 25 and player.mPos < 35:
+                self.mFixedPosition = 35
+            else:
+                self.mFixedPosition = 5
+            player.mPos = self.mFixedPosition
         elif self.mSpecial == "NextUtility":
-            pass
+            if player.mPos >= 12 and player.mPos < 28:
+                self.mFixedPosition = 28
+            else:
+                self.mFixedPosition = 12
+            player.mPos = self.mFixedPosition
         elif self.mSpecial == "25 and 100":
             pass
         elif self.mSpecial == "Chairman":
-            for currPlayer in board.mPlayers:
+            for currPlayer in playerList:
                 if currPlayer is not player:
                     player.mBalance -= 50
                     currPlayer.mBalance += 50
         elif self.mSpecial == "GetOut":
             player.mNumJailFree = player.mNumJailFree + 1
         elif self.mSpecial == "Jail":
-            player.mTurnsInJail = 1
+            player.GoToJail()
         elif self.mSpecial == "Birthday":
-            for currPlayer in board.mPlayers:
+            for currPlayer in playerList:
                 if currPlayer is not player:
                     player.mBalance += 10
                     currPlayer.mBalance -= 10
         elif self.mSpecial == "40 and 115":
             pass
-        # TODO: physically move the player, call action for spot you land on
+        print(self.mSpecial, self.mDeltaBalance, self.mFixedPosition, self.mDeltaPosition, player.mBalance)
+        if self.mSpecial != "Jail" and (self.mFixedPosition != -1 or self.mDeltaPosition != 0):
+            if player.mPos <= oldPos: # passed go check
+                player.mBalance += const.GO_MONEY
+                print(player.mPlayerName + " passed go and earned $200!")
+            tile = Tiles[player.mPos]
+            # TODO: physically move player to tile
+            print(player.mPlayerName + " landed on " + tile.mTileName + "!")
+            tile.action(player)
