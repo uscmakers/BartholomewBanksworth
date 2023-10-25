@@ -153,9 +153,14 @@ class Board:
                                 self.turn(player)
                         elif command == "stats":
                             self.stats(player)
+                        # TODO: future implementation
                         elif command == "trade":
                             pass
                         elif command == "build":
+                            # pick property to build on from property list
+                            # check if can build on selected property
+                            # if can build, check if enough balance, then build, increment house count
+                            # else say cannot build, return to help menu
                             pass
                         elif command == "exit":
                             return
