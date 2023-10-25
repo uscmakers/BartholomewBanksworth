@@ -1,23 +1,25 @@
-
-from gpiozero import OutputDevice
+import RPi.GPIO as GPIO
 import time
 
-# Define the GPIO pin connected to the electromagnet
-electromagnet = OutputDevice(17)  # Change 17 to the actual GPIO pin number you're using
+# Set the GPIO pin for your electromagnetic module
+EMAG_PIN = 17
 
-try:
-    while True:
-        # Turn the electromagnet on
-        electromagnet.on()
-        print("Electromagnet is ON")
-        time.sleep(2)  # Keep it on for 2 seconds
-        
-        # Turn the electromagnet off
-        electromagnet.off()
-        print("Electromagnet is OFF")
-        time.sleep(2)  # Keep it off for 2 seconds
+# Initialize GPIO settings
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(EMAG_PIN, GPIO.OUT)
 
-except KeyboardInterrupt:
-    # If you press Ctrl+C, exit the loop and clean up GPIO
-    electromagnet.off()
-    print("Exiting the program")
+# Initialize PWM on the EMAG_PIN
+pwm = GPIO.PWM(EMAG_PIN, 1000)  # 1000 Hz frequency
+
+
+pwm.start(0)  # Starts with 0% duty cycle
+while True:
+    # Increase duty cycle to strengthen the magnetic field
+    for duty_cycle in range(0, 101):
+        pwm.ChangeDutyCycle(duty_cycle)
+        time.sleep(0.1)
+
+    # Decrease duty cycle to weaken the magnetic field
+    for duty_cycle in range(100, -1, -1):
+        pwm.ChangeDutyCycle(duty_cycle)
+        time.sleep(0.1)
