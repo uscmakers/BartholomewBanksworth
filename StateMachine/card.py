@@ -99,7 +99,7 @@ class Card:
             print("INCORRECT inputType GIVEN TO CARD, should be 0-27")
         
     def action(self, player : Player, board):
-        if (player.mPos > self.mFixedPosition or player.mPos + self.mDeltaPosition > 39) and self.mSpecial is not "Jail":
+        if (player.mPos > self.mFixedPosition or player.mPos + self.mDeltaPosition > 39) and self.mSpecial != "Jail":
             player.mBalance += 200
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
         player.mPos += self.mDeltaPosition
