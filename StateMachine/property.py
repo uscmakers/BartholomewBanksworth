@@ -16,13 +16,10 @@ class Property(Deed):
         self.mFourHouseRent = mFourHouseRent
         self.mFiveHouseRent = mFiveHouseRent  # hotel
 
-    def CalculatePropertyRent(self, player: Player = None) -> int:
+    def CalculateRent(self, rollSum, player: Player = None) -> int:
         from board import SetToDeedMap
-        if self.mNumHouse == 0:
-            return self.mRent
-        elif len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(self, player):
-            return self.mRent * 2
-        elif self.mNumHouse == 1:
+        
+        if self.mNumHouse == 1:
             return self.mOneHouseRent
         elif self.mNumHouse == 2:
             return self.mTwoHouseRent
@@ -32,13 +29,22 @@ class Property(Deed):
             return self.mFourHouseRent
         elif self.mNumHouse == 5:
             return self.mFiveHouseRent
+        elif len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(player):
+            return self.mRent * 2
+        else:
+            return self.mRent
         
     def BuildHouse(self, player: Player = None) -> bool:
         from board import SetToDeedMap        
         mCanBuild = False
-        if AVAILABLE_HOUSE != 0 and len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(self, player) and self.mSet != "railroad" and self.mSet != "utility":
+        if AVAILABLE_HOUSE != 0 and len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(player) and self.mSet != "railroad" and self.mSet != "utility":
+            # print("first")
             if self.mNumHouse < 4 or (self.mNumHouse < 5 and AVAILABLE_HOTEL != 0):
+                # print("second")
+                mCanBuild = True
                 for property in SetToDeedMap[self.mSet]:
-                    if self != property and (self.mNumHouse - property.mNumHouse == 0 or self.mNumHouse - property.mNumHouse == -1):
-                        mCanBuild = True
+                    if self != property and (self.mNumHouse - property.mNumHouse != 0 and self.mNumHouse - property.mNumHouse != -1):
+                        # print("three")
+                        mCanBuild = False
+                        break
         return mCanBuild

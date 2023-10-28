@@ -138,7 +138,6 @@ class Card:
                     currPlayer.mBalance -= 10
         elif self.mSpecial == "40 and 115":
             pass
-        print(self.mSpecial, self.mDeltaBalance, self.mFixedPosition, self.mDeltaPosition, player.mBalance)
         if self.mSpecial != "Jail" and (self.mFixedPosition != -1 or self.mDeltaPosition != 0):
             if player.mPos <= oldPos: # passed go check
                 player.mBalance += const.GO_MONEY
@@ -146,4 +145,4 @@ class Card:
             tile = Tiles[player.mPos]
             # TODO: physically move player to tile
             print(player.mPlayerName + " landed on " + tile.mTileName + "!")
-            tile.action(player)
+            tile.action(player, player.mPos-oldPos)

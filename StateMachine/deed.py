@@ -10,7 +10,7 @@ class Deed(Tile):
         # TODO: add rent calculate function
         self.mRent = mRent
 
-    def action(self, mPlayer: Player):
+    def action(self, mPlayer: Player, rollSum: int):
         if mPlayer.mIsAi: # AI, so make decisions for the player
             if self.mOwner is None: # if the deed is unowned
                 if mPlayer.mBalance >= self.mCost: # if AI has enough money
@@ -18,7 +18,7 @@ class Deed(Tile):
             elif self.mOwner == mPlayer: # deed is owned by yourself
                 print("Nothing happens!")
             else: # deed is owned by another player
-                self.pay(mPlayer)
+                self.pay(mPlayer, rollSum)
         else: # user, so user should make decisions
             if self.mOwner is None:
                 choice = input("Would you like to purchase the property? (yes/no) ")
@@ -27,7 +27,7 @@ class Deed(Tile):
             elif self.mOwner == mPlayer: # deed is owned by yourself
                 print("This is your own property!")
             else: # deed is owned by another player
-                self.pay(mPlayer)
+                self.pay(mPlayer, rollSum)
                     
 
     def purchase(self, mPlayer: Player):
@@ -36,11 +36,13 @@ class Deed(Tile):
         self.mOwner.mDeedOwned.append(self)
         print(mPlayer.mPlayerName + " purchased " + self.mTileName + " for $" + str(self.mCost) + "!")
 
-    def pay(self, mPlayer: Player):
-        # base implementation (default rent without accounting for monopolies or upgrades or railroad/utility rules)
-        mPlayer.mBalance -= self.mRent
-        self.mOwner.mBalance += self.mRent
-        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(self.mRent) + "!")
+    # update pay function with rent calc functions
+    def pay(self, mPlayer: Player, rollSum: int):
+        mRentToPay = self.CalculateRent(rollSum, self.mOwner)
+        # print("This is mRentToPay", mRentToPay, "This playerBalance", mPlayer.mBalance)
+        mPlayer.mBalance -= mRentToPay
+        self.mOwner.mBalance += mRentToPay
+        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(mRentToPay) + "!")
 
     # find number of deeds owned from a set
     # to check for monopoly use
@@ -49,8 +51,13 @@ class Deed(Tile):
         # fix circular import
         from board import SetToDeedMap
 
+        # print("I am here")
         count = 0
         for property in SetToDeedMap[self.mSet]:
             if player == property.mOwner:
                 count += 1
+        # print("This is count deed owned", count)
         return count
+    
+    def CalculateRent(self, rollSum, player: Player = None) -> int:
+        pass

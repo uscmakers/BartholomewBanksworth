@@ -24,6 +24,6 @@ class Deck(Tile):
             print("Only options are 'community chest' or 'chance'")
         if shuffle: random.shuffle(self.mList) # shuffle deck
 
-    def action(self, mPlayer: Player):
+    def action(self, mPlayer: Player, rollSum: int):
         self.mList[self.mTop].action(mPlayer, mPlayer.mPlayerList)
         self.mTop = (self.mTop + 1) % len(self.mList)

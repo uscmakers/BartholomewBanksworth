@@ -91,6 +91,15 @@ class Board:
         for i in range(len(self.mPlayers)): 
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
             self.mPlayers[i].NamePlayer(i+1) # name each player
+        
+        self.mPlayers[0].mDeedOwned = [MediterraneanAvenue, BalticAvenue]
+        MediterraneanAvenue.mOwner = self.mPlayers[0]
+        BalticAvenue.mOwner = self.mPlayers[0]
+
+        self.mPlayers[1].mDeedOwned = [OrientalAvenue, VermontAvenue, ConnecticutAvenue]
+        OrientalAvenue.mOwner = self.mPlayers[1]
+        VermontAvenue.mOwner = self.mPlayers[1]
+        ConnecticutAvenue.mOwner = self.mPlayers[1]
     
     # RUN LOOP
     
@@ -154,12 +163,39 @@ class Board:
                         # TODO: future implementation
                         elif command == "trade":
                             pass
+                        # LOGIC IS DOWN BUT NOT ABLE TO ACCESS CHILD CLASS FUNCTIONS
                         elif command == "build":
                             # pick property to build on from property list
+                            # if len(player.mDeedOwned) == 0:
+                                # print("No houses to build on")
+                                # exit()
+                                # self.helpMenu()
+                            # else:
+                                # d : Deed
+                            count: int = 1
+                            for d in player.mDeedOwned:
+                                if d.mSet != "utility" and d.mSet != "railroad":
+                                    print(str(count) + ". " + str(d.mTileName)) 
+                                else:
+                                    print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
+                                count += 1
+                            select = int(input("Enter corresponding number to select property: "))
+                            developProperty: property = player.mDeedOwned[select - 1]
                             # check if can build on selected property
-                            # if can build, check if enough balance, then build, increment house count
+                            # print(developProperty.BuildHouse(player))
+                            # print("This is house cost", developProperty.mHouseCost, "This is player balance", player.mBalance)
+                            if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
+                                # if can build, check if enough balance, then build, increment house count
+                                ans = input("Do you want to build here (y/n)? ")
+                                if ans in "Yy":
+                                    developProperty.mNumHouse += 1
+                                    print("You have built a house")
+                                else:
+                                    print("Returning to help menu")
+                                    # self.helpMenu()
                             # else say cannot build, return to help menu
-                            pass
+                            else:
+                                print("Can not build a house here. Returning to help menu")
                         elif command == "quit":
                             ans = input("Are you sure you want to quit the game? Your progress won't be saved. (yes/no) ")
                             if ans == "yes":
@@ -175,9 +211,9 @@ class Board:
     
     def turn(self, player: Player):
         while True:
-            tile, doubles = self.roll(player) # roll dice and move player to appropriate space
+            tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
             # TODO: physically move player to tile
-            if player.mTurnsInJail == 0: tile.action(player) # execute action when land on space
+            if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
             if not doubles: break
     
     def roll(self, player: Player): # roll dice and move player to appropriate space
@@ -198,13 +234,13 @@ class Board:
         player.mPos = (player.mPos + rollSum) % 40 # move player appropriate number of spaces
         tile = self.mTiles[player.mPos]
         print(player.mPlayerName + " landed on " + tile.mTileName + "!")
-        return tile, doubles
+        return tile, doubles, rollSum
     
     def rollDice(self, player: Player): # simulates rolling two dice
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, 7 #sum
+        return dice, sum
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
