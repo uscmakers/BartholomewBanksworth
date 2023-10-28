@@ -92,14 +92,14 @@ class Board:
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
             self.mPlayers[i].NamePlayer(i+1) # name each player
         
-        self.mPlayers[0].mDeedOwned = [MediterraneanAvenue, BalticAvenue]
-        MediterraneanAvenue.mOwner = self.mPlayers[0]
-        BalticAvenue.mOwner = self.mPlayers[0]
+        # self.mPlayers[0].mDeedOwned = [MediterraneanAvenue, BalticAvenue]
+        # MediterraneanAvenue.mOwner = self.mPlayers[0]
+        # BalticAvenue.mOwner = self.mPlayers[0]
 
-        self.mPlayers[1].mDeedOwned = [OrientalAvenue, VermontAvenue, ConnecticutAvenue]
-        OrientalAvenue.mOwner = self.mPlayers[1]
-        VermontAvenue.mOwner = self.mPlayers[1]
-        ConnecticutAvenue.mOwner = self.mPlayers[1]
+        # self.mPlayers[1].mDeedOwned = [OrientalAvenue, VermontAvenue, ConnecticutAvenue]
+        # OrientalAvenue.mOwner = self.mPlayers[1]
+        # VermontAvenue.mOwner = self.mPlayers[1]
+        # ConnecticutAvenue.mOwner = self.mPlayers[1]
     
     # RUN LOOP
     
