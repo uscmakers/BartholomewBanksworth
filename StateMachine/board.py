@@ -189,16 +189,14 @@ class Board:
                                 ans = input("Do you want to build here (y/n)? ")
                                 if ans in "Yy":
                                     developProperty.mNumHouse += 1
+                                    if developProperty.mNumHouse == 5: player.mHotelOwned += 1
+                                    else: player.mHouseOwned += 1
                                     print("You have built a house")
-                                else:
-                                    print("Returning to help menu")
-                                    # self.helpMenu()
-                            # else say cannot build, return to help menu
                             else:
-                                print("Can not build a house here. Returning to help menu")
+                                print("Cannot build a house here.")
                         elif command == "quit":
-                            ans = input("Are you sure you want to quit the game? Your progress won't be saved. (yes/no) ")
-                            if ans == "yes":
+                            ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
+                            if ans in "Yy":
                                 return
                         else:
                             print("Not a valid command. Type help to see list of valid commands.")
@@ -251,7 +249,7 @@ class Board:
         else:
             d : Deed
             for d in player.mDeedOwned:
-                print(d.mTileName)
+                print(d.mTileName + " [" + d.mSet + "]")
     
     def helpMenu(self): # print help menu
         print("Help menu:")

@@ -99,7 +99,7 @@ class Card:
         
     def action(self, player : Player, playerList):
         from board import Tiles
-        print(self.mName)
+        print(self.mName + ".")
         oldPos = player.mPos
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
         player.mPos += self.mDeltaPosition
@@ -121,7 +121,9 @@ class Card:
                 self.mFixedPosition = 12
             player.mPos = self.mFixedPosition
         elif self.mSpecial == "25 and 100":
-            pass
+            cost = player.mHotelOwned * 100 + player.mHouseOwned * 25
+            player.mBalance -= cost
+            print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
         elif self.mSpecial == "Chairman":
             for currPlayer in playerList:
                 if currPlayer is not player:
@@ -137,7 +139,9 @@ class Card:
                     player.mBalance += 10
                     currPlayer.mBalance -= 10
         elif self.mSpecial == "40 and 115":
-            pass
+            cost = player.mHotelOwned * 115 + player.mHouseOwned * 40
+            player.mBalance -= cost
+            print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
         if self.mSpecial != "Jail" and (self.mFixedPosition != -1 or self.mDeltaPosition != 0):
             if player.mPos <= oldPos: # passed go check
                 player.mBalance += const.GO_MONEY
