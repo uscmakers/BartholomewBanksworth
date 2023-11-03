@@ -212,7 +212,7 @@ class Board:
             tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
             # TODO: physically move player to tile
             if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
-            if not doubles: break
+            if (not doubles) or (player.mTurnsInJail > 0): break
     
     def roll(self, player: Player): # roll dice and move player to appropriate space
         doubles = False
@@ -238,7 +238,7 @@ class Board:
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, sum
+        return dice, 10 # sum
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")

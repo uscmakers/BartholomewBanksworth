@@ -133,6 +133,7 @@ class Card:
             player.mNumJailFree = player.mNumJailFree + 1
         elif self.mSpecial == "Jail":
             player.GoToJail()
+            return
         elif self.mSpecial == "Birthday":
             for currPlayer in playerList:
                 if currPlayer is not player:
