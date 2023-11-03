@@ -1,4 +1,5 @@
 import const
+from Embedded.util import *
 # from deed import Deed
 # from property import Property
 # from railroad import Railroad
@@ -45,9 +46,9 @@ class Player:
             self.mPlayerName = "Bartholomew Banksworth"
 
     def GoToJail(self):
-        motor.turnMotor(self.mPos-10) # TODO: physically move player to jail
-        self.mPos = 10
         self.mTurnsInJail = 1
+        self.MotorRequest(10-self.mPos) # TODO: physically move player to jail
+        self.mPos = 10
     
     def PayJailFee(self):
         print(self.mPlayerName + " paid $" + str(const.JAIL_FEE) + " to get out of jail!")
@@ -59,7 +60,4 @@ class Player:
         self.mNumJailFree -= 1
         
     def MotorRequest(self, deltaPos: int):
-        pass
-        # TODO: 
-        # Make POST request to RPi with {"player": self.Index, "currPos": self.mPos, "deltaPos": deltaPos}
-        # If deltaPos > 0: move clockwise, else: move counter-clockwise
+        makeRequest(self.index, self.mPos, deltaPos)

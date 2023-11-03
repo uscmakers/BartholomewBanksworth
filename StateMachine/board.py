@@ -87,7 +87,7 @@ class Board:
         for i in range(self.mNumPlayers-1): # humans
             p = Player(i, False)
             self.mPlayers.append(p)
-        self.mPlayers.append(Player(True)) # ai
+        self.mPlayers.append(Player(self.mNumPlayers-1, True)) # ai
         for i in range(len(self.mPlayers)): 
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
             self.mPlayers[i].NamePlayer(i+1) # name each player
@@ -211,6 +211,7 @@ class Board:
         while True:
             tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
             player.MotorRequest(rollSum) # physically move player to tile
+            print(player.mPlayerName + " landed on " + tile.mTileName + "!")
             if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
             if (not doubles) or (player.mTurnsInJail > 0): break
     
@@ -231,7 +232,6 @@ class Board:
             print(player.mPlayerName + " passed go and earned $200!")
         player.mPos = (player.mPos + rollSum) % 40 # move player appropriate number of spaces
         tile = self.mTiles[player.mPos]
-        print(player.mPlayerName + " landed on " + tile.mTileName + "!")
         return tile, doubles, rollSum
     
     def rollDice(self, player: Player): # simulates rolling two dice
