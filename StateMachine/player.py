@@ -6,8 +6,9 @@ import const
 # from typing import List
 
 class Player:
-    def __init__(self, mIsAi: bool):
+    def __init__(self, index: int, mIsAi: bool):
         # PLAYER INFO
+        self.index = index
         self.mPos = 0
         self.mIsAi = mIsAi
         self.mPlayerName = ""
@@ -44,8 +45,8 @@ class Player:
             self.mPlayerName = "Bartholomew Banksworth"
 
     def GoToJail(self):
+        motor.turnMotor(self.mPos-10) # TODO: physically move player to jail
         self.mPos = 10
-        # TODO: physically move player to jail
         self.mTurnsInJail = 1
     
     def PayJailFee(self):
@@ -56,3 +57,9 @@ class Player:
         print(self.mPlayerName + " used their get out of jail free card!")
         self.mTurnsInJail = 0
         self.mNumJailFree -= 1
+        
+    def MotorRequest(self, deltaPos: int):
+        pass
+        # TODO: 
+        # Make POST request to RPi with {"player": self.Index, "currPos": self.mPos, "deltaPos": deltaPos}
+        # If deltaPos > 0: move clockwise, else: move counter-clockwise

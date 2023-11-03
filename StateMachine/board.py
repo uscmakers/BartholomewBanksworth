@@ -85,7 +85,7 @@ class Board:
     def initPlayers(self):
         # initialize players and add to player list
         for i in range(self.mNumPlayers-1): # humans
-            p = Player(False)
+            p = Player(i, False)
             self.mPlayers.append(p)
         self.mPlayers.append(Player(True)) # ai
         for i in range(len(self.mPlayers)): 
@@ -210,7 +210,7 @@ class Board:
     def turn(self, player: Player):
         while True:
             tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
-            # TODO: physically move player to tile
+            player.MotorRequest(rollSum) # physically move player to tile
             if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
             if (not doubles) or (player.mTurnsInJail > 0): break
     
@@ -238,7 +238,7 @@ class Board:
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, 10 # sum
+        return dice, 2 # sum
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
