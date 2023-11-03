@@ -1,5 +1,5 @@
 import const
-from Embedded.util import *
+import Embedded.util as util
 # from deed import Deed
 # from property import Property
 # from railroad import Railroad
@@ -60,4 +60,4 @@ class Player:
         self.mNumJailFree -= 1
         
     def MotorRequest(self, deltaPos: int):
-        makeRequest(self.index, self.mPos, deltaPos)
+        util.makeRequest(self.index, self.mPos, deltaPos)

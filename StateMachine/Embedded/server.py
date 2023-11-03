@@ -10,7 +10,7 @@ motorPos = 0
 # Function to process the json data received by the server
 def process_json(move_data):
     # Parse the json for the title and artist using dictionary indexing
-    player = move_data['player']
+    player = move_data['player'] # TODO: figure out string vs. json object
     deltaPos = move_data['deltaPos']
     currPos = move_data['currPos']
     # Move the motor to the initial pos of the player
@@ -33,6 +33,8 @@ def process_json(move_data):
 @app.route('/move', methods=['POST'])
 def move_one():
     received = request.get_json()
+    print(received, ":::")
+    print(type(received))
     process_json(received)
     res = jsonify({})
     res.status_code = 201 # Status code for "created"
