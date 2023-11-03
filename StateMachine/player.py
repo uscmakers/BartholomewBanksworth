@@ -1,4 +1,5 @@
 import const
+from Embedded.util import *
 # from deed import Deed
 # from property import Property
 # from railroad import Railroad
@@ -59,7 +60,4 @@ class Player:
         self.mNumJailFree -= 1
         
     def MotorRequest(self, deltaPos: int):
-        pass
-        # TODO: 
-        # Make POST request to RPi with {"player": self.Index, "currPos": self.mPos, "deltaPos": deltaPos}
-        # If deltaPos > 0: move clockwise, else: move counter-clockwise
+        makeRequest(self.index, self.mPos, deltaPos)
