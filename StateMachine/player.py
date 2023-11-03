@@ -45,9 +45,9 @@ class Player:
             self.mPlayerName = "Bartholomew Banksworth"
 
     def GoToJail(self):
-        motor.turnMotor(self.mPos-10) # TODO: physically move player to jail
-        self.mPos = 10
         self.mTurnsInJail = 1
+        self.MotorRequest(10-self.mPos) # TODO: physically move player to jail
+        self.mPos = 10
     
     def PayJailFee(self):
         print(self.mPlayerName + " paid $" + str(const.JAIL_FEE) + " to get out of jail!")

@@ -101,7 +101,6 @@ class Card:
         from board import Tiles
         print(self.mName + ".")
         oldPos = player.mPos
-        deltaPos = (player.mPos-oldPos)%40
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
         player.mPos += self.mDeltaPosition
         player.mBalance += self.mDeltaBalance
@@ -149,6 +148,10 @@ class Card:
                 player.mBalance += const.GO_MONEY
                 print(player.mPlayerName + " passed go and earned $200!")
             tile = Tiles[player.mPos]
-            player.MotorRequest(player.mPos-oldPos) # physically move player to tile
+            # physically move player to tile
+            if self.mDeltaPosition != 0:
+                player.MotorRequest(self.mDeltaPosition)
+            else:
+                player.MotorRequest((player.mPos-oldPos)%40)
             print(player.mPlayerName + " landed on " + tile.mTileName + "!")
-            tile.action(player, player.mPos - oldPos)
+            tile.action(player, (player.mPos-oldPos)%40)
