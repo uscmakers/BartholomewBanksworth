@@ -148,6 +148,8 @@ class Card:
                 player.mBalance += const.GO_MONEY
                 print(player.mPlayerName + " passed go and earned $200!")
             tile = Tiles[player.mPos]
+            if self.mSpecial == "NextRailroad" or self.mSpecial == "NextUtility":
+                tile.card = True
             # TODO: physically move player to tile
             print(player.mPlayerName + " landed on " + tile.mTileName + "!")
             tile.action(player, player.mPos-oldPos)

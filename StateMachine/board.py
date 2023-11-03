@@ -238,7 +238,7 @@ class Board:
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, 10 # sum
+        return dice, sum
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
