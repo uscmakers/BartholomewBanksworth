@@ -12,7 +12,7 @@ magnet1 = 20 #  GPIO Pin for magnet 1
 magnet2 = 26 #  GPIO pin for magnet 2
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(magnet1,GPIO.OUT) # set enable pin as output for magnet 1
 GPIO.setup(magnet2,GPIO.OUT) # set enable pin as output for magnet 2
 
