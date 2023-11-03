@@ -250,6 +250,9 @@ class Board:
             d : Deed
             for d in player.mDeedOwned:
                 print(d.mTileName + " [" + d.mSet + "]")
+        
+        if (player.mNumJailFree > 0):
+            print (player.mNumJailFree, "Get out of Jail free")
     
     def helpMenu(self): # print help menu
         print("Help menu:")
