@@ -14,10 +14,17 @@ def process_json(move_data):
     deltaPos = move_data['deltaPos']
     currPos = move_data['currPos']
     # Move the motor to the initial pos of the player
-    motor.turnMotor(currPos - motorPos)
+    rotation = currPos - motorPos
+    if rotation > 0:
+        motor.turnMotor(rotation, True)
+    else:
+        motor.turnMotor(-rotation, False)
     motorPos = currPos
     # Move player here
-    motor.turnMotor(deltaPos)
+    if deltaPos > 0:
+        motor.turnMotor(rotation, True)
+    else:
+        motor.turnMotor(-rotation, False)
     motorPos = motorPos + deltaPos
 
 # Move motor route
