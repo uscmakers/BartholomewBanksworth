@@ -20,12 +20,14 @@ def process_json(move_data):
     else:
         motor.turnMotor(-rotation, False)
     motorPos = currPos
+    motor.electromagnetOn(player)
     # Move player here
     if deltaPos > 0:
         motor.turnMotor(rotation, True)
     else:
         motor.turnMotor(-rotation, False)
     motorPos = motorPos + deltaPos
+    motor.electromagnetOff(player)
 
 # Move motor route
 @app.route('/move', methods=['POST'])
