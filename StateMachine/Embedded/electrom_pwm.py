@@ -1,7 +1,21 @@
 import RPi.GPIO as GPIO
 import time
+"""
+#hardware pwm example:
+from rpi_hardware_pwm import HardwarePWM
+
+pwm = HardwarePWM(pwm_channel=0, hz=60)
+pwm.start(100) # full duty cycle
+
+pwm.change_duty_cycle(50)
+pwm.change_frequency(25_000)
+
+pwm.stop()
+"""
 # easier way than just writing the same code four times
 # Set the GPIO pin for your electromagnetic module
+#these are the hardware pwm pins but the software pwm can be used on any gpio pins (we are using software pwm)
+
 mag_pin1 = 12
 mag_pin2 = 13
 mag_pin3 = 18
