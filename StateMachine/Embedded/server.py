@@ -6,6 +6,7 @@ import json
 # Define Flask server
 app = Flask(__name__)
 thisdir = pathlib.Path(__file__).parent.absolute() # path to directory of this file
+global motorPos
 motorPos = 0
 
 # Function to process the json data received by the server
