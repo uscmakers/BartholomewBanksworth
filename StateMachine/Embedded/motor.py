@@ -12,7 +12,7 @@ magnet1 = 20 #  GPIO Pin for magnet 1
 magnet2 = 26 #  GPIO pin for magnet 2
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
-GPIO.setmode(GPIO.BOARD) # GPIO.BCM before
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(magnet1,GPIO.OUT) # set enable pin as output for magnet 1
 GPIO.setup(magnet2,GPIO.OUT) # set enable pin as output for magnet 2
 
@@ -29,6 +29,7 @@ def turnMotor(numSteps: int, clockwise: bool):
                      .05) # initial delay [sec]
     
 def electromagnetOn(num: int):
+    print(magnet1)
     GPIO.output(num, GPIO.HIGH) # TODO: I don't think this works lol
 
 def electromagnetOff(num: int):
