@@ -10,15 +10,12 @@ motorPos = 0
 
 # Function to process the json data received by the server
 def process_json(move_data):
-    motorPos = 0
-    move_data = json.loads(move_data)
+    motorPos = 0 # TODO: scope error (temporary fix which is wrong but will fix later)
+    move_data = json.loads(move_data) # convert json string to json object dictionary
     # Parse the json for the title and artist using dictionary indexing
-    player = move_data['player'] # TODO: figure out string vs. json object
+    player = move_data['player']
     deltaPos = move_data['deltaPos']
     currPos = move_data['currPos']
-    print(player)
-    print(deltaPos)
-    print(currPos)
     # Move the motor to the initial pos of the player
     rotation = currPos - motorPos
     if rotation > 0:
