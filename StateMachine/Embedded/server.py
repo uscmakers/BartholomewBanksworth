@@ -12,7 +12,7 @@ motorPos = 0
 def process_json(move_data):
     print("raw type:")
     print(type(move_data))
-    move_data_json = json.loads(move_data)
+    move_data = json.loads(move_data)
     print("json type:")
     print(type(move_data))
     # Parse the json for the title and artist using dictionary indexing
