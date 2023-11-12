@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import pathlib
 import motor
+import json
 
 # Define Flask server
 app = Flask(__name__)
@@ -9,6 +10,9 @@ motorPos = 0
 
 # Function to process the json data received by the server
 def process_json(move_data):
+    print("raw type: " + type(move_data))
+    move_data_json = json.loads(move_data)
+    print("json type: " + type(move_data))
     # Parse the json for the title and artist using dictionary indexing
     player = move_data['player'] # TODO: figure out string vs. json object
     deltaPos = move_data['deltaPos']
