@@ -6,20 +6,19 @@ import json
 # Define Flask server
 app = Flask(__name__)
 thisdir = pathlib.Path(__file__).parent.absolute() # path to directory of this file
-global motorPos
 motorPos = 0
 
 # Function to process the json data received by the server
 def process_json(move_data):
-    print("raw type:")
-    print(type(move_data))
+    motorPos = 0
     move_data = json.loads(move_data)
-    print("json type:")
-    print(type(move_data))
     # Parse the json for the title and artist using dictionary indexing
     player = move_data['player'] # TODO: figure out string vs. json object
     deltaPos = move_data['deltaPos']
     currPos = move_data['currPos']
+    print(player)
+    print(deltaPos)
+    print(currPos)
     # Move the motor to the initial pos of the player
     rotation = currPos - motorPos
     if rotation > 0:
