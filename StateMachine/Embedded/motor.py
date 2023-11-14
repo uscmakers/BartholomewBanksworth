@@ -2,8 +2,6 @@ import RPi.GPIO as GPIO
 from RpiMotorLib import RpiMotorLib
 import time
 
-motorPos = 0
-
 #define GPIO pins
 direction = 22 # Direction (DIR) GPIO Pin
 step = 23 # Step GPIO Pin
