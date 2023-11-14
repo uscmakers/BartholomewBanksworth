@@ -34,7 +34,7 @@ def turnMotor(numSteps: int, clockwise: bool):
                      .05) # initial delay [sec]
     
 def electromagnetOn(num: int):
-    GPIO.output(magnets[num], GPIO.HIGH) # TODO: I don't think this works lol
+    GPIO.output(magnets[num], GPIO.HIGH)
 
 def electromagnetOff(num: int):
     GPIO.output(magnets[num], GPIO.LOW)
