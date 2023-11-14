@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import pathlib
-import motor
 import json
 
 # Define Flask server
@@ -10,6 +9,7 @@ motorPos = 0
 
 # Function to process the json data received by the server
 def process_json(move_data):
+    import motor
     motorPos = 0 # TODO: scope error (temporary fix which is wrong but will fix later)
     move_data = json.loads(move_data) # convert json string to json object dictionary
     # Parse the json for the title and artist using dictionary indexing
