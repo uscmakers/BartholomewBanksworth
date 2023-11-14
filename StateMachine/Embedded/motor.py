@@ -8,8 +8,13 @@ step = 23 # Step GPIO Pin
 EN_pin = 24 # enable pin (LOW to enable)
 
 #define GPIO pins
-magnet1 = 20 #  GPIO Pin for magnet 1
-magnet2 = 26 #  GPIO pin for magnet 2
+magnet1 = 12 #  GPIO Pin for magnet 1
+magnet2 = 13 #  GPIO pin for magnet 2
+magnet3 = 18 #  GPIO pin for magnet 3
+magnet4 = 19 #  GPIO pin for magnet 4
+
+#define map from player number to magent GPIO pins
+magnets = [magnet1, magnet2, magnet3, magnet4]
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
 GPIO.setmode(GPIO.BCM)
@@ -29,7 +34,7 @@ def turnMotor(numSteps: int, clockwise: bool):
                      .05) # initial delay [sec]
     
 def electromagnetOn(num: int):
-    GPIO.output(num, GPIO.HIGH) # TODO: I don't think this works lol
+    GPIO.output(magnets[num], GPIO.HIGH) # TODO: I don't think this works lol
 
 def electromagnetOff(num: int):
-    GPIO.output(num, GPIO.LOW)
+    GPIO.output(magnets[num], GPIO.LOW)
