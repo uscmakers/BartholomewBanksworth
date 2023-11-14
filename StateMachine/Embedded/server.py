@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import pathlib
-from motor import turnMotor, electromagnetOn, electromagnetOff
+import motor
 import json
 
 # Define Flask server
@@ -19,18 +19,18 @@ def process_json(move_data):
     # Move the motor to the initial pos of the player
     rotation = currPos - motorPos
     if rotation > 0:
-        turnMotor(rotation, True)
+        motor.turnMotor(rotation, True)
     else:
-        turnMotor(-rotation, False)
+        motor.turnMotor(-rotation, False)
     motorPos = currPos
-    electromagnetOn(player)
+    motor.electromagnetOn(player)
     # Move player here
     if deltaPos > 0:
-        turnMotor(rotation, True)
+        motor.turnMotor(rotation, True)
     else:
-        turnMotor(-rotation, False)
+        motor.turnMotor(-rotation, False)
     motorPos = motorPos + deltaPos
-    electromagnetOff(player)
+    motor.electromagnetOff(player)
 
 # Move motor route
 @app.route('/move', methods=['POST'])
