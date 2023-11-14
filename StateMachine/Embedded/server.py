@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import pathlib
-import motor
+import motor as motor
 import json
 
 # Define Flask server
