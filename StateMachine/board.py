@@ -241,7 +241,7 @@ class Board:
     
     def rollDice(self, player: Player): # simulates rolling two dice
         dice = (random.randint(1,6), random.randint(1,6))
-        sum = 7 #sum = dice[0] + dice[1]
+        sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
         return dice, sum 
     
