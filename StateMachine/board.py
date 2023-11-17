@@ -115,13 +115,14 @@ class Board:
                     print(player.mPlayerName + " is out of jail!")
                 elif player.mTurnsInJail > 0: # in-jail check
                     print(player.mPlayerName + " is in jail!")
-                    if player.mNumJailFree > 0: # get out of jail free card
+                    if player.mCJailFree > 0 or player.mCCJailFree > 0: # get out of jail free card
                         if player.mIsAi:
-                            player.UseGetOutOfJailFree()
+                            self.getOutOfJailFree(player)
+                            
                         else:
                             choice = input("Would you like to use your get out of jail free card? (yes/no) ")
                             if choice == "yes":
-                                player.UseGetOutOfJailFree()
+                                self.getOutOfJailFree(player)
                             else:    
                                 player.mTurnsInJail += 1
                                 continue
@@ -240,9 +241,16 @@ class Board:
     
     def rollDice(self, player: Player): # simulates rolling two dice
         dice = (random.randint(1,6), random.randint(1,6))
-        sum = dice[0] + dice[1]
+        sum = 7 #sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
         return dice, sum 
+    
+    def getOutOfJailFree(self, player: Player):
+        if(player.mCJailFree > 1):
+            Chance.addGetOutOfJailFreeCard()
+        else:
+            CommunityChest.addGetOutOfJailFreeCard()
+        player.UseGetOutOfJailFree()
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
@@ -255,8 +263,8 @@ class Board:
             for d in player.mDeedOwned:
                 print(d.mTileName + " [" + d.mSet + "]")
         
-        if (player.mNumJailFree > 0):
-            print (player.mNumJailFree, "Get out of Jail free")
+        if (player.mCJailFree + player.mCCJailFree > 0):
+            print("Get out of Jail Free cards: " + str(player.mCJailFree + player.mCCJailFree))
     
     def helpMenu(self): # print help menu
         print("Help menu:")
