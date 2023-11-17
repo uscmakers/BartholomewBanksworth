@@ -6,7 +6,6 @@ class Card:
         self.mDeltaPosition = 0
         self.mDeltaBalance = 0
         self.mSpecial = ""
-        inputType = 2
         if inputType == 0:
             self.mName = "Advance to Boardwalk"
             self.mFixedPosition = 39
