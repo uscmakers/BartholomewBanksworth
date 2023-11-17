@@ -207,7 +207,12 @@ class Board:
                             self.mPlayers.remove(player)
                             print(player.mPlayerName + " is bankrupt!")
                             break
+                        if player.mTurnsInJail > 0:
+                            break
                 player.mContinuousDoubles = 0
+            if(len(self.mPlayers) == 1):
+                print(self.mPlayers[0].mPlayerName + " won!")
+                break
             turn += 1
     
     def turn(self, player: Player):
