@@ -1,5 +1,6 @@
 from tile import Tile
 from player import Player
+import board as board
 
 class Deed(Tile):
     def __init__(self, mTileName, mCost, mSet, mRent):
@@ -11,6 +12,8 @@ class Deed(Tile):
         self.mRent = mRent
 
     def action(self, mPlayer: Player, rollSum: int):
+        # from board import inputValidation
+        # import board
         if mPlayer.mIsAi: # AI, so make decisions for the player
             if self.mOwner is None: # if the deed is unowned
                 if mPlayer.mBalance >= self.mCost: # if AI has enough money
@@ -21,7 +24,11 @@ class Deed(Tile):
                 self.pay(mPlayer, rollSum)
         else: # user, so user should make decisions
             if self.mOwner is None:
-                choice = input("Would you like to purchase the property? (yes/no) ")
+                choice = ""
+                choice = board.inputValidation(choice, ["yes", "no"], "Would you like to purchase the property? (yes/no) ")
+                # choice = ""
+                # while choice not in ["yes", "no"]:
+                #     choice = input("Would you like to purchase the property? (yes/no) ")
                 if choice == "yes":
                     self.purchase(mPlayer)
             elif self.mOwner == mPlayer: # deed is owned by yourself

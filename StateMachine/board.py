@@ -179,6 +179,8 @@ class Board:
                                 else:
                                     print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
                                 count += 1
+                            # select = -1
+                            # select = int((inputValidation(select, list(range(len(player.mDeedOwned))), "Enter corresponding number to select property: ")))
                             select = int(input("Enter corresponding number to select property: "))
                             developProperty: property = player.mDeedOwned[select - 1]
                             # check if can build on selected property
@@ -210,10 +212,11 @@ class Board:
     def turn(self, player: Player):
         while True:
             tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
-            player.MotorRequest(rollSum) # physically move player to tile
-            print(player.mPlayerName + " landed on " + tile.mTileName + "!")
-            if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
-            if (not doubles) or (player.mTurnsInJail > 0): break
+            if tile != None:
+                # player.MotorRequest(rollSum) # physically move player to tile
+                print(player.mPlayerName + " landed on " + tile.mTileName + "!")
+                if player.mTurnsInJail == 0 and tile.mTileName != "Go": tile.action(player, rollSum) # execute action when land on space
+                if (not doubles) or (player.mTurnsInJail > 0): break
     
     def roll(self, player: Player): # roll dice and move player to appropriate space
         doubles = False
@@ -223,10 +226,9 @@ class Board:
             print(player.mPlayerName + " rolled doubles!")
             player.mContinuousDoubles += 1
             if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
-                player.mPos = 10
-                player.mTurnsInJail = 1
                 print(player.mPlayerName + " rolled three consecutive doubles! Go to jail!")
-                return None
+                player.GoToJail()
+                return None, True, 0
         if (player.mPos + rollSum) >= 40: # passed go check
             player.mBalance += const.GO_MONEY
             print(player.mPlayerName + " passed go and earned $200!")
@@ -238,7 +240,7 @@ class Board:
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, sum
+        return dice, sum 
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
@@ -263,3 +265,10 @@ class Board:
         print("end = end your turn")
         print("quit = quit the game")
         print("help = see this list of commands")
+    
+def inputValidation(choiceVariable: str, validInputs: list, userPrompt: str):
+    choiceVariable = ""
+    while choiceVariable not in validInputs:
+        choiceVariable = input(userPrompt)
+    
+    return choiceVariable

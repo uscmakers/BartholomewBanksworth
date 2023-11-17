@@ -6,6 +6,7 @@ class Card:
         self.mDeltaPosition = 0
         self.mDeltaBalance = 0
         self.mSpecial = ""
+        inputType = 2
         if inputType == 0:
             self.mName = "Advance to Boardwalk"
             self.mFixedPosition = 39
@@ -131,6 +132,7 @@ class Card:
                     currPlayer.mBalance += 50
         elif self.mSpecial == "GetOut":
             player.mNumJailFree = player.mNumJailFree + 1
+            # ADD A COUNTER OVER HERE TO KEEP TRACK OF CARD COUNT
         elif self.mSpecial == "Jail":
             player.GoToJail()
             return
@@ -144,7 +146,7 @@ class Card:
             player.mBalance -= cost
             print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
         if self.mSpecial != "Jail" and (self.mFixedPosition != -1 or self.mDeltaPosition != 0):
-            if player.mPos <= oldPos: # passed go check
+            if player.mPos <= oldPos and self.mName != "Go Back 3 Spaces" and self.mName != "Advance to Go (Collect $200)": # passed go check
                 player.mBalance += const.GO_MONEY
                 print(player.mPlayerName + " passed go and earned $200!")
             tile = Tiles[player.mPos]
@@ -152,9 +154,9 @@ class Card:
             if self.mSpecial == "NextRailroad" or self.mSpecial == "NextUtility":
                 tile.card = True
             # physically move player to tile
-            if self.mDeltaPosition != 0:
-                player.MotorRequest(self.mDeltaPosition)
-            else:
-                player.MotorRequest((player.mPos-oldPos)%40)
+            # if self.mDeltaPosition != 0:
+                # player.MotorRequest(self.mDeltaPosition)
+            # else:
+                # player.MotorRequest((player.mPos-oldPos)%40)
             print(player.mPlayerName + " landed on " + tile.mTileName + "!")
             tile.action(player, (player.mPos-oldPos)%40)
