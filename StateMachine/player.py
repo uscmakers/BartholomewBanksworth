@@ -26,7 +26,8 @@ class Player:
 
         # JAIL INFO
         self.mTurnsInJail = 0
-        self.mNumJailFree = 0
+        self.mCJailFree = 0
+        self.mCCJailFree = 0
         self.mContinuousDoubles = 0
 
     def InitPlayerList(self, mPlayerList):
@@ -56,9 +57,12 @@ class Player:
         self.mBalance -= const.JAIL_FEE
     
     def UseGetOutOfJailFree(self):
-        print(self.mPlayerName + " used their get out of jail free card!")
+        if self.mCJailFree > 0:
+            self.mCJailFree -= 1
+        elif self.mCCJailFree > 0:
+            self.mCCJailFree -= 1
         self.mTurnsInJail = 0
-        self.mNumJailFree -= 1
+        print(self.mPlayerName + " used their get out of jail free card!")
         
     # def MotorRequest(self, deltaPos: int):
         # util.makeRequest(self.index, self.mPos, deltaPos)

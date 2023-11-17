@@ -6,7 +6,7 @@ class Card:
         self.mDeltaPosition = 0
         self.mDeltaBalance = 0
         self.mSpecial = ""
-        inputType = 2
+        self.input = inputType
         if inputType == 0:
             self.mName = "Advance to Boardwalk"
             self.mFixedPosition = 39
@@ -98,7 +98,7 @@ class Card:
         else:
             print("INCORRECT inputType GIVEN TO CARD, should be 0-27")
         
-    def action(self, player : Player, playerList):
+    def action(self, player : Player, playerList, isChance : bool) -> bool:
         from board import Tiles
         print(self.mName + ".")
         oldPos = player.mPos
@@ -131,11 +131,14 @@ class Card:
                     player.mBalance -= 50
                     currPlayer.mBalance += 50
         elif self.mSpecial == "GetOut":
-            player.mNumJailFree = player.mNumJailFree + 1
-            # ADD A COUNTER OVER HERE TO KEEP TRACK OF CARD COUNT
+            if isChance:
+                player.mCJailFree = player.mCJailFree + 1
+            else: 
+                player.mCCJailFree = player.mCCJailFree + 1
+            return True
         elif self.mSpecial == "Jail":
             player.GoToJail()
-            return
+            return False
         elif self.mSpecial == "Birthday":
             for currPlayer in playerList:
                 if currPlayer is not player:
@@ -150,7 +153,6 @@ class Card:
                 player.mBalance += const.GO_MONEY
                 print(player.mPlayerName + " passed go and earned $200!")
             tile = Tiles[player.mPos]
-
             if self.mSpecial == "NextRailroad" or self.mSpecial == "NextUtility":
                 tile.card = True
             # physically move player to tile
@@ -160,3 +162,4 @@ class Card:
                 # player.MotorRequest((player.mPos-oldPos)%40)
             print(player.mPlayerName + " landed on " + tile.mTileName + "!")
             tile.action(player, (player.mPos-oldPos)%40)
+        return False
