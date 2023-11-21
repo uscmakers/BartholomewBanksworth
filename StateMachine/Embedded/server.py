@@ -17,11 +17,12 @@ def process_json(move_data):
     deltaPos = move_data['deltaPos']
     currPos = move_data['currPos']
     # Move the motor to the initial pos of the player
-    rotation = currPos - motorPos
-    if rotation > 0:
-        turnMotor(rotation, True)
-    else:
-        turnMotor(-rotation, False)
+    rotation = 5*(currPos - motorPos)
+    print(rotation)
+    # if rotation > 0:
+        #turnMotor(rotation, True)
+    # else:
+        #turnMotor(-rotation, False)
     motorPos = currPos
     electromagnetOn(player)
     # Move player here
