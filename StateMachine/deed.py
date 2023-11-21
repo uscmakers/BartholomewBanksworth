@@ -23,16 +23,17 @@ class Deed(Tile):
             else: # deed is owned by another player
                 self.pay(mPlayer, rollSum)
         else: # user, so user should make decisions
-            if self.mOwner is None:
-                choice = ""
-                choice = board.inputValidation(choice, ["yes", "no"], "Would you like to purchase the property? (yes/no) ")
-                # choice = ""
-                # while choice not in ["yes", "no"]:
-                #     choice = input("Would you like to purchase the property? (yes/no) ")
-                if choice == "yes":
-                    self.purchase(mPlayer)
-            elif self.mOwner == mPlayer: # deed is owned by yourself
+            if self.mOwner == mPlayer: # deed is owned by yourself
                 print("This is your own property!")
+            elif self.mOwner is None:
+                if (True): #check if can buy:
+                    choice = ""
+                    choice = board.inputValidation(choice, ["yes", "no"], "Would you like to purchase the property? (yes/no) ")
+                    if choice == "yes":
+                        self.purchase(mPlayer)
+                else:
+                    # you cannot buy
+                    print("NO BUY")
             else: # deed is owned by another player
                 self.pay(mPlayer, rollSum)
                     

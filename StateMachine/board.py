@@ -167,12 +167,6 @@ class Board:
                         # LOGIC IS DOWN BUT NOT ABLE TO ACCESS CHILD CLASS FUNCTIONS
                         elif command == "build":
                             # pick property to build on from property list
-                            # if len(player.mDeedOwned) == 0:
-                                # print("No houses to build on")
-                                # exit()
-                                # self.helpMenu()
-                            # else:
-                                # d : Deed
                             count: int = 1
                             for d in player.mDeedOwned:
                                 if d.mSet != "utility" and d.mSet != "railroad":
@@ -180,13 +174,9 @@ class Board:
                                 else:
                                     print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
                                 count += 1
-                            # select = -1
-                            # select = int((inputValidation(select, list(range(len(player.mDeedOwned))), "Enter corresponding number to select property: ")))
                             select = int(input("Enter corresponding number to select property: "))
                             developProperty: property = player.mDeedOwned[select - 1]
                             # check if can build on selected property
-                            # print(developProperty.BuildHouse(player))
-                            # print("This is house cost", developProperty.mHouseCost, "This is player balance", player.mBalance)
                             if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
                                 # if can build, check if enough balance, then build, increment house count
                                 ans = input("Do you want to build here (y/n)? ")
