@@ -43,8 +43,9 @@ class Player:
 
     def GoToJail(self):
         self.mTurnsInJail = 1
-        self.MotorRequest(10-self.mPos) # physically move player to jail
+        oldPos = self.mPos
         self.mPos = 10
+        self.MotorRequest(10-oldPos) # physically move player to jail
     
     def PayJailFee(self):
         print(self.mPlayerName + " paid $" + str(const.JAIL_FEE) + " to get out of jail!")
