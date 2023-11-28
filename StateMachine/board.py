@@ -115,13 +115,14 @@ class Board:
                     print(player.mPlayerName + " is out of jail!")
                 elif player.mTurnsInJail > 0: # in-jail check
                     print(player.mPlayerName + " is in jail!")
-                    if player.mNumJailFree > 0: # get out of jail free card
+                    if player.mCJailFree > 0 or player.mCCJailFree > 0: # get out of jail free card
                         if player.mIsAi:
-                            player.UseGetOutOfJailFree()
+                            self.getOutOfJailFree(player)
+                            
                         else:
                             choice = input("Would you like to use your get out of jail free card? (yes/no) ")
                             if choice == "yes":
-                                player.UseGetOutOfJailFree()
+                                self.getOutOfJailFree(player)
                             else:    
                                 player.mTurnsInJail += 1
                                 continue
@@ -166,12 +167,6 @@ class Board:
                         # LOGIC IS DOWN BUT NOT ABLE TO ACCESS CHILD CLASS FUNCTIONS
                         elif command == "build":
                             # pick property to build on from property list
-                            # if len(player.mDeedOwned) == 0:
-                                # print("No houses to build on")
-                                # exit()
-                                # self.helpMenu()
-                            # else:
-                                # d : Deed
                             count: int = 1
                             for d in player.mDeedOwned:
                                 if d.mSet != "utility" and d.mSet != "railroad":
@@ -182,8 +177,6 @@ class Board:
                             select = int(input("Enter corresponding number to select property: "))
                             developProperty: property = player.mDeedOwned[select - 1]
                             # check if can build on selected property
-                            # print(developProperty.BuildHouse(player))
-                            # print("This is house cost", developProperty.mHouseCost, "This is player balance", player.mBalance)
                             if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
                                 # if can build, check if enough balance, then build, increment house count
                                 ans = input("Do you want to build here (y/n)? ")
@@ -204,16 +197,24 @@ class Board:
                             self.mPlayers.remove(player)
                             print(player.mPlayerName + " is bankrupt!")
                             break
+                        if player.mTurnsInJail > 0:
+                            break
                 player.mContinuousDoubles = 0
+            if(len(self.mPlayers) == 1):
+                print(self.mPlayers[0].mPlayerName + " won!")
+                break
             turn += 1
     
     def turn(self, player: Player):
         while True:
             tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
-            player.MotorRequest(rollSum) # physically move player to tile
-            print(player.mPlayerName + " landed on " + tile.mTileName + "!")
-            if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
-            if (not doubles) or (player.mTurnsInJail > 0): break
+            if rollSum != 0:
+                player.MotorRequest(rollSum) # physically move player to tile
+                print(player.mPlayerName + " landed on " + tile.mTileName + "!")
+                if player.mTurnsInJail == 0 and tile.mTileName != "Go": tile.action(player, rollSum) # execute action when land on space
+                if (not doubles) or (player.mTurnsInJail > 0): break
+            else:
+                break
     
     def roll(self, player: Player): # roll dice and move player to appropriate space
         doubles = False
@@ -223,10 +224,9 @@ class Board:
             print(player.mPlayerName + " rolled doubles!")
             player.mContinuousDoubles += 1
             if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
-                player.mPos = 10
-                player.mTurnsInJail = 1
                 print(player.mPlayerName + " rolled three consecutive doubles! Go to jail!")
-                return None
+                player.GoToJail()
+                return None, True, 0
         if (player.mPos + rollSum) >= 40: # passed go check
             player.mBalance += const.GO_MONEY
             print(player.mPlayerName + " passed go and earned $200!")
@@ -238,7 +238,14 @@ class Board:
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, sum
+        return dice, sum 
+    
+    def getOutOfJailFree(self, player: Player):
+        if(player.mCJailFree > 1):
+            Chance.addGetOutOfJailFreeCard()
+        else:
+            CommunityChest.addGetOutOfJailFreeCard()
+        player.UseGetOutOfJailFree()
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
@@ -251,8 +258,8 @@ class Board:
             for d in player.mDeedOwned:
                 print(d.mTileName + " [" + d.mSet + "]")
         
-        if (player.mNumJailFree > 0):
-            print (player.mNumJailFree, "Get out of Jail free")
+        if (player.mCJailFree + player.mCCJailFree > 0):
+            print("Get out of Jail Free cards: " + str(player.mCJailFree + player.mCCJailFree))
     
     def helpMenu(self): # print help menu
         print("Help menu:")
@@ -263,3 +270,10 @@ class Board:
         print("end = end your turn")
         print("quit = quit the game")
         print("help = see this list of commands")
+    
+def inputValidation(choiceVariable: str, validInputs: list, userPrompt: str):
+    choiceVariable = ""
+    while choiceVariable not in validInputs:
+        choiceVariable = input(userPrompt)
+    
+    return choiceVariable

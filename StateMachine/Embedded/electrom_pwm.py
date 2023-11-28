@@ -31,9 +31,9 @@ GPIO.setup(mag_pin2, GPIO.OUT)
 GPIO.setup(mag_pin3, GPIO.OUT)
 GPIO.setup(mag_pin4, GPIO.OUT)
 
-freq = int(input("what frequency (1000 for example):))
-duty = int(input("what duty cycle % is it on (0-100):))
-t = int(input("how long to sleep for:)
+freq = int(input("what frequency (1000 for example):"))
+duty = int(input("what duty cycle % is it on (0-100):"))
+t = int(input("how long to sleep for:"))
 
 # Initialize PWM on the mag_pin1
 pwm1 = GPIO.PWM(mag_pin1, freq)  # 1000 Hz frequency
@@ -64,10 +64,10 @@ while q:
   pwm2.ChangeDutyCycle(duty)
   pwm3.ChangeDutyCycle(duty)
   pwm4.ChangeDutyCycle(duty)
-  freq = int(input("what frequency (1000 for example):))
-  duty = int(input("what duty cycle % is it on (0-100):))
-  q = int(input("want to quit? (0 to quit, 1 to stay): )
-  t = int(input("how long to sleep for:)
+  freq = int(input("what frequency (1000 for example):"))
+  duty = int(input("what duty cycle % is it on (0-100):"))
+  q = int(input("want to quit? (0 to quit, 1 to stay):"))
+  t = int(input("how long to sleep for:"))
   time.sleep(t)
 
 
