@@ -3,6 +3,7 @@ from card import Card
 from typing import List
 from tile import Tile
 from player import Player
+import const
 
 class Deck(Tile):
     def __init__(self, mTileName, shuffle):
@@ -25,5 +26,10 @@ class Deck(Tile):
         if shuffle: random.shuffle(self.mList) # shuffle deck
 
     def action(self, mPlayer: Player, rollSum: int):
-        self.mList[self.mTop].action(mPlayer, mPlayer.mPlayerList)
+        getOutOfJailFree = self.mList[self.mTop].action(mPlayer, mPlayer.mPlayerList, self.mTileName == "Chance")
+        if getOutOfJailFree:
+            del self.mList[self.mTop] # remove get out of jail free card from deck if received
         self.mTop = (self.mTop + 1) % len(self.mList)
+    
+    def addGetOutOfJailFreeCard(self):
+        self.mList.append(Card(13))
