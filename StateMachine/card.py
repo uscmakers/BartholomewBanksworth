@@ -156,10 +156,10 @@ class Card:
             if self.mSpecial == "NextRailroad" or self.mSpecial == "NextUtility":
                 tile.card = True
             # physically move player to tile
-            # if self.mDeltaPosition != 0:
-                # player.MotorRequest(self.mDeltaPosition)
-            # else:
-                # player.MotorRequest((player.mPos-oldPos)%40)
+            if self.mDeltaPosition != 0:
+                player.MotorRequest(self.mDeltaPosition)
+            else:
+                player.MotorRequest((player.mPos-oldPos)%40)
             print(player.mPlayerName + " landed on " + tile.mTileName + "!")
             tile.action(player, (player.mPos-oldPos)%40)
         return False

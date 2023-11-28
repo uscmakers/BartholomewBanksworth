@@ -1,11 +1,5 @@
 import const
-# import Embedded.util as util
-
-# from deed import Deed
-# from property import Property
-# from railroad import Railroad
-# from utility import Utility
-# from typing import List
+import Embedded.util as util
 
 class Player:
     def __init__(self, index: int, mIsAi: bool):
@@ -49,7 +43,7 @@ class Player:
 
     def GoToJail(self):
         self.mTurnsInJail = 1
-        # self.MotorRequest(10-self.mPos) # TODO: physically move player to jail
+        self.MotorRequest(10-self.mPos) # physically move player to jail
         self.mPos = 10
     
     def PayJailFee(self):
@@ -65,5 +59,5 @@ class Player:
         self.mTurnsInJail = 0
         print(self.mPlayerName + " used their get out of jail free card!")
         
-    # def MotorRequest(self, deltaPos: int):
-        # util.makeRequest(self.index, self.mPos, deltaPos)
+    def MotorRequest(self, deltaPos: int):
+        util.makeRequest(self.index, self.mPos, deltaPos)

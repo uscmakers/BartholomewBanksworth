@@ -209,7 +209,7 @@ class Board:
         while True:
             tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
             if rollSum != 0:
-                # player.MotorRequest(rollSum) # physically move player to tile
+                player.MotorRequest(rollSum) # physically move player to tile
                 print(player.mPlayerName + " landed on " + tile.mTileName + "!")
                 if player.mTurnsInJail == 0 and tile.mTileName != "Go": tile.action(player, rollSum) # execute action when land on space
                 if (not doubles) or (player.mTurnsInJail > 0): break
