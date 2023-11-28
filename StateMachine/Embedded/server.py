@@ -16,6 +16,7 @@ def process_json(move_data):
     player = move_data['player']
     deltaPos = move_data['deltaPos']
     currPos = move_data['currPos']
+    print("This is data: ", move_data) # line for debugging
     # Move the motor to the initial pos of the player
     rotation = 5*(currPos - motorPos)
     print(rotation)
