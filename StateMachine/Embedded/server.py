@@ -21,7 +21,7 @@ def process_json(move_data):
     print("This is data: ", move_data) # line for debugging
     print("Current Motor Position: ", motorPos) # line for debugging
     # Move the motor to the initial pos of the player
-    rotation = 5*(currPos - deltaPos - motorPos)
+    rotation = 5*((currPos - deltaPos - motorPos) % 40)
     print("Pick-up Rotation: ", rotation) # line for debugging
     # going to the piece (currPos - deltaPos)
     # UNCOMMENT
@@ -30,7 +30,7 @@ def process_json(move_data):
     # else:
     #     turnMotor(-rotation, False)
     # UNCOMMENT
-    moveRot = 5*deltaPos
+    moveRot = 5*(deltaPos % 40)
     print("Move Rotation: ", moveRot) # line for debugging
     time.sleep(0.1)
     # UNCOMMENT
