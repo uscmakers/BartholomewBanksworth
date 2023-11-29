@@ -232,13 +232,13 @@ class Board:
             print(player.mPlayerName + " passed go and earned $200!")
         player.mPos = (player.mPos + rollSum) % 40 # move player appropriate number of spaces
         tile = self.mTiles[player.mPos]
-        return tile, doubles, rollSum
+        return tile, doubles, 7 #rollSum
     
     def rollDice(self, player: Player): # simulates rolling two dice
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         print(player.mPlayerName + " rolled " + str(sum) + "!")
-        return dice, sum 
+        return dice, 7 #sum 
     
     def getOutOfJailFree(self, player: Player):
         if(player.mCJailFree > 1):
