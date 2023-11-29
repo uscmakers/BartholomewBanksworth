@@ -19,6 +19,10 @@ def process_json(move_data):
     currPos = move_data['currPos']  # current player position - after delta position is applied (1 - 40)
     print("This is data: ", move_data) # line for debugging
     print("Current Motor Position: ", motorPos) # line for debugging
+    if player == -1:
+        rotation = 5*motorPos
+        turnMotor(rotation, False)
+        return
     # Move the motor to the initial pos of the player
     rotation = 5*(currPos - deltaPos - motorPos)
     if rotation >= 200: rotation %= 40

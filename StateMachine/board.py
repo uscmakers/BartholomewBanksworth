@@ -11,6 +11,7 @@ from goToJail import GoToJail
 from jail import Jail
 from deck import Deck
 from typing import List
+import Embedded.util as util
 
 # TILES
 
@@ -190,6 +191,7 @@ class Board:
                         elif command == "quit":
                             ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
                             if ans in "Yy":
+                                self.reset()
                                 return
                         else:
                             print("Not a valid command. Type help to see list of valid commands.")
@@ -204,6 +206,10 @@ class Board:
                 print(self.mPlayers[0].mPlayerName + " won!")
                 break
             turn += 1
+        self.reset()
+    
+    def reset():
+        util.makeRequest(-1, -1, -1)
     
     def turn(self, player: Player):
         while True:
