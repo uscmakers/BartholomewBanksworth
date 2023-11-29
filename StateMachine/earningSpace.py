@@ -12,4 +12,4 @@ class EarningSpace(Tile):
         if self.earnings > 0:
             print(mPlayer.mPlayerName + " earned $" + str(self.earnings) + "!")
         elif self.earnings < 0:
-            print(mPlayer.mPlayerName + " lost $" + str(self.earnings) + "!")
+            print(mPlayer.mPlayerName + " lost $" + str(-self.earnings) + "!")
