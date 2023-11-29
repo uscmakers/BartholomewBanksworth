@@ -21,6 +21,7 @@ def process_json(move_data):
     print("Current Motor Position: ", motorPos) # line for debugging
     if player == -1:
         rotation = 5*motorPos
+        print("Reset Rotation: ", rotation) # line for debugging
         turnMotor(rotation, False)
         return
     # Move the motor to the initial pos of the player
