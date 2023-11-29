@@ -35,7 +35,7 @@ def process_json(move_data):
         turnMotor(-rotation, False)
     moveRot = 5*deltaPos
     print("Move Rotation: ", moveRot) # line for debugging
-    time.sleep(0.5)
+    time.sleep(2)
     # electromagnetOn(player)
     # Move player here. going to currPos
     if deltaPos > 0:
@@ -44,7 +44,7 @@ def process_json(move_data):
         turnMotor(-moveRot, False)
     motorPos = currPos
     print("Final Motor Position: ", motorPos) # line for debugging
-    time.sleep(0.5)
+    time.sleep(2)
     # electromagnetOff(player)
 
 # Move motor route

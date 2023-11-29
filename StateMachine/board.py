@@ -208,7 +208,7 @@ class Board:
             turn += 1
         self.reset()
     
-    def reset():
+    def reset(self):
         util.makeRequest(-1, -1, -1)
     
     def turn(self, player: Player):
