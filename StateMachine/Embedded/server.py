@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 import pathlib
 import json
-from motor import *
+import time
+# UNCOMMENT
+# from motor import *
 
 # Define Flask server
 app = Flask(__name__)
@@ -17,27 +19,37 @@ def process_json(move_data):
     deltaPos = move_data['deltaPos'] # change (dice roll) in player position (1 - 12)
     currPos = move_data['currPos']  # current player position - after delta position is applied (1 - 40)
     print("This is data: ", move_data) # line for debugging
+    print("Current Motor Position: ", motorPos) # line for debugging
     # Move the motor to the initial pos of the player
     rotation = 5*(currPos - deltaPos - motorPos)
-    print("Rotation: ", rotation)
+    print("Pick-up Rotation: ", rotation) # line for debugging
     # going to the piece (currPos - deltaPos)
-    if rotation > 0:
-        turnMotor(rotation, True)
-    else:
-        turnMotor(-rotation, False)
+    # UNCOMMENT
+    # if rotation > 0:
+    #     turnMotor(rotation, True)
+    # else:
+    #     turnMotor(-rotation, False)
+    # UNCOMMENT
     moveRot = 5*deltaPos
-    print("Move Rotation: ", moveRot)
+    print("Move Rotation: ", moveRot) # line for debugging
     time.sleep(0.1)
-    electromagnetOn(player)
+    # UNCOMMENT
+    # electromagnetOn(player)
+    # UNCOMMENT
     time.sleep(0.1)
     # Move player here. going to currPos
-    if deltaPos > 0:
-        turnMotor(moveRot, True)
-    else:
-        turnMotor(-moveRot, False)
+    # UNCOMMENT
+    # if deltaPos > 0:
+    #     turnMotor(moveRot, True)
+    # else:
+    #     turnMotor(-moveRot, False)
+    # UNCOMMENT
     motorPos = currPos
+    print("Final Motor Position: ", motorPos) # line for debugging
     time.sleep(0.1)
-    electromagnetOff(player)
+    # UNCOMMENT
+    # electromagnetOff(player)
+    # UNCOMMENT
 
 # Move motor route
 @app.route('/move', methods=['POST'])
@@ -51,4 +63,4 @@ def move_one():
     return res
 
 if __name__ == '__main__':
-    app.run(host='172.20.10.11', port=5000)
+    app.run(host='172.20.10.3', port=5000)
