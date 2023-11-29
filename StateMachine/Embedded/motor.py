@@ -30,7 +30,7 @@ def turnMotor(numSteps: int, clockwise: bool):
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                      numSteps, # number of steps
                      .0005, # step delay [sec]
-                     False, # True = print verbose output 
+                     True, # True = print verbose output 
                      .05) # initial delay [sec]
     
 def electromagnetOn(num: int):
