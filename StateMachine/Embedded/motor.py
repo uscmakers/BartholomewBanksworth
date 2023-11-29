@@ -26,7 +26,6 @@ mymotortest = RpiMotorLib.A4988Nema(direction, step, (21,21,21), "DRV8825")
 GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
 
 def turnMotor(numSteps: int, clockwise: bool):
-    print("TURN MOTOR: numSteps=", numSteps, " clockwise=", clockwise)
     mymotortest.motor_go(clockwise, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                      numSteps, # number of steps
