@@ -2,8 +2,7 @@ from flask import Flask, request, jsonify
 import pathlib
 import json
 import time
-# UNCOMMENT
-# from motor import *
+from motor import *
 
 # Define Flask server
 app = Flask(__name__)
@@ -26,32 +25,24 @@ def process_json(move_data):
     elif rotation <= -200: rotation %= -40
     print("Pick-up Rotation: ", rotation) # line for debugging
     # going to the piece (currPos - deltaPos)
-    # UNCOMMENT
-    # if rotation > 0:
-    #     turnMotor(rotation, True)
-    # else:
-    #     turnMotor(-rotation, False)
-    # UNCOMMENT
+    if rotation > 0:
+        turnMotor(rotation, True)
+    else:
+        turnMotor(-rotation, False)
     moveRot = 5*deltaPos
     print("Move Rotation: ", moveRot) # line for debugging
     time.sleep(0.1)
-    # UNCOMMENT
-    # electromagnetOn(player)
-    # UNCOMMENT
+    electromagnetOn(player)
     time.sleep(0.1)
     # Move player here. going to currPos
-    # UNCOMMENT
-    # if deltaPos > 0:
-    #     turnMotor(moveRot, True)
-    # else:
-    #     turnMotor(-moveRot, False)
-    # UNCOMMENT
+    if deltaPos > 0:
+        turnMotor(moveRot, True)
+    else:
+        turnMotor(-moveRot, False)
     motorPos = currPos
     print("Final Motor Position: ", motorPos) # line for debugging
     time.sleep(0.1)
-    # UNCOMMENT
-    # electromagnetOff(player)
-    # UNCOMMENT
+    electromagnetOff(player)
 
 # Move motor route
 @app.route('/move', methods=['POST'])
@@ -65,4 +56,4 @@ def move_one():
     return res
 
 if __name__ == '__main__':
-    app.run(host='172.20.10.3', port=5000)
+    app.run(host='172.20.10.11', port=5000)
