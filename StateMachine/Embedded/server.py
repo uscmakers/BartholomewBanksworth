@@ -32,7 +32,7 @@ def process_json(move_data):
     # else:
     #     turnMotor(-rotation, False)
     # UNCOMMENT
-    moveRot = 5*(deltaPos % 40)
+    moveRot = 5*deltaPos
     print("Move Rotation: ", moveRot) # line for debugging
     time.sleep(0.1)
     # UNCOMMENT
