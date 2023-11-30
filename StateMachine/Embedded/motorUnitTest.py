@@ -37,7 +37,7 @@ def turnMotorFaster(numSteps: int, clockwise: bool):
     mymotortest.motor_go(clockwise, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                      numSteps, # number of steps
-                     .0002, # step delay [sec]
+                     .0001, # step delay [sec]
                      True, # True = print verbose output 
                      .05) # initial delay [sec]
     
@@ -47,4 +47,4 @@ def electromagnetOn(num: int):
 def electromagnetOff(num: int):
     GPIO.output(magnets[num], GPIO.LOW)
 
-turnMotorFaster(400, True)
+turnMotorFaster(800, True)
