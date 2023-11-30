@@ -39,4 +39,4 @@ def electromagnetOn(num: int):
 def electromagnetOff(num: int):
     GPIO.output(magnets[num], GPIO.LOW)
 
-turnMotor(5, True)
+turnMotor(10, True)
