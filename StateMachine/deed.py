@@ -1,6 +1,7 @@
 from tile import Tile
 from player import Player
 
+# A DEED IS A TILE THAT CAN BE PURCHASED! 
 class Deed(Tile):
     def __init__(self, mTileName, mCost, mSet, mRent):
         super().__init__(mTileName)
@@ -10,6 +11,7 @@ class Deed(Tile):
         # TODO: add rent calculate function
         self.mRent = mRent
 
+    # WHAT HAPPENS WHEN A PLAYER LANDS ON A DEED?
     def action(self, mPlayer: Player, rollSum: int):
         if mPlayer.mIsAi: # AI, so make decisions for the player
             if self.mOwner is None: # if the deed is unowned

@@ -1,6 +1,9 @@
 from player import Player
 import const
+
+# COMMUNITY CHEST AND CHANCE CARDS
 class Card:
+    # INITIALIZATION FOR COMMUNITY CHEST AND CHANCE CARDS
     def __init__(self, inputType):
         self.mFixedPosition = -1
         self.mDeltaPosition = 0
@@ -96,7 +99,8 @@ class Card:
             self.mDeltaBalance += 100
         else:
             print("INCORRECT inputType GIVEN TO CARD, should be 0-27")
-        
+      
+    # WHAT HAPPENS WHEN A PLAYER LANDS ON A COMMUNITY CHEST OR CHANCE TILE?  
     def action(self, player : Player, playerList):
         from board import Tiles
         print(self.mName + ".")
