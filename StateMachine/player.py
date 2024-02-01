@@ -47,7 +47,7 @@ class Player:
 
     def GoToJail(self):
         self.mTurnsInJail = 1
-        self.MotorRequest(10-self.mPos) # TODO: physically move player to jail
+        # self.MotorRequest(10-self.mPos) # TODO: physically move player to jail
         self.mPos = 10
     
     def PayJailFee(self):
@@ -59,5 +59,5 @@ class Player:
         self.mTurnsInJail = 0
         self.mNumJailFree -= 1
         
-    def MotorRequest(self, deltaPos: int):
-        util.makeRequest(self.index, self.mPos, deltaPos)
+    # def MotorRequest(self, deltaPos: int):
+    #     util.makeRequest(self.index, self.mPos, deltaPos)
