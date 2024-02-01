@@ -25,6 +25,7 @@ class Token():
 class TicTacToeEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
+    # TODO: Modify for Monopoly
     def __init__(self, verbose = False, manual = False):
         super(TicTacToeEnv, self).__init__()
         self.name = 'tictactoe'
@@ -39,6 +40,7 @@ class TicTacToeEnv(gym.Env):
         self.verbose = verbose
         
 
+    # TODO: Modify for Monopoly
     @property
     def observation(self):
         if self.players[self.current_player_num].token.number == 1:
@@ -50,6 +52,7 @@ class TicTacToeEnv(gym.Env):
         out = np.stack([position,la_grid], axis = -1)
         return out
 
+    # TODO: Modify for Monopoly
     @property
     def legal_actions(self):
         legal_actions = []
@@ -96,6 +99,7 @@ class TicTacToeEnv(gym.Env):
         return self.players[self.current_player_num]
 
 
+    # TODO: Modify for Monopoly
     def step(self, action):
         
         reward = [0,0]
@@ -121,6 +125,7 @@ class TicTacToeEnv(gym.Env):
 
         return self.observation, reward, done, {}
 
+    # TODO: Modify for Monopoly
     def reset(self):
         self.board = [Token('.', 0)] * self.num_squares
         self.players = [Player('1', Token('X', 1)), Player('2', Token('O', -1))]
@@ -131,6 +136,7 @@ class TicTacToeEnv(gym.Env):
         return self.observation
 
 
+    # TODO: Modify for Monopoly
     def render(self, mode='human', close=False, verbose = True):
         logger.debug('')
         if close:
