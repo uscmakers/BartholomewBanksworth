@@ -27,15 +27,15 @@ class TicTacToeEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     # TODO: Modify for Monopoly
-    def __init__(self, verbose = False, manual = False):
+    def __init__(self, numplayers, verbose = False, manual = False):
         super(TicTacToeEnv, self).__init__()
         self.name = 'tictactoe'
         self.manual = manual
         
         self.grid_length = 3
-        self.n_players = 2
-        self.num_squares = self.grid_length * self.grid_length
-        self.grid_shape = (self.grid_length, self.grid_length)
+        self.n_players = numplayers
+        lower_range_values = np.array([[0,0,0,0]]*36)
+        upper_range_values = np.array([[]])
         self.action_space = gym.spaces.Dict({
             "buy": Discrete(2),
             "buildMedAve": Discrete(5),
