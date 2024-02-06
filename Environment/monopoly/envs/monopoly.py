@@ -81,42 +81,18 @@ class MonopolyEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     # TODO: Modify for Monopoly
-    def __init__(self, verbose = False, manual = False):
+    # Maybe done?
+    def __init__(self, numplayers, verbose = False, manual = False):
         super(MonopolyEnv, self).__init__()
         self.name = 'monopoly'
         self.manual = manual
-        
-        self.grid_length = 3
         self.n_players = numplayers
         lower_range_values = np.array([[0,0,0,0]]*36)
-        upper_range_values = np.array([[]])
-        self.action_space = gym.spaces.Dict({
-            "buy": Discrete(2),
-            "buildMedAve": Discrete(5),
-            "buildBalticAve": Discrete(5),
-            "buildOrientalAve": Discrete(5),
-            "buildVermontAve": Discrete(5),
-            "buildConnectAve": Discrete(5),
-            "buildCharlesAve": Discrete(5),
-            "buildStatesAve": Discrete(5),
-            "buildVirginiaAve": Discrete(5),
-            "buildJamesAve": Discrete(5),
-            "buildTenAve": Discrete(5),
-            "buildNyAve": Discrete(5),
-            "buildKentuckyAve": Discrete(5),
-            "buildIndiAve": Discrete(5),
-            "buildIlliAve": Discrete(5),
-            "buildAtlanticAve": Discrete(5),
-            "buildVentAve": Discrete(5),
-            "buildMarvinAve": Discrete(5),
-            "buildPacAve": Discrete(5), 
-            "buildNcAve": Discrete(5),
-            "buildPenAve": Discrete(5),
-            "buildParkAve": Discrete(5),
-            "buildBoardAve": Discrete(5),
-            "jail": Discrete("use GOOJ", "pay 50", "Nothing")
-        })
-        self.observation_space = gym.spaces.Box(-1, 1, self.grid_shape+(2,))
+        upper_range_values = np.array([[39,39,39,39]]+[[999999,999999,999999,999999]]+[[6,6,6,6]]*28) #row 0 is player position, row 1 is player money
+        self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
+        
+        # new action_space
+        self.action_space = gym.spaces.Dict(Discrete(23))
         self.verbose = verbose
         
 
@@ -135,6 +111,7 @@ class MonopolyEnv(gym.Env):
     # TODO: Modify for Monopoly
     @property
     def legal_actions(self):
+        # array of legal actions (i think)
         legal_actions = []
         for action_num in range(len(self.board)):
             if self.board[action_num].number==0: #empty square
@@ -146,34 +123,28 @@ class MonopolyEnv(gym.Env):
 
 
 
-    def square_is_player(self, square, player):
-        return self.board[square].number == self.players[player].token.number
 
+    #Adapted to our need in monopoly theoritically
     def check_game_over(self):
 
-        board = self.board
-        current_player_num = self.current_player_num
-        players = self.players
-
-
-        # check game over
-        for i in range(self.grid_length):
-            # horizontals and verticals
-            if ((self.square_is_player(i*self.grid_length,current_player_num) and self.square_is_player(i*self.grid_length+1,current_player_num) and self.square_is_player(i*self.grid_length+2,current_player_num))
-                or (self.square_is_player(i+0,current_player_num) and self.square_is_player(i+self.grid_length,current_player_num) and self.square_is_player(i+self.grid_length*2,current_player_num))):
-                return  1, True
-
-        # diagonals
-        if((self.square_is_player(0,current_player_num) and self.square_is_player(4,current_player_num) and self.square_is_player(8,current_player_num))
-            or (self.square_is_player(2,current_player_num) and self.square_is_player(4,current_player_num) and self.square_is_player(6,current_player_num))):
-                return  1, True
-
-        if self.turns_taken == self.num_squares:
-            logger.debug("Board full")
-            return  0, True
-
+        num_players = self.n_players
+        numberOfPlayersBankrupt = 0
+        winningPlayer = 0
+        
+        #check each player's balance
+        for playerIndex in range(num_players):
+            if (self.board[1][playerIndex]) == 0:
+                numberOfPlayersBankrupt += 1
+            else:
+                winningPlayer = playerIndex
+            #only one player has money and everyone else has no money
+            if numberOfPlayersBankrupt + 1 == num_players:
+                logger.debug(f"Only player {winningPlayer+1} has money left")
+                #return tuple value, the first value is used in the Step funciton which can be used to punish models
+                return 0, True
+            
         return 0, False
-
+                        
     @property
     def current_player(self):
         return self.players[self.current_player_num]
@@ -182,7 +153,8 @@ class MonopolyEnv(gym.Env):
     # TODO: Modify for Monopoly
     def step(self, action):
         
-        reward = [0,0]
+        #each index represents a player, so the number of indexies in reward depends on number of players
+        reward = [0] * self.n_players
         
         # check move legality
         board = self.board
@@ -201,7 +173,7 @@ class MonopolyEnv(gym.Env):
         self.done = done
 
         if not done:
-            self.current_player_num = (self.current_player_num + 1) % 2
+            self.current_player_num = (self.current_player_num + 1) % self.n_players
 
         return self.observation, reward, done, {}
 
@@ -226,6 +198,7 @@ class MonopolyEnv(gym.Env):
         else:
             logger.debug(f"It is Player {self.current_player.id}'s turn to move")
             
+        
         logger.debug(' '.join([x.symbol for x in self.board[:self.grid_length]]))
         logger.debug(' '.join([x.symbol for x in self.board[self.grid_length:self.grid_length*2]]))
         logger.debug(' '.join([x.symbol for x in self.board[(self.grid_length*2):(self.grid_length*3)]]))
