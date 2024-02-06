@@ -1,6 +1,7 @@
 # Adapted from https://mblogscode.com/2016/06/03/python-naughts-crossestic-tac-toe-coding-unbeatable-ai/
 
 import gym
+from gym.spaces import Dict, Discrete
 import numpy as np
 
 import config
@@ -35,7 +36,32 @@ class TicTacToeEnv(gym.Env):
         self.n_players = 2
         self.num_squares = self.grid_length * self.grid_length
         self.grid_shape = (self.grid_length, self.grid_length)
-        self.action_space = gym.spaces.Discrete(self.num_squares)
+        self.action_space = gym.spaces.Dict({
+            "buy": Discrete(2),
+            "buildMedAve": Discrete(5),
+            "buildBalticAve": Discrete(5),
+            "buildOrientalAve": Discrete(5),
+            "buildVermontAve": Discrete(5),
+            "buildConnectAve": Discrete(5),
+            "buildCharlesAve": Discrete(5),
+            "buildStatesAve": Discrete(5),
+            "buildVirginiaAve": Discrete(5),
+            "buildJamesAve": Discrete(5),
+            "buildTenAve": Discrete(5),
+            "buildNyAve": Discrete(5),
+            "buildKentuckyAve": Discrete(5),
+            "buildIndiAve": Discrete(5),
+            "buildIlliAve": Discrete(5),
+            "buildAtlanticAve": Discrete(5),
+            "buildVentAve": Discrete(5),
+            "buildMarvinAve": Discrete(5),
+            "buildPacAve": Discrete(5), 
+            "buildNcAve": Discrete(5),
+            "buildPenAve": Discrete(5),
+            "buildParkAve": Discrete(5),
+            "buildBoardAve": Discrete(5),
+            "jail": Discrete("use GOOJ", "pay 50", "Nothing")
+        })
         self.observation_space = gym.spaces.Box(-1, 1, self.grid_shape+(2,))
         self.verbose = verbose
         
