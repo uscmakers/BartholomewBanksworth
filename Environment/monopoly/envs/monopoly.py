@@ -82,20 +82,33 @@ class MonopolyEnv(gym.Env):
 
     # TODO: Modify for Monopoly
     # Maybe done?
-    def __init__(self, numplayers, verbose = False, manual = False):
+    def __init__(self, verbose = False, manual = False):
         super(MonopolyEnv, self).__init__()
         self.name = 'monopoly'
         self.manual = manual
-        self.n_players = numplayers
+        
+        # Initializes players and board
+        self.mNumPlayers = 2
+        self.mPlayers : List[Player] = []
+        self.mTiles = []
+        self.initPlayers()
+        self.mTiles = Tiles
+        
+        # Observation Space
         lower_range_values = np.array([[0,0,0,0]]*36)
         upper_range_values = np.array([[39,39,39,39]]+[[999999,999999,999999,999999]]+[[6,6,6,6]]*28) #row 0 is player position, row 1 is player money
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         
-        # new action_space
-        self.action_space = gym.spaces.Dict(Discrete(23))
+        # Action Space
+        self.action_space = gym.spaces.Discrete(23)
         self.verbose = verbose
         
-
+    def initPlayers(self):
+        # initialize players and add to player list
+        for i in range(self.mNumPlayers): # humans
+            self.mPlayers.append(Player(i, True))
+            self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
+    
     # TODO: Modify for Monopoly
     @property
     def observation(self):
