@@ -144,7 +144,7 @@ class MonopolyEnv(gym.Env):
         propertyInfo = propertyInfo.flatten()
 
         #legal Actions        
-        la_grid = legal_actions(current_player())
+        la_grid = self.legal_actions(self.current_player)
         la_grid = la_grid.flatten()
 
         #concatenate everything
@@ -161,22 +161,18 @@ class MonopolyEnv(gym.Env):
         # out = np.stack([position,la_grid], axis = -1)
         # return out
 
-    # TODO: Modify for Monopoly
+   # TODO: Modify for Monopoly
     @property
     def legal_actions(self, player: Player):
         # idx 0 is do nothing
         # idx 1 - 28 is deed
         # idx 29 is jail
         #each key corresponds to the position of the tiles in the legal actions array
-        Tiles = {MediterraneanAvenue: 1, BalticAvenue: 2, ReadingRR: 23, OrientalAvenue: 3, VermontAvenue: 4, ConnecticutAvenue: 5,
+        tiles = Tiles
+        TilesIdx = {MediterraneanAvenue: 1, BalticAvenue: 2, ReadingRR: 23, OrientalAvenue: 3, VermontAvenue: 4, ConnecticutAvenue: 5,
                        CharlesPlace: 6, ElectricCompany: 27, StatesAvenue: 7, VirginiaAvenue: 8, PennsylvaniaRR: 24, JamesPlace: 9, TennesseeAvenue: 10, NewYorkAvenue: 11,
-                       KentuckyAvenue: 12, IndianaAvenue: 13, IllinoisAvenue: 14, BoRR: 25, AtlanticAvenue: 15, VentnorAvenue: 16, WaterWorks: 28, MarvinGardens: 17, GotoJail,
+                       KentuckyAvenue: 12, IndianaAvenue: 13, IllinoisAvenue: 14, BoRR: 25, AtlanticAvenue: 15, VentnorAvenue: 16, WaterWorks: 28, MarvinGardens: 17,
                        PacificAvenue: 18, NorthCarolinaAvenue: 19, PennsylvaniaAvenue: 24, ShortLine: 26, ParkPlace:21, Boardwalk: 22}
-        
-        BoardList = [Go, MediterraneanAvenue, CommunityChest, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, Chance, VermontAvenue, ConnecticutAvenue, VisitJail,
-                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, CommunityChest, TennesseeAvenue, NewYorkAvenue, FreeParking,
-                       KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
-                       PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
         
         # array of legal actions (i think)
         legal_actions = np.zeros(31)
@@ -184,8 +180,8 @@ class MonopolyEnv(gym.Env):
         # the position of the current player
         # each Player has an mPos member variable
         for deed in player.mDeedOwned:
-            idx = Tiles[deed]
-            if (type(deed) is Property:
+            idx = TilesIdx[deed]
+            if type(deed) is Property:
                 # check if has monopoly on property
                 # if monopoly then change legal_actions to 1 for color group
                 if deed.BuildHouse():
@@ -194,8 +190,13 @@ class MonopolyEnv(gym.Env):
                 else:
                     legal_actions[idx] = 0
         # check current position
-        if BoardList[player.mPos] is deed:
-            if 
+        if type(tiles[player.mPos]) is Deed:
+            currDeedTile = tiles[player.mPos]
+            if currDeedTile.mOwner is None:
+                idx = TilesIdx[currDeedTile]
+                legal_actions[idx] = 1
+            else:
+                legal_actions[idx] = 0
             # if deed owner is null (prperties, utilities, railroads)
             # can buy
             # 1 => can buy property
@@ -205,10 +206,21 @@ class MonopolyEnv(gym.Env):
         #   if it is owned by the current player and they have a monopoly, set legal_actions[i] to 1
         #   if it is unowned by any player, set legal_actions[i] to 1
         # if in jail and have card, set legal_actions[-1] to 1
-
-
-
-
+        
+        # START LEGAL ACTION JAILL STUFF
+        if player.mTurnsInJail > 0: # in-jail check
+            if player.mNumJailFree > 0: # get out of jail free card
+                # can use GOOJFC
+                legal_actions[29] = 1
+            else:
+                legal_actions[29] = 0
+            
+            if player.mBalance >= const.JAIL_FEE:
+                legal_actions[30] = 1
+            else:
+                legal_actions[30] = 0
+                
+        return np.array(legal_actions)
 
     #Adapted to our need in monopoly theoritically
     def check_game_over(self):
@@ -235,8 +247,6 @@ class MonopolyEnv(gym.Env):
     def current_player(self):
         return self.players[self.current_player_num]
 
-
-    # TODO: Modify for Monopoly
     def step(self, action):
         
         # assumption: action is an integer between 0 and 27 (obtained from action space of Discrete[28])
@@ -265,10 +275,21 @@ class MonopolyEnv(gym.Env):
         
         if 1 <= action <= 28:
             if tiles[1].mOwner is None:
-                deeds[action-1].purchase(current_player())
+                deeds[action-1].purchase(self.current_player)
             else:
-                
-            
+                deeds[action-1].mNumHouse += 1
+                if deeds[action-1].mNumHouse == 5: 
+                    player.mHotelOwned += 1
+                    self.current_player.mBalance -= deeds[action-1].mHouseCost
+                else: 
+                    player.mHouseOwned += 1
+                    self.current_player.mBalance -= deeds[action-1].mHouseCost
+                    
+        if action is 29:
+            self.current_player.UseGetOutOfJailFree()
+        
+        if action is 30:
+            self.current_player.PayJailFee() 
         
         # assign rewards based on current player balance (we will make this more robust later)
 
@@ -277,7 +298,14 @@ class MonopolyEnv(gym.Env):
 
         if not done:
             self.current_player_num = (self.current_player_num + 1) % self.mNumPlayers
-
+            
+        totalBalance = 0
+        for player in self.mPlayers:
+            totalBalance += player.mBalance
+        reward = [0,0]
+        for playerIndex in range(len(self.mPlayers)):
+            player = self.mPlayers[playerIndex]
+            reward[playerIndex] = (player.getBalance()/totalBalance)
         return self.observation, reward, done, {}
 
     # TODO: Modify for Monopoly

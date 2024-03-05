@@ -51,6 +51,7 @@ class Player:
     
     def PayJailFee(self):
         print(self.mPlayerName + " paid $" + str(const.JAIL_FEE) + " to get out of jail!")
+        self.mTurnsInJail = 0
         self.mBalance -= const.JAIL_FEE
     
     def UseGetOutOfJailFree(self):
