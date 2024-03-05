@@ -66,6 +66,10 @@ Tiles = [Go, MediterraneanAvenue, CommunityChest, BalticAvenue, IncomeTax, Readi
                        KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
                        PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
 
+Deeds = [MediterraneanAvenue, BalticAvenue, ReadingRR, OrientalAvenue, VermontAvenue, ConnecticutAvenue, CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, TennesseeAvenue,
+         NewYorkAvenue, KentuckyAvenue, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, PacificAvenue,
+         NorthCarolinaAvenue, PennsylvaniaAvenue, ShortLine, ParkPlace, Boardwalk]
+
 SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
                 "utility": [ElectricCompany, WaterWorks],
                 "brown": [MediterraneanAvenue, BalticAvenue],
@@ -107,7 +111,6 @@ class MonopolyEnv(gym.Env):
             self.mPlayers.append(Player(i, True))
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
     
-    # TODO: Modify for Monopoly
     @property
     def observation(self):
         # 1D array of two balances (or we can also just represent in binary) OR 2D array of 2 players by 15 binary digits
@@ -115,36 +118,93 @@ class MonopolyEnv(gym.Env):
         # 2D array of 40 properties with 2 possible owners OR 3D array of 40 properties by 2 possible owners by 5 "levels" of ownership
         # and legal actions
         # and then we flatten them all and append them to each other and return
-        
-        if self.players[self.current_player_num].token.number == 1:
-            position = np.array([x.number for x in self.board]).reshape(self.grid_shape)
-        else:
-            position = np.array([-x.number for x in self.board]).reshape(self.grid_shape)
 
-        la_grid = np.array(self.legal_actions).reshape(self.grid_shape)
-        out = np.stack([position,la_grid], axis = -1)
-        return out
+        #the balances of players represented between 0 - 1
+        totalBalance = 0
+        for player in self.mPlayers:
+            totalBalance += player.getBalance()
+        balances = []
+        for player in self.mPlayers:
+            balances.append(player.getBalance()/totalBalance)
+        balances = np.array(balances)
+        balances = balances.flatten()
+
+        #player positions in a 2D array of 40 spaces
+        positions = np.zeros(shape=(2, 40))
+        for playerIndex in range(len(self.mPlayers)):
+            positions[playerIndex, self.mPlayers[playerIndex].getPlayerPosition()] = 1
+        positions = positions.flatten()
+
+        #property information
+        propertyInfo = np.zeros(shape=(2,5,40))
+        for playerIndex in range(len(self.mPlayers)):
+            player = self.mPlayers[playerIndex]
+            for properties in player.mDeedOwned:
+                propertyInfo[playerIndex, properties.mNumHouse, Tiles.index(properties)] = 1
+        propertyInfo = propertyInfo.flatten()
+
+        #legal Actions        
+        la_grid = legal_actions(current_player())
+        la_grid = la_grid.flatten()
+
+        #concatenate everything
+
+        result = np.concatenate((balances, positions, propertyInfo, la_grid))
+        return result
+
+        # if self.players[self._player_numcurrent].token.number == 1:
+        #     position = np.array([x.number for x in self.board]).reshape(self.grid_shape)
+        # else:
+        #     position = np.array([-x.number for x in self.board]).reshape(self.grid_shape)
+
+        # la_grid = np.array(self.legal_actions).reshape(self.grid_shape)
+        # out = np.stack([position,la_grid], axis = -1)
+        # return out
 
     # TODO: Modify for Monopoly
     @property
     def legal_actions(self, player: Player):
+        # idx 0 is do nothing
+        # idx 1 - 28 is deed
+        # idx 29 is jail
+        #each key corresponds to the position of the tiles in the legal actions array
+        Tiles = {MediterraneanAvenue: 1, BalticAvenue: 2, ReadingRR: 23, OrientalAvenue: 3, VermontAvenue: 4, ConnecticutAvenue: 5,
+                       CharlesPlace: 6, ElectricCompany: 27, StatesAvenue: 7, VirginiaAvenue: 8, PennsylvaniaRR: 24, JamesPlace: 9, TennesseeAvenue: 10, NewYorkAvenue: 11,
+                       KentuckyAvenue: 12, IndianaAvenue: 13, IllinoisAvenue: 14, BoRR: 25, AtlanticAvenue: 15, VentnorAvenue: 16, WaterWorks: 28, MarvinGardens: 17, GotoJail,
+                       PacificAvenue: 18, NorthCarolinaAvenue: 19, PennsylvaniaAvenue: 24, ShortLine: 26, ParkPlace:21, Boardwalk: 22}
+        
+        BoardList = [Go, MediterraneanAvenue, CommunityChest, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, Chance, VermontAvenue, ConnecticutAvenue, VisitJail,
+                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, CommunityChest, TennesseeAvenue, NewYorkAvenue, FreeParking,
+                       KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
+                       PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
+        
         # array of legal actions (i think)
+        legal_actions = np.zeros(31)
+        
         # the position of the current player
         # each Player has an mPos member variable
+        for deed in player.mDeedOwned:
+            idx = Tiles[deed]
+            if (type(deed) is Property:
+                # check if has monopoly on property
+                # if monopoly then change legal_actions to 1 for color group
+                if deed.BuildHouse():
+                # 1 over here => can build a house
+                    legal_actions[idx] = 1
+                else:
+                    legal_actions[idx] = 0
+        # check current position
+        if BoardList[player.mPos] is deed:
+            if 
+            # if deed owner is null (prperties, utilities, railroads)
+            # can buy
+            # 1 => can buy property
+        
         # the ownership status of each deed
-        # legal_actions = Discrete(23)
-        # legal_actions = np.zero(23)
         # for each property i,
         #   if it is owned by the current player and they have a monopoly, set legal_actions[i] to 1
         #   if it is unowned by any player, set legal_actions[i] to 1
         # if in jail and have card, set legal_actions[-1] to 1
-        legal_actions = []
-        for action_num in range(len(self.board)):
-            if self.board[action_num].number==0: #empty square
-                legal_actions.append(1)
-            else:
-                legal_actions.append(0)
-        return np.array(legal_actions)
 
 
 
@@ -179,132 +239,40 @@ class MonopolyEnv(gym.Env):
     # TODO: Modify for Monopoly
     def step(self, action):
         
+        # assumption: action is an integer between 0 and 27 (obtained from action space of Discrete[28])
+        
         #each index represents a player, so the number of indexies in reward depends on number of players
         reward = [0] * self.mNumPlayers
         
         # check move legality
-        board = self.mTiles
+        tiles = self.mTiles
+        deeds = Deeds
         player = self.mPlayers[self.current_player_num]
         
-        # JAIL STUFF BEGIN
-        # # print(player.mPlayerName + "'s turn:")
+        # JAIL STUFF
         if player.mTurnsInJail == 3: # out-of-jail check
             player.mTurnsInJail = 0
-            # # print(player.mPlayerName + " is out of jail!")
         elif player.mTurnsInJail > 0: # in-jail check
-            # # print(player.mPlayerName + " is in jail!")
             if player.mNumJailFree > 0: # get out of jail free card
-                # if player.mIsAi:
-                player.UseGetOutOfJailFree() # TODO: we will want to change this so that they don't use GOOJ every time
-                # else:
-                #     choice = input("Would you like to use your get out of jail free card? (yes/no) ")
-                #     if choice == "yes":
-                #         player.UseGetOutOfJailFree()
-                #     else:    
-                #         player.mTurnsInJail += 1
-                #         continue
-            elif player.mBalance >= const.JAIL_FEE:
-                # if player.mIsAi:
-                player.PayJailFee() # TODO: we will want to change this too
-                # else:
-                #     choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
-                #     if choice == "yes":
-                #         player.PayJailFee()
-                #     else:    
-                #         player.mTurnsInJail += 1
-                #         continue
+                if action is 29:
+                    player.UseGetOutOfJailFree()
+                elif action is 30:
+                    player.PayJailFee()
+                else:
+                    player.mTurnsInJail += 1 
+        
+        self.turn(player)
+        
+        if 1 <= action <= 28:
+            if tiles[1].mOwner is None:
+                deeds[action-1].purchase(current_player())
             else:
-                player.mTurnsInJail += 1
-                # should we return here?
-                # continue
-        # JAIL STUFF END
+                
+            
         
-        
-        if player.mIsAi:
-            done = (len(self.mPlayers) <= 1)
-            self.turn(player)
-            # TODO: AI can build
-            # TODO: AI can trade
-            # self.stats(player) # TODO: render?
-        # else:
-        #     rolled = False
-        #     while True:  
-        #         command = input("Type a command, or type help: ")
-        #         if command == "help":
-        #             self.helpMenu()
-        #         elif command == "end":
-        #             if rolled: break
-        #             # print("You haven't rolled yet!")
-        #         elif command == "roll":
-        #             if rolled:
-        #                 pass
-        #                 # print("You already rolled!")
-        #             else:
-        #                 rolled = True
-        #                 self.turn(player)
-        #         elif command == "stats":
-        #             self.stats(player)
-        #         # TODO: future implementation
-        #         elif command == "trade":
-        #             pass
-        #         # LOGIC IS DOWN BUT NOT ABLE TO ACCESS CHILD CLASS FUNCTIONS
-        #         elif command == "build":
-        #             # pick property to build on from property list
-        #             # if len(player.mDeedOwned) == 0:
-        #                 # # print("No houses to build on")
-        #                 # exit()
-        #                 # self.helpMenu()
-        #             # else:
-        #                 # d : Deed
-        #             count: int = 1
-        #             for d in player.mDeedOwned:
-        #                 if d.mSet != "utility" and d.mSet != "railroad":
-        #                     # print(str(count) + ". " + str(d.mTileName)) 
-        #                     pass
-        #                 else:
-        #                     # print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
-        #                     pass
-        #                 count += 1
-        #             select = int(input("Enter corresponding number to select property: "))
-        #             developProperty: property = player.mDeedOwned[select - 1]
-        #             # check if can build on selected property
-        #             # # print(developProperty.BuildHouse(player))
-        #             # # print("This is house cost", developProperty.mHouseCost, "This is player balance", player.mBalance)
-        #             if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
-        #                 # if can build, check if enough balance, then build, increment house count
-        #                 ans = input("Do you want to build here (y/n)? ")
-        #                 if ans in "Yy":
-        #                     developProperty.mNumHouse += 1
-        #                     if developProperty.mNumHouse == 5: player.mHotelOwned += 1
-        #                     else: player.mHouseOwned += 1
-        #                     # print("You have built a house")
-        #             else:
-        #                 # print("Cannot build a house here.")
-        #                 pass
-        #         elif command == "quit":
-        #             ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
-        #             if ans in "Yy":
-        #                 done = True
-        #         else:
-        #             # print("Not a valid command. Type help to see list of valid commands.")
-        #             pass
-        #         if player.mBalance < 0: # bankruptcy check
-        #             self.mPlayers.remove(player)
-        #             # print(player.mPlayerName + " is bankrupt!")
-        #             break
-        player.mContinuousDoubles = 0
-        
-        # if (board[action].number != 0):  # not empty
-        #     done = True
-        #     reward = [1, 1]
-        #     reward[self.current_player_num] = -1
-        # else:
-        #     board[action] = self.current_player.token
-        #     self.turns_taken += 1
-        #     r, done = self.check_game_over()
-        #     reward = [-r,-r]
-        #     reward[self.current_player_num] = r
+        # assign rewards based on current player balance (we will make this more robust later)
 
+        done = (len(self.mPlayers) <= 1)
         self.done = done
 
         if not done:
@@ -473,11 +441,11 @@ class MonopolyEnv(gym.Env):
                 winningMoves += 1
         return winningMoves >= 2
 
+# OUR FUNCTIONS START
     def turn(self, player: Player):
             while True:
                 tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
                 # player.MotorRequest(rollSum) # physically move player to tile
-                # print(player.mPlayerName + " landed on " + tile.mTileName + "!")
                 if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
                 if (not doubles) or (player.mTurnsInJail > 0): break
         

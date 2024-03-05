@@ -60,3 +60,7 @@ class Player:
         
     # def MotorRequest(self, deltaPos: int):
     #     util.makeRequest(self.index, self.mPos, deltaPos)
+    def getBalance(self):
+        return self.mBalance
+    def getPlayerPosition(self):
+        return self.mPos
