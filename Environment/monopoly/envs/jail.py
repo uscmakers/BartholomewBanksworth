@@ -7,3 +7,6 @@ class Jail(Tile):
 
     def action(self, mPlayer: Player, rollSum: int):
         print("Just visiting!")
+        
+    def reset(self):
+        pass

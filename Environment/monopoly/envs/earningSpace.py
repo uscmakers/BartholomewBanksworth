@@ -13,3 +13,6 @@ class EarningSpace(Tile):
             print(mPlayer.mPlayerName + " earned $" + str(self.earnings) + "!")
         elif self.earnings < 0:
             print(mPlayer.mPlayerName + " lost $" + str(self.earnings) + "!")
+    
+    def reset(self):
+        pass

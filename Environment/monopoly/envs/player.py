@@ -65,3 +65,21 @@ class Player:
         return self.mBalance
     def getPlayerPosition(self):
         return self.mPos
+
+    def reset(self):
+        # PLAYER INFO
+        self.mPos = 0
+
+        # MONEY INFO
+        self.mBalance = const.STARTING_BALANCE
+        self.mNetWorth = self.mBalance
+
+        # PROPERTY INFO
+        self.mDeedOwned = []
+        self.mHouseOwned = 0
+        self.mHotelOwned = 0
+
+        # JAIL INFO
+        self.mTurnsInJail = 0
+        self.mNumJailFree = 0
+        self.mContinuousDoubles = 0

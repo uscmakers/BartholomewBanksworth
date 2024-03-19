@@ -120,27 +120,40 @@ class MonopolyEnv(gym.Env):
         # and then we flatten them all and append them to each other and return
 
         #the balances of players represented between 0 - 1
+        currentPlayer = self.current_player
+        
+        if (self.current_player_num == 0):
+            otherPlayer = self.players[1]
+            otherPlayerIndex = 1
+        else:
+            otherPlayer = self.players[0]
+            otherPlayerIndex = 0
+
         totalBalance = 0
         for player in self.mPlayers:
             totalBalance += player.getBalance()
+        
         balances = []
-        for player in self.mPlayers:
-            balances.append(player.getBalance()/totalBalance)
+        balances.append(currentPlayer.getBalance()/totalBalance)
+        balances.append(otherPlayer.getBalance()/totalBalance)
+
         balances = np.array(balances)
         balances = balances.flatten()
 
         #player positions in a 2D array of 40 spaces
         positions = np.zeros(shape=(2, 40))
-        for playerIndex in range(len(self.mPlayers)):
-            positions[playerIndex, self.mPlayers[playerIndex].getPlayerPosition()] = 1
+        positions[self.current_player_num, currentPlayer.getPlayerPosition()] = 1
+        positions[otherPlayerIndex, otherPlayer.getPlayerPosition()] = 1
+
         positions = positions.flatten()
 
         #property information
         propertyInfo = np.zeros(shape=(2,5,40))
-        for playerIndex in range(len(self.mPlayers)):
-            player = self.mPlayers[playerIndex]
-            for properties in player.mDeedOwned:
-                propertyInfo[playerIndex, properties.mNumHouse, Tiles.index(properties)] = 1
+
+        for properties in currentPlayer.mDeedOwned:
+                propertyInfo[self.current_player_num, properties.mNumHouse, Tiles.index(properties)] = 1
+        for properties in otherPlayer.mDeedOwned:
+                propertyInfo[otherPlayerIndex, properties.mNumHouse, Tiles.index(properties)] = 1
         propertyInfo = propertyInfo.flatten()
 
         #legal Actions        
@@ -293,7 +306,10 @@ class MonopolyEnv(gym.Env):
         
         # assign rewards based on current player balance (we will make this more robust later)
 
-        done = (len(self.mPlayers) <= 1)
+        done = False
+        for player in self.mPlayers:
+            if player.mBalance < 0:
+                done = True
         self.done = done
 
         if not done:
@@ -308,13 +324,17 @@ class MonopolyEnv(gym.Env):
             reward[playerIndex] = (player.getBalance()/totalBalance)
         return self.observation, reward, done, {}
 
-    # TODO: Modify for Monopoly
     def reset(self):
-        # TODO
-        self.board = [Token('.', 0)] * self.num_squares # reset self.board to empty (no properties owned)
-        self.players = [Player('1', Token('X', 1)), Player('2', Token('O', -1))] # reset self.players to array of two players: Player 1 and Player 2. Both without properties, both at GO (pos=0)
+        # reset self.board to empty (no properties owned)
+        for tile in Tiles:
+            tile.reset()
+            
+        # reset players
+        for player in self.mPlayers:
+            player.reset()
+        
         self.current_player_num = 0
-        self.turns_taken = 0
+        
         self.done = False
         logger.debug(f'\n\n---- NEW GAME ----')
         return self.observation
@@ -328,7 +348,7 @@ class MonopolyEnv(gym.Env):
         if self.done:
             logger.debug(f'GAME OVER')
         else:
-            logger.debug(f"It is Player {self.current_player.id}'s turn to move")
+            logger.debug(f"It is Player {self.current_player_num}'s turn to move")
         r"""
         # print board
         # some unique identifier, if a player is on it, and property ownership
@@ -368,106 +388,6 @@ class MonopolyEnv(gym.Env):
         
         if not self.done:
             logger.debug(f'\nLegal actions: {[i for i,o in enumerate(self.legal_actions) if o != 0]}')
-
-
-    def rules_move(self):
-        if self.current_player.token.number == 1:
-            b = [x.number for x in self.board]
-        else:
-            b = [-x.number for x in self.board]
-
-        # Check computer win moves
-        for i in range(0, self.num_squares):
-            if b[i] == 0 and testWinMove(b, 1, i):
-                logger.debug('Winning move')
-                return self.create_action_probs(i)
-        # Check player win moves
-        for i in range(0, self.num_squares):
-            if b[i] == 0 and testWinMove(b, -1, i):
-                logger.debug('Block move')
-                return self.create_action_probs(i)
-        # Check computer fork opportunities
-        for i in range(0, self.num_squares):
-            if b[i] == 0 and testForkMove(b, 1, i):
-                logger.debug('Create Fork')
-                return self.create_action_probs(i)
-        # Check player fork opportunities, incl. two forks
-        playerForks = 0
-        for i in range(0, self.num_squares):
-            if b[i] == 0 and testForkMove(b, -1, i):
-                playerForks += 1
-                tempMove = i
-        if playerForks == 1:
-            logger.debug('Block One Fork')
-            return self.create_action_probs(tempMove)
-        elif playerForks == 2:
-            for j in [1, 3, 5, 7]:
-                if b[j] == 0:
-                    logger.debug('Block 2 Forks')
-                    return self.create_action_probs(j)
-        # Play center
-        if b[4] == 0:
-            logger.debug('Play Centre')
-            return self.create_action_probs(4)
-        # Play a corner
-        for i in [0, 2, 6, 8]:
-            if b[i] == 0:
-                logger.debug('Play Corner')
-                return self.create_action_probs(i)
-        #Play a side
-        for i in [1, 3, 5, 7]:
-            if b[i] == 0:
-                logger.debug('Play Side')
-                return self.create_action_probs(i)
-
-
-    # [0.01, 0.01, 0.01, 0.92, 0.01, 0.01]
-    def create_action_probs(self, action):
-        action_probs = [0.01] * self.action_space.n
-        action_probs[action] = 0.92
-        return action_probs   
-
-
-    def checkWin(b, m):
-        return ((b[0] == m and b[1] == m and b[2] == m) or  # H top
-                (b[3] == m and b[4] == m and b[5] == m) or  # H mid
-                (b[6] == m and b[7] == m and b[8] == m) or  # H bot
-                (b[0] == m and b[3] == m and b[6] == m) or  # V left
-                (b[1] == m and b[4] == m and b[7] == m) or  # V centre
-                (b[2] == m and b[5] == m and b[8] == m) or  # V right
-                (b[0] == m and b[4] == m and b[8] == m) or  # LR diag
-                (b[2] == m and b[4] == m and b[6] == m))  # RL diag
-
-
-    def checkDraw(b):
-        return 0 not in b
-
-    def getBoardCopy(b):
-        # Make a duplicate of the board. When testing moves we don't want to 
-        # change the actual board
-        dupeBoard = []
-        for j in b:
-            dupeBoard.append(j)
-        return dupeBoard
-
-    def testWinMove(b, mark, i):
-        # b = the board
-        # mark = 0 or X
-        # i = the square to check if makes a win 
-        bCopy = getBoardCopy(b)
-        bCopy[i] = mark
-        return checkWin(bCopy, mark)
-
-
-    def testForkMove(b, mark, i):
-        # Determines if a move opens up a fork
-        bCopy = getBoardCopy(b)
-        bCopy[i] = mark
-        winningMoves = 0
-        for j in range(0, 9):
-            if testWinMove(bCopy, mark, j) and bCopy[j] == 0:
-                winningMoves += 1
-        return winningMoves >= 2
 
 # OUR FUNCTIONS START
     def turn(self, player: Player):

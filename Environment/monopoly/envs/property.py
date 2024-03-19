@@ -48,3 +48,7 @@ class Property(Deed):
                         mCanBuild = False
                         break
         return mCanBuild
+
+    def reset(self):
+        super().reset()
+        self.mNumHouse = 0

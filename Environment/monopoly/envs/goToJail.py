@@ -8,3 +8,6 @@ class GoToJail(Tile):
 
     def action(self, mPlayer: Player, rollSum: int):
         mPlayer.GoToJail()
+        
+    def reset(self):
+        pass

@@ -22,3 +22,6 @@ class Railroad(Deed):
             return tempRent * 2
         else:
             return tempRent
+
+    def reset(self):
+        super().reset()

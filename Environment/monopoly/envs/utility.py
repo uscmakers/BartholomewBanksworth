@@ -14,3 +14,6 @@ class Utility(Deed):
             return rollSum * 4
         elif self.CountDeedOwned(player) == 2:
             return rollSum * 10
+
+    def reset(self):
+        super().reset()

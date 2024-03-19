@@ -63,3 +63,6 @@ class Deed(Tile):
     
     def CalculateRent(self, rollSum, player: Player = None) -> int:
         pass
+    
+    def reset(self):
+        self.mOwner = None
