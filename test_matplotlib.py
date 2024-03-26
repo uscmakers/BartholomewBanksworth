@@ -1,50 +1,53 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.table import Table
-
+import numpy as np
+from matplotlib.animation import FuncAnimation
+import cv2
 # Monopoly properties data
 properties_data = [
-    ['Go', 'Special', 'white'],
-    ['Mediterranean Ave.', 'Low Rent', '#8B4513'],
-    ['Community Chest', 'Special', 'white'],
-    ['Baltic Ave.', 'Low Rent', '#8B4513'],
-    ['Income Tax', 'Special', 'white'],
-    ['Reading Railroad', 'Railroad', '#A9A9A9'],
-    ['Oriental Ave.', 'Medium Rent', '#ADD8E6'],
-    ['Chance', 'Special', 'white'],
-    ['Vermont Ave.', 'Medium Rent', '#ADD8E6'],
-    ['Connecticut Ave.', 'Medium Rent', '#ADD8E6'],
-    ['Jail', 'Special', 'white'],
-    ['St. Charles Place', 'High Rent', '#FFC0CB'],
-    ['Electric Company', 'Special', 'white'],
-    ['States Ave.', 'High Rent', '#FFC0CB'],
-    ['Virginia Ave.', 'High Rent', '#FFC0CB'],
-    ['Pennsylvania Railroad', 'Railroad', '#A9A9A9'],
-    ['St. James Place', 'Medium Rent', '#FFA500'],
-    ['Community Chest', 'Special', 'white'],
-    ['Tennessee Ave.', 'Medium Rent', '#FFA500'],
-    ['New York Ave.', 'Medium Rent', '#FFA500'],
-    ['Free Parking', 'Special', 'white'],
-    ['Kentucky Ave.', 'High Rent', '#FF0000'],
-    ['Chance', 'Special', 'white'],
-    ['Indiana Ave.', 'High Rent', '#FF0000'],
-    ['Illinois Ave.', 'High Rent', '#FF0000'],
-    ['B. & O. Railroad', 'Medium Rent', '#A9A9A9'],
-    ['Atlantic Ave.', 'Medium Rent', '#FFFF00'],
-    ['Ventnor Ave.', 'Medium Rent', '#FFFF00'],
-    ['Water Works', 'Special', 'white'],
-    ['Marvin Gardens', 'Medium Rent', '#FFFF00'],
-    ['Go to Jail', 'Special', 'white'],
-    ['Pacific Ave.', 'Medium Rent', '#008000'],
-    ['North Carolina Ave.', 'Medium Rent', '#008000'],
-    ['Community Chest', 'Special', 'white'],
-    ['Pennsylvania Ave.', 'High Rent', '#000080'],
-    ['Short Line', 'Medium Rent', '#A9A9A9'],
-    ['Chance', 'Special', 'white'],
-    ['Park Place', 'High Rent', '#000080'],
-    ['Luxury Tax', 'Special', 'white'],
-    ['Boardwalk', 'High Rent', '#000080']
+    ['Go', 'None', '0'],
+    ['Mediterranean Ave.', 'None', '0'],
+    ['Community Chest', 'None', '0'],
+    ['Baltic Ave.', 'None', '0'],
+    ['Income Tax', 'None', '0'],
+    ['Reading Railroad', 'None', '0'],
+    ['Oriental Ave.', 'None', '0'],
+    ['Chance', 'None', '0'],
+    ['Vermont Ave.', 'None', '0'],
+    ['Connecticut Ave.', 'None', '0'],
+    ['Jail', 'None', '0'],
+    ['St. Charles Place', 'None', '0'],
+    ['Electric Company', 'None', '0'],
+    ['States Ave.', 'None', '0'],
+    ['Virginia Ave.', 'None', '0'],
+    ['Pennsylvania Railroad', 'None', '0'],
+    ['St. James Place', 'None', '0'],
+    ['Community Chest', 'None', '0'],
+    ['Tennessee Ave.', 'None', '0'],
+    ['New York Ave.', 'None', '0'],
+    ['Free Parking', 'None', '0'],
+    ['Kentucky Ave.', 'None', '0'],
+    ['Chance', 'None', '0'],
+    ['Indiana Ave.', 'None', '0'],
+    ['Illinois Ave.', 'None', '0'],
+    ['B. & O. Railroad', 'None', '0'],
+    ['Atlantic Ave.', 'None', '0'],
+    ['Ventnor Ave.', 'None', '0'],
+    ['Water Works', 'None', '0'],
+    ['Marvin Gardens', 'None', '0'],
+    ['Go to Jail', 'None', '0'],
+    ['Pacific Ave.', 'None', '0'],
+    ['North Carolina Ave.', 'None', '0'],
+    ['Community Chest', 'None', '0'],
+    ['Pennsylvania Ave.', 'None', '0'],
+    ['Short Line', 'None', '0'],
+    ['Chance', 'None', '0'],
+    ['Park Place', 'None', '0'],
+    ['Luxury Tax', 'None', '0'],
+    ['Boardwalk', 'None', '0']
 ]
+
 
 property_table_colors = [['None', 'None', 'None'], 
                          ['indianred', 'None', 'None'], 
@@ -87,43 +90,73 @@ property_table_colors = [['None', 'None', 'None'],
                          ['None', 'None', 'None'],
                          ['cornflowerblue', 'None', 'None']]
 
-# Player data
-players_data = [
-    [0, 1500, ''],
-    [10, 1500, '']
-]
-
-# Create DataFrames
-df_properties = pd.DataFrame(properties_data)
-df_players = pd.DataFrame(players_data)
-
 # Create a figure and axis
 fig, ax = plt.subplots(figsize=(15, 8))
-ax.axis('off')
 
-# Create a table for properties
-table_properties = plt.table(cellText=properties_data, bbox=[0, 0, 0.6, 1], colLabels=('Property', 'Group', 'Color Code'), cellColours=property_table_colors)
-for i, col in enumerate(df_properties.columns):
-    table_properties.auto_set_column_width([i])
+def createFrame(players_data):
+    # Create DataFrames
+    df_properties = pd.DataFrame(properties_data)
+    df_players = pd.DataFrame(players_data)
 
-# Formatting for properties table
-table_properties.auto_set_font_size(False)
-table_properties.set_fontsize(10)
-table_properties.scale(1.2, 1.2)
+    # Create a table for properties
+    table_properties = plt.table(cellText=properties_data, bbox=[0, 0, 0.6, 1], colLabels=('Property', 'Group', 'Color Code'), cellColours=property_table_colors, cellLoc='center')
+    for i, col in enumerate(df_properties.columns):
+        table_properties.auto_set_column_width([i])
 
-# # Create a table for players
-# table_players = plt.table(cellText=playersata, bbox=[0.65, 0.1, 0.35, 0.8], colLabels=('Player', 'Balance', 'Other'))
-# for i, col in enumerate(df_players.columns):
-#     table_players.auto_set_column_width([i])
+    # Formatting for properties table
+    table_properties.auto_set_font_size(False)
+    table_properties.set_fontsize(8)
+    table_properties.scale(1.2, 1.2)
 
-# # Formatting for players table
-# table_players.auto_set_font_size(False)
-# table_players.set_fontsize(12)
-# table_players.scale(1.2, 1.2)
+    # Create a table for players
+    table_players = plt.table(cellText=players_data, bbox=[0.65, 0.5, 0.35, 0.45], colLabels=('Player', 'Balance', 'Other'))
+    for i, col in enumerate(df_players.columns):
+        table_players.auto_set_column_width([i])
+              
+    # Create a "table" for next action
+    table_ai_action = plt.text(0.65, 0.25, f'test', wrap=True, color='blue')
 
-# Add tables to the axis
-ax.add_table(table_properties)
-# ax.add_table(table_players)
+    plt.suptitle('Monopoly Properties and Players', fontsize=16)
 
-plt.suptitle('Monopoly Properties and Players', fontsize=16)
-plt.show()
+
+# Create a function to generate each frame of the animation
+def update(frame):
+    # Generate your plot for each frame here
+    plt.clf()
+    createFrame(np.random.rand(2,3))
+
+# # Create a figure and axis object
+# fig, ax = plt.subplots()
+
+# Create an animation object
+ani = FuncAnimation(fig, update, frames=range(10), repeat=False)
+
+# Save each frame as a PNG image
+length = 20
+for i in range(length):
+    update(i)  # Generate the plot for each frame
+    plt.savefig(f'frame_{i:03d}.png')
+
+# Convert PNG images to an MP4 video using OpenCV
+frames = []
+for i in range(length):
+    img = cv2.imread(f'frame_{i:03d}.png')
+    height, width, layers = img.shape
+    size = (width,height)
+    frames.append(img)
+
+# Define the codec and create a VideoWriter object
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+out = cv2.VideoWriter('output.mp4', fourcc, 1.0, size)
+
+# Write the frames to the video
+for frame in frames:
+    out.write(frame)
+
+# Release the VideoWriter object
+out.release()
+
+# Cleanup: Remove the PNG images
+import os
+for i in range(length):
+    os.remove(f'frame_{i:03d}.png')

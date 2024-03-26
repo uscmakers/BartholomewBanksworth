@@ -22,6 +22,14 @@ from jail import Jail
 from deck import Deck
 from typing import List
 
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.table import Table
+import numpy as np
+from matplotlib.animation import FuncAnimation
+import cv2
+import os
+
 # TILES
 
 Go = EarningSpace("Go", 200)
@@ -79,7 +87,117 @@ SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
                 "red": [KentuckyAvenue, IndianaAvenue, IllinoisAvenue],
                 "yellow": [AtlanticAvenue, VentnorAvenue, MarvinGardens],
                 "green": [PacificAvenue, NorthCarolinaAvenue, PennsylvaniaAvenue],
-                "darkblue": [ParkPlace, Boardwalk]}    
+                "darkblue": [ParkPlace, Boardwalk]} 
+
+properties_data = [
+    ['Go', 'None', '0'],
+    ['Mediterranean Ave.', 'None', '0'],
+    ['Community Chest', 'None', '0'],
+    ['Baltic Ave.', 'None', '0'],
+    ['Income Tax', 'None', '0'],
+    ['Reading Railroad', 'None', '0'],
+    ['Oriental Ave.', 'None', '0'],
+    ['Chance', 'None', '0'],
+    ['Vermont Ave.', 'None', '0'],
+    ['Connecticut Ave.', 'None', '0'],
+    ['Jail', 'None', '0'],
+    ['St. Charles Place', 'None', '0'],
+    ['Electric Company', 'None', '0'],
+    ['States Ave.', 'None', '0'],
+    ['Virginia Ave.', 'None', '0'],
+    ['Pennsylvania Railroad', 'None', '0'],
+    ['St. James Place', 'None', '0'],
+    ['Community Chest', 'None', '0'],
+    ['Tennessee Ave.', 'None', '0'],
+    ['New York Ave.', 'None', '0'],
+    ['Free Parking', 'None', '0'],
+    ['Kentucky Ave.', 'None', '0'],
+    ['Chance', 'None', '0'],
+    ['Indiana Ave.', 'None', '0'],
+    ['Illinois Ave.', 'None', '0'],
+    ['B. & O. Railroad', 'None', '0'],
+    ['Atlantic Ave.', 'None', '0'],
+    ['Ventnor Ave.', 'None', '0'],
+    ['Water Works', 'None', '0'],
+    ['Marvin Gardens', 'None', '0'],
+    ['Go to Jail', 'None', '0'],
+    ['Pacific Ave.', 'None', '0'],
+    ['North Carolina Ave.', 'None', '0'],
+    ['Community Chest', 'None', '0'],
+    ['Pennsylvania Ave.', 'None', '0'],
+    ['Short Line', 'None', '0'],
+    ['Chance', 'None', '0'],
+    ['Park Place', 'None', '0'],
+    ['Luxury Tax', 'None', '0'],
+    ['Boardwalk', 'None', '0']
+]
+
+
+property_table_colors = [['None', 'None', 'None'], 
+                         ['indianred', 'None', 'None'], 
+                         ['None', 'None', 'None'],
+                         ['indianred', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['Silver', 'None', 'None'],
+                         ['Aqua', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['Aqua', 'None', 'None'],
+                         ['Aqua', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['mediumpurple', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['mediumpurple', 'None', 'None'],
+                         ['mediumpurple', 'None', 'None'],
+                         ['Silver', 'None', 'None'],
+                         ['Orange', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['Orange', 'None', 'None'],
+                         ['Orange', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['Red', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['Red', 'None', 'None'],
+                         ['Red', 'None', 'None'],
+                         ['Silver', 'None', 'None'],
+                         ['Yellow', 'None', 'None'],
+                         ['Yellow', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['Yellow', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['springgreen', 'None', 'None'],
+                         ['springgreen', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['springgreen', 'None', 'None'],
+                         ['Silver', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['cornflowerblue', 'None', 'None'],
+                         ['None', 'None', 'None'],
+                         ['cornflowerblue', 'None', 'None']]   
+
+def createFrame(players_data):
+        # Create DataFrames
+        df_properties = pd.DataFrame(properties_data)
+        df_players = pd.DataFrame(players_data)
+
+        # Create a table for properties
+        table_properties = plt.table(cellText=properties_data, bbox=[0, 0, 0.6, 1], colLabels=('Property', 'Group', 'Color Code'), cellColours=property_table_colors, cellLoc='center')
+        for i, col in enumerate(df_properties.columns):
+            table_properties.auto_set_column_width([i])
+
+        # Formatting for properties table
+        table_properties.auto_set_font_size(False)
+        table_properties.set_fontsize(8)
+        table_properties.scale(1.2, 1.2)
+
+        # Create a table for players
+        table_players = plt.table(cellText=players_data, bbox=[0.65, 0.5, 0.35, 0.45], colLabels=('Player', 'Balance', 'Other'))
+        for i, col in enumerate(df_players.columns):
+            table_players.auto_set_column_width([i])
+                
+        # Create a "table" for next action
+        table_ai_action = plt.text(0.65, 0.25, f'test', wrap=True, color='blue')
+
+        plt.suptitle('Monopoly Properties and Players', fontsize=16)
 
 class MonopolyEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -104,6 +222,11 @@ class MonopolyEnv(gym.Env):
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
         self.action_space = gym.spaces.Discrete(28)
         self.verbose = verbose
+        
+        # Render stuff
+        fig, ax = plt.subplots(figsize=(15, 8))
+        ani = FuncAnimation(fig, self.render, frames=range(10), repeat=False)
+        self.mNumFrames = 0
         
     def initPlayers(self):
         # initialize players and add to player list
@@ -336,52 +459,38 @@ class MonopolyEnv(gym.Env):
         self.current_player_num = 0
         
         self.done = False
+        
+        # Convert PNG images to an MP4 video using OpenCV
+        frames = []
+        for i in range(self.mNumFrames):
+            img = cv2.imread(f'frame_{i:03d}.png')
+            height, width, layers = img.shape
+            size = (width,height)
+            frames.append(img)
+
+        # Define the codec and create a VideoWriter object
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        out = cv2.VideoWriter('output.mp4', fourcc, 1.0, size)
+
+        # Write the frames to the video
+        for frame in frames:
+            out.write(frame)
+
+        # Release the VideoWriter object
+        out.release()
+
+        # Cleanup: Remove the PNG images
+        for i in range(self.mNumFrames):
+            os.remove(f'frame_{i:03d}.png')
+         
         logger.debug(f'\n\n---- NEW GAME ----')
         return self.observation
-
-
-    # TODO: Modify for Monopoly
+    
     def render(self, mode='human', close=False, verbose = True):
-        logger.debug('')
-        if close:
-            return
-        if self.done:
-            logger.debug(f'GAME OVER')
-        else:
-            logger.debug(f"It is Player {self.current_player_num}'s turn to move")
-        r"""
-        # print board
-        # some unique identifier, if a player is on it, and property ownership
-        # print rewards and selected action
-        # print stats() for each player
-        
-        
-        +---------+-----------+-----------------+-----------+-------------+
-        |    GO   |  BROWN    | COMMUNITY CHEST  |  BROWN    | INCOME TAX  |
-        |   1 2   |           |
-        +---------+-----------+-----------------+-----------+-------------+
-        |   JAIL  | LIGHT BLUE|      CHANCE      | LIGHT BLUE| LIGHT BLUE  |
-        +---------+-----------+-----------------+-----------+-------------+
-        | FREE    |   PINK    |    UTILITY      |   PINK    |    PINK     |
-        | PARKING |           |                 |           |  RAILROAD   |
-        +---------+-----------+-----------------+-----------+-------------+
-        |  ORANGE |   CHANCE  |     ORANGE      |   ORANGE  |  RAILROAD   |
-        +---------+-----------+-----------------+-----------+-------------+
-        | GO TO   |    RED    |      RED        |  UTILITY  |     RED     |
-        |  JAIL   |           |                 |           |             |
-        +---------+-----------+-----------------+-----------+-------------+
-        |  YELLOW |  YELLOW   | COMMUNITY CHEST  |  YELLOW   |  RAILROAD   |
-        +---------+-----------+-----------------+-----------+-------------+
-        |  CHANCE |   GREEN   |      GREEN      |  UTILITY  |    GREEN    |
-        +---------+-----------+-----------------+-----------+-------------+
-        | LUXURY  |   BLUE    |   INCOME TAX    |   BLUE    |  RAILROAD   |
-        |   TAX   |           |                 |           |             |
-        +---------+-----------+-----------------+-----------+-------------+
-        """
-        
-        # logger.debug(' '.join([x.symbol for x in self.board[:self.grid_length]]))
-        # logger.debug(' '.join([x.symbol for x in self.board[self.grid_length:self.grid_length*2]]))
-        # logger.debug(' '.join([x.symbol for x in self.board[(self.grid_length*2):(self.grid_length*3)]]))
+        plt.clf()
+        createFrame(np.random.rand(2,3))
+        plt.savefig(f'frame_{self.mNumFrames:03d}.png')
+        self.mNumFrames += 1
 
         if self.verbose:
             logger.debug(f'\nObservation: \n{self.observation}')
@@ -421,29 +530,3 @@ class MonopolyEnv(gym.Env):
         sum = dice[0] + dice[1]
         # print(player.mPlayerName + " rolled " + str(sum) + "!")
         return dice, sum
-
-    # def stats(self, player: Player): # # print stats
-    #     # print(player.mPlayerName + "'s stats:")
-    #     # print("Balance: $" + str(player.mBalance))
-    #     # print("Properties:")
-    #     if len(player.mDeedOwned) == 0:
-    #         pass
-    #         # print("(None)")
-    #     else:
-    #         d : Deed
-    #         for d in player.mDeedOwned:
-    #             # print(d.mTileName + " [" + d.mSet + "]")
-        
-    #     if (player.mNumJailFree > 0):
-    #         pass
-    #         # print (player.mNumJailFree, "Get out of Jail free")
-
-    # def helpMenu(self): # # print help menu
-        # print("Help menu:")
-        # print("roll = roll dice")
-        # print("stats = see your balance and properties")
-        # print("build = build houses/hotels")
-        # print("trade = trade with another player")
-        # print("end = end your turn")
-        # print("quit = quit the game")
-        # print("help = see this list of commands")
