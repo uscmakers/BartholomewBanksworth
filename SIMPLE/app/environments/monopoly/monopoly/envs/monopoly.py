@@ -180,6 +180,8 @@ def createFrame(players_data):
     #                    KentuckyAvenue: 12, IndianaAvenue: 13, IllinoisAvenue: 14, BoRR: 25, AtlanticAvenue: 15, VentnorAvenue: 16, WaterWorks: 28, MarvinGardens: 17,
     #                    PacificAvenue: 18, NorthCarolinaAvenue: 19, PennsylvaniaAvenue: 24, ShortLine: 26, ParkPlace:21, Boardwalk: 22}
     
+    # Use state machine stuff to update properties table
+    
     # Create DataFrames
     df_properties = pd.DataFrame(properties_data)
     df_players = pd.DataFrame(players_data)
@@ -302,7 +304,6 @@ class MonopolyEnv(gym.Env):
         # out = np.stack([position,la_grid], axis = -1)
         # return out
 
-   # TODO: Modify for Monopoly
     @property
     def legal_actions(self, player: Player):
         # idx 0 is do nothing
@@ -493,8 +494,7 @@ class MonopolyEnv(gym.Env):
     
     def render(self, mode='human', close=False, verbose = True):
         plt.clf()
-        createFrame(np.array([[1, self.players[0].getBalance(), self.players[0].getPlayerPosition()], [2, self.players[1].getBalance(), self.players[1].getPlayerPosition()]]))
-        # createFrame(np.array([[1, self.players[0]., 0], [2, 0, 0]]))
+        createFrame(np.array([[1, self.mPlayers[0].getBalance(), self.mPlayers[0].getPlayerPosition()], [2, self.mPlayers[1].getBalance(), self.mPlayers[1].getPlayerPosition()]]))
         plt.savefig(f'frame_{self.mNumFrames:03d}.png')
         self.mNumFrames += 1
 
