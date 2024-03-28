@@ -91,40 +91,40 @@ SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
 
 properties_data = [
     ['Go', 'None', '0'],
-    ['Mediterranean Ave.', 'None', '0'],
+    ['Mediterranean Avenue', 'None', '0'],
     ['Community Chest', 'None', '0'],
-    ['Baltic Ave.', 'None', '0'],
+    ['Baltic Avenue', 'None', '0'],
     ['Income Tax', 'None', '0'],
     ['Reading Railroad', 'None', '0'],
-    ['Oriental Ave.', 'None', '0'],
+    ['Oriental Avenue', 'None', '0'],
     ['Chance', 'None', '0'],
-    ['Vermont Ave.', 'None', '0'],
-    ['Connecticut Ave.', 'None', '0'],
+    ['Vermont Avenue', 'None', '0'],
+    ['Connecticut Avenue', 'None', '0'],
     ['Jail', 'None', '0'],
     ['St. Charles Place', 'None', '0'],
     ['Electric Company', 'None', '0'],
-    ['States Ave.', 'None', '0'],
-    ['Virginia Ave.', 'None', '0'],
+    ['States Avenue', 'None', '0'],
+    ['Virginia Avenue', 'None', '0'],
     ['Pennsylvania Railroad', 'None', '0'],
     ['St. James Place', 'None', '0'],
     ['Community Chest', 'None', '0'],
-    ['Tennessee Ave.', 'None', '0'],
-    ['New York Ave.', 'None', '0'],
+    ['Tennessee Avenue', 'None', '0'],
+    ['New York Avenue', 'None', '0'],
     ['Free Parking', 'None', '0'],
-    ['Kentucky Ave.', 'None', '0'],
+    ['Kentucky Avenue', 'None', '0'],
     ['Chance', 'None', '0'],
-    ['Indiana Ave.', 'None', '0'],
-    ['Illinois Ave.', 'None', '0'],
-    ['B. & O. Railroad', 'None', '0'],
-    ['Atlantic Ave.', 'None', '0'],
-    ['Ventnor Ave.', 'None', '0'],
+    ['Indiana Avenue', 'None', '0'],
+    ['Illinois Avenue', 'None', '0'],
+    ['B&O Railroad', 'None', '0'],
+    ['Atlantic Avenue', 'None', '0'],
+    ['Ventnor Avenue', 'None', '0'],
     ['Water Works', 'None', '0'],
     ['Marvin Gardens', 'None', '0'],
     ['Go to Jail', 'None', '0'],
-    ['Pacific Ave.', 'None', '0'],
-    ['North Carolina Ave.', 'None', '0'],
+    ['Pacific Avenue', 'None', '0'],
+    ['North Carolina Avenue', 'None', '0'],
     ['Community Chest', 'None', '0'],
-    ['Pennsylvania Ave.', 'None', '0'],
+    ['Pennsylvania Avenue', 'None', '0'],
     ['Short Line', 'None', '0'],
     ['Chance', 'None', '0'],
     ['Park Place', 'None', '0'],
@@ -145,7 +145,7 @@ property_table_colors = [['None', 'None', 'None'],
                          ['Aqua', 'None', 'None'],
                          ['None', 'None', 'None'],
                          ['mediumpurple', 'None', 'None'],
-                         ['None', 'None', 'None'],
+                         ['lightpink', 'None', 'None'],
                          ['mediumpurple', 'None', 'None'],
                          ['mediumpurple', 'None', 'None'],
                          ['Silver', 'None', 'None'],
@@ -161,7 +161,7 @@ property_table_colors = [['None', 'None', 'None'],
                          ['Silver', 'None', 'None'],
                          ['Yellow', 'None', 'None'],
                          ['Yellow', 'None', 'None'],
-                         ['None', 'None', 'None'],
+                         ['lightpink', 'None', 'None'],
                          ['Yellow', 'None', 'None'],
                          ['None', 'None', 'None'],
                          ['springgreen', 'None', 'None'],
@@ -180,8 +180,19 @@ def createFrame(players_data):
     #                    KentuckyAvenue: 12, IndianaAvenue: 13, IllinoisAvenue: 14, BoRR: 25, AtlanticAvenue: 15, VentnorAvenue: 16, WaterWorks: 28, MarvinGardens: 17,
     #                    PacificAvenue: 18, NorthCarolinaAvenue: 19, PennsylvaniaAvenue: 24, ShortLine: 26, ParkPlace:21, Boardwalk: 22}
     
-    # Use state machine stuff to update properties table
-    
+    for i in range(len(properties_data)):
+        if property_table_colors[i][0] != None:
+            for j in Deeds:
+                if isinstance(j, Deed):
+                    # updating owner
+                    if j.mTileName == properties_data[i][0] and j.mOwner != None and properties_data[i][1] == None:
+                        properties_data[i][1] = j.mOwner
+                    # updating house count
+                    if isinstance(j, Property) and j.mTileName == properties_data[i][0] and j.mNumHouse > 0 and properties_data[i][2] == 0:
+                        properties_data[i][1] = j.mOwner
+
+                     
+            
     # Create DataFrames
     df_properties = pd.DataFrame(properties_data)
     df_players = pd.DataFrame(players_data)
