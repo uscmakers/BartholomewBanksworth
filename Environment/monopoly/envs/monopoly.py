@@ -175,29 +175,36 @@ property_table_colors = [['None', 'None', 'None'],
                          ['cornflowerblue', 'None', 'None']]   
 
 def createFrame(players_data):
-        # Create DataFrames
-        df_properties = pd.DataFrame(properties_data)
-        df_players = pd.DataFrame(players_data)
 
-        # Create a table for properties
-        table_properties = plt.table(cellText=properties_data, bbox=[0, 0, 0.6, 1], colLabels=('Property', 'Group', 'Color Code'), cellColours=property_table_colors, cellLoc='center')
-        for i, col in enumerate(df_properties.columns):
-            table_properties.auto_set_column_width([i])
 
-        # Formatting for properties table
-        table_properties.auto_set_font_size(False)
-        table_properties.set_fontsize(8)
-        table_properties.scale(1.2, 1.2)
+    # TilesIdx = {MediterraneanAvenue: 1, BalticAvenue: 2, ReadingRR: 23, OrientalAvenue: 3, VermontAvenue: 4, ConnecticutAvenue: 5,
+    #                    CharlesPlace: 6, ElectricCompany: 27, StatesAvenue: 7, VirginiaAvenue: 8, PennsylvaniaRR: 24, JamesPlace: 9, TennesseeAvenue: 10, NewYorkAvenue: 11,
+    #                    KentuckyAvenue: 12, IndianaAvenue: 13, IllinoisAvenue: 14, BoRR: 25, AtlanticAvenue: 15, VentnorAvenue: 16, WaterWorks: 28, MarvinGardens: 17,
+    #                    PacificAvenue: 18, NorthCarolinaAvenue: 19, PennsylvaniaAvenue: 24, ShortLine: 26, ParkPlace:21, Boardwalk: 22}
+    
+    # Create DataFrames
+    df_properties = pd.DataFrame(properties_data)
+    df_players = pd.DataFrame(players_data)
 
-        # Create a table for players
-        table_players = plt.table(cellText=players_data, bbox=[0.65, 0.5, 0.35, 0.45], colLabels=('Player', 'Balance', 'Other'))
-        for i, col in enumerate(df_players.columns):
-            table_players.auto_set_column_width([i])
-                
-        # Create a "table" for next action
-        table_ai_action = plt.text(0.65, 0.25, f'test', wrap=True, color='blue')
+    # Create a table for properties
+    table_properties = plt.table(cellText=properties_data, bbox=[0, 0, 0.6, 1], colLabels=('Property', 'Group', 'Color Code'), cellColours=property_table_colors, cellLoc='center')
+    for i, col in enumerate(df_properties.columns):
+        table_properties.auto_set_column_width([i])
 
-        plt.suptitle('Monopoly Properties and Players', fontsize=16)
+    # Formatting for properties table
+    table_properties.auto_set_font_size(False)
+    table_properties.set_fontsize(8)
+    table_properties.scale(1.2, 1.2)
+
+    # Create a table for players
+    table_players = plt.table(cellText=players_data, bbox=[0.65, 0.5, 0.35, 0.45], colLabels=('Player', 'Balance', 'Other'))
+    for i, col in enumerate(df_players.columns):
+        table_players.auto_set_column_width([i])
+            
+    # Create a "table" for next action
+    table_ai_action = plt.text(0.65, 0.25, f'test', wrap=True, color='blue')
+
+    plt.suptitle('Monopoly Properties and Players', fontsize=16)
 
 class MonopolyEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -488,7 +495,7 @@ class MonopolyEnv(gym.Env):
     
     def render(self, mode='human', close=False, verbose = True):
         plt.clf()
-        createFrame(np.random.rand(2,3))
+        createFrame(np.array([[1, self.players[0]., 0], [2, 0, 0]]))
         plt.savefig(f'frame_{self.mNumFrames:03d}.png')
         self.mNumFrames += 1
 
