@@ -2,7 +2,7 @@
 
 def get_environment(env_name):
     try:
-        print("ajsdnkkjsdbj")
+        #print("ajsdnkkjsdbj")
         if env_name in ('tictactoe'):
             from tictactoe.envs.tictactoe import TicTacToeEnv
             return TicTacToeEnv
@@ -22,9 +22,11 @@ def get_environment(env_name):
             from frouge.envs.frouge import FlammeRougeEnv
             return FlammeRougeEnv
         elif env_name in ('monopoly'):
+            print("try block under monpoly")
             from monopoly.envs.monopoly import MonopolyEnv
             return MonopolyEnv
         else:
+            print("checking else")
             raise Exception(f'No environment found for {env_name}')
     except SyntaxError as e:
         print(e)
