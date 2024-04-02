@@ -1,1 +1,1 @@
-from frouge.envs.monopoly import MonopolyEnv
+from monopoly.envs.monopoly import MonopolyEnv
