@@ -24,6 +24,7 @@ def get_environment(env_name):
         elif env_name in ('monopoly'):
             print("try block under monpoly")
             from monopoly.envs.monopoly import MonopolyEnv
+            print("checking after from before return")
             return MonopolyEnv
         else:
             print("checking else")
@@ -56,8 +57,9 @@ def get_network_arch(env_name):
         from models.frouge.models import CustomPolicy
         return CustomPolicy
     elif env_name in ('monopoly'):
-        print("hellooooooo")
+        #print("hellooooooo")
         from models.monopoly.models import CustomPolicy
+        print("network check")
         return CustomPolicy
     else:
         raise Exception(f'No model architectures found for {env_name}')
