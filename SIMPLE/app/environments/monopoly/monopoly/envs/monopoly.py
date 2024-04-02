@@ -6,9 +6,6 @@ import numpy as np
 
 import config
 
-import os
-print(os.getcwd())
-
 from stable_baselines import logger
 
 import random
