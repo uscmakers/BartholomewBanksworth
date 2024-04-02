@@ -2,6 +2,7 @@
 
 def get_environment(env_name):
     try:
+        print("ajsdnkkjsdbj")
         if env_name in ('tictactoe'):
             from tictactoe.envs.tictactoe import TicTacToeEnv
             return TicTacToeEnv
