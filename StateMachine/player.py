@@ -1,10 +1,17 @@
-import const
 import Embedded.util as util
 # from deed import Deed
 # from property import Property
 # from railroad import Railroad
 # from utility import Utility
 # from typing import List
+
+# CONSTANTS
+
+JAIL_FEE = 50
+GO_MONEY = 200
+STARTING_BALANCE = 1500
+AVAILABLE_HOUSE = 32
+AVAILABLE_HOTEL = 12
 
 class Player:
     def __init__(self, index: int, mIsAi: bool):

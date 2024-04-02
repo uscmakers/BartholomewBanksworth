@@ -9,7 +9,6 @@ import config
 from stable_baselines import logger
 
 import random
-import const
 from player import Player
 from tile import Tile
 from deed import Deed
@@ -29,6 +28,14 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 import cv2
 import os
+
+# CONSTANTS
+
+JAIL_FEE = 50
+GO_MONEY = 200
+STARTING_BALANCE = 1500
+AVAILABLE_HOUSE = 32
+AVAILABLE_HOTEL = 12
 
 # TILES
 

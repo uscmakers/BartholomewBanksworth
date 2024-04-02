@@ -1,4 +1,3 @@
-import const
 from tile import Tile
 from player import Player
 
