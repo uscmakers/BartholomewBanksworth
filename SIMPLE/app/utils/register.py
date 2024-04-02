@@ -53,6 +53,7 @@ def get_network_arch(env_name):
         from models.frouge.models import CustomPolicy
         return CustomPolicy
     elif env_name in ('monopoly'):
+        print("hellooooooo")
         from models.monopoly.models import CustomPolicy
         return CustomPolicy
     else:
