@@ -38,6 +38,7 @@ def get_environment(env_name):
 
 
 def get_network_arch(env_name):
+    print("hellooooooo")
     if env_name in ('tictactoe'):
         from models.tictactoe.models import CustomPolicy
         return CustomPolicy
@@ -57,7 +58,7 @@ def get_network_arch(env_name):
         from models.frouge.models import CustomPolicy
         return CustomPolicy
     elif env_name in ('monopoly'):
-        #print("hellooooooo")
+
         from models.monopoly.models import CustomPolicy
         print("network check")
         return CustomPolicy

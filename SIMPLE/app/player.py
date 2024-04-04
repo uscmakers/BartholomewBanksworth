@@ -1,4 +1,4 @@
-import Embedded.util as util
+# import Embedded.util as util
 # from deed import Deed
 # from property import Property
 # from railroad import Railroad
@@ -21,7 +21,7 @@ class Player:
         self.mIsAi = mIsAi
 
         # MONEY INFO
-        self.mBalance = const.STARTING_BALANCE
+        self.mBalance = STARTING_BALANCE
         self.mNetWorth = self.mBalance
 
         # PROPERTY INFO
@@ -57,9 +57,9 @@ class Player:
         self.mPos = 10
     
     def PayJailFee(self):
-        print(self.mPlayerName + " paid $" + str(const.JAIL_FEE) + " to get out of jail!")
+        print(self.mPlayerName + " paid $" + str(JAIL_FEE) + " to get out of jail!")
         self.mTurnsInJail = 0
-        self.mBalance -= const.JAIL_FEE
+        self.mBalance -= JAIL_FEE
     
     def UseGetOutOfJailFree(self):
         print(self.mPlayerName + " used their get out of jail free card!")
@@ -78,7 +78,7 @@ class Player:
         self.mPos = 0
 
         # MONEY INFO
-        self.mBalance = const.STARTING_BALANCE
+        self.mBalance = STARTING_BALANCE
         self.mNetWorth = self.mBalance
 
         # PROPERTY INFO

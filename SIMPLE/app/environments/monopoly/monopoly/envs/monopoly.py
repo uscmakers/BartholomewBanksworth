@@ -9,16 +9,16 @@ import config
 from stable_baselines import logger
 
 import random
-from environments.monopoly.monopoly.envs.player import Player
-from environments.monopoly.monopoly.envs.tile import Tile
-from environments.monopoly.monopoly.envs.deed import Deed
-from environments.monopoly.monopoly.envs.earningSpace import EarningSpace
-from environments.monopoly.monopoly.envs.property import Property
-from environments.monopoly.monopoly.envs.railroad import Railroad
-from environments.monopoly.monopoly.envs.utility import Utility
-from environments.monopoly.monopoly.envs.goToJail import GoToJail
-from environments.monopoly.monopoly.envs.jail import Jail
-from environments.monopoly.monopoly.envs.deck import Deck
+from player import Player
+from tile import Tile
+from deed import Deed
+from earningSpace import EarningSpace
+from property import Property
+from railroad import Railroad
+from utility import Utility
+from goToJail import GoToJail
+from jail import Jail
+from deck import Deck
 from typing import List
 
 import pandas as pd

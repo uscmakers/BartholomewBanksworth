@@ -1,7 +1,10 @@
 from deed import Deed
 from player import Player
-from const import AVAILABLE_HOUSE, AVAILABLE_HOTEL
-
+JAIL_FEE = 50
+GO_MONEY = 200
+STARTING_BALANCE = 1500
+AVAILABLE_HOUSE = 32
+AVAILABLE_HOTEL = 12
 class Property(Deed):
     def __init__(self, mTileName, mCost, mSet, mRent, mHouseCost, mOneHouseRent, mTwoHouseRent, mThreeHouseRent, mFourHouseRent, mFiveHouseRent):
         super().__init__(mTileName, mCost, mSet, mRent)
