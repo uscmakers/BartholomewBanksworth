@@ -12,10 +12,9 @@ GPIO.setup(magnet,GPIO.OUT) # set enable pin as output
 # Actual motor control
 ###########################
 #
+GPIO.output(magnet, GPIO.HIGH)
+
 while True:
-    GPIO.output(magnet, GPIO.HIGH)
-    time.sleep(5)
-    GPIO.output(magnet, GPIO.LOW)
     time.sleep(5)
 
 GPIO.cleanup() # clear GPIO allocations after run
