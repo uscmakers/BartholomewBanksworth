@@ -42,12 +42,12 @@ while True:
                      .0005, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
-    GPIO.output(magnet1, GPIO.HIGH)
-    GPIO.output(magnet2, GPIO.HIGH)
+    # GPIO.output(magnet1, GPIO.HIGH)
+    # GPIO.output(magnet2, GPIO.HIGH)
 
     time.sleep(5)
-    GPIO.output(magnet1, GPIO.LOW)
-    GPIO.output(magnet2, GPIO.LOW)
+    # GPIO.output(magnet1, GPIO.LOW)
+    # GPIO.output(magnet2, GPIO.LOW)
     mymotortest.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     50, # number of steps

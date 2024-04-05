@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import pathlib
-import motor
+import json
+import time
+from motor import *
 
 # Define Flask server
 app = Flask(__name__)
@@ -9,25 +11,42 @@ motorPos = 0
 
 # Function to process the json data received by the server
 def process_json(move_data):
+    global motorPos
+    move_data = json.loads(move_data) # convert json string to json object dictionary
     # Parse the json for the title and artist using dictionary indexing
-    player = move_data['player'] # TODO: figure out string vs. json object
-    deltaPos = move_data['deltaPos']
-    currPos = move_data['currPos']
+    player = move_data['player'] # player number (0 - 3)
+    deltaPos = move_data['deltaPos'] # change (dice roll) in player position (1 - 12)
+    currPos = move_data['currPos']  # current player position - after delta position is applied (1 - 40)
+    print("This is data: ", move_data) # line for debugging
+    print("Current Motor Position: ", motorPos) # line for debugging
+    if player == -1:
+        rotation = 5*motorPos
+        print("Reset Rotation: ", rotation) # line for debugging
+        turnMotor(rotation, False)
+        return
     # Move the motor to the initial pos of the player
-    rotation = currPos - motorPos
+    rotation = 5*(currPos - deltaPos - motorPos)
+    if rotation >= 200: rotation %= 40
+    elif rotation <= -200: rotation %= -40
+    print("Pick-up Rotation: ", rotation) # line for debugging
+    # going to the piece (currPos - deltaPos)
     if rotation > 0:
-        motor.turnMotor(rotation, True)
+        turnMotor(rotation, True)
     else:
-        motor.turnMotor(-rotation, False)
-    motorPos = currPos
-    motor.electromagnetOn(player)
-    # Move player here
+        turnMotor(-rotation, False)
+    moveRot = 5*deltaPos
+    print("Move Rotation: ", moveRot) # line for debugging
+    electromagnetOn(player)
+    time.sleep(0.5)
+    # Move player here. going to currPos
     if deltaPos > 0:
-        motor.turnMotor(rotation, True)
+        turnMotor(moveRot, True)
     else:
-        motor.turnMotor(-rotation, False)
-    motorPos = motorPos + deltaPos
-    motor.electromagnetOff(player)
+        turnMotor(-moveRot, False)
+    motorPos = currPos
+    print("Final Motor Position: ", motorPos) # line for debugging
+    electromagnetOff(player)
+    time.sleep(0.5)
 
 # Move motor route
 @app.route('/move', methods=['POST'])
