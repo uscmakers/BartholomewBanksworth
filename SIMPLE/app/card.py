@@ -109,7 +109,7 @@ class Card:
       
     # WHAT HAPPENS WHEN A PLAYER LANDS ON A COMMUNITY CHEST OR CHANCE TILE?  
     def action(self, player : Player, playerList):
-        from board import Tiles
+        from environments.monopoly.monopoly.envs.monopoly import Tiles
         print(self.mName + ".")
         oldPos = player.mPos
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition

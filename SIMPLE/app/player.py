@@ -19,7 +19,8 @@ class Player:
         self.index = index
         self.mPos = 0
         self.mIsAi = mIsAi
-
+        self.mPlayerName = "AI"
+        
         # MONEY INFO
         self.mBalance = STARTING_BALANCE
         self.mNetWorth = self.mBalance
