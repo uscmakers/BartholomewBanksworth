@@ -46,4 +46,5 @@ while True:
                             False, # True = print verbose output 
                             .05) # initial delay [sec]
 
+GPIO.output(EN_pin, GPIO.HIGH)
 GPIO.cleanup() # clear GPIO allocations after run
