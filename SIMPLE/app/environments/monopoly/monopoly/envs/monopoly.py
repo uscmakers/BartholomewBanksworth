@@ -9,16 +9,16 @@ import config
 from stable_baselines import logger
 
 import random
-from environments.monopoly.monopoly.envs.player import Player
-from environments.monopoly.monopoly.envs.tile import Tile
-from environments.monopoly.monopoly.envs.deed import Deed
-from environments.monopoly.monopoly.envs.earningSpace import EarningSpace
-from environments.monopoly.monopoly.envs.property import Property
-from environments.monopoly.monopoly.envs.railroad import Railroad
-from environments.monopoly.monopoly.envs.utility import Utility
-from environments.monopoly.monopoly.envs.goToJail import GoToJail
-from environments.monopoly.monopoly.envs.jail import Jail
-from environments.monopoly.monopoly.envs.deck import Deck
+from player import Player
+from tile import Tile
+from deed import Deed
+from earningSpace import EarningSpace
+from property import Property
+from railroad import Railroad
+from utility import Utility
+from goToJail import GoToJail
+from jail import Jail
+from deck import Deck
 from typing import List
 
 import pandas as pd
@@ -240,7 +240,7 @@ class MonopolyEnv(gym.Env):
         self.mTiles = Tiles
         
         # Observation Space
-        lower_range_values = np.array([[0,0,0,0]]*36)
+        lower_range_values = np.array([[0,0,0,0]]*30)
         upper_range_values = np.array([[39,39,39,39]]+[[999999,999999,999999,999999]]+[[6,6,6,6]]*28) #row 0 is player position, row 1 is player money
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         

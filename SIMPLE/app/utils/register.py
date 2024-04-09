@@ -2,6 +2,7 @@
 
 def get_environment(env_name):
     try:
+        #print("ajsdnkkjsdbj")
         if env_name in ('tictactoe'):
             from tictactoe.envs.tictactoe import TicTacToeEnv
             return TicTacToeEnv
@@ -21,9 +22,12 @@ def get_environment(env_name):
             from frouge.envs.frouge import FlammeRougeEnv
             return FlammeRougeEnv
         elif env_name in ('monopoly'):
+            print("try block under monpoly")
             from monopoly.envs.monopoly import MonopolyEnv
+            print("checking after from before return")
             return MonopolyEnv
         else:
+            print("checking else")
             raise Exception(f'No environment found for {env_name}')
     except SyntaxError as e:
         print(e)
@@ -34,6 +38,7 @@ def get_environment(env_name):
 
 
 def get_network_arch(env_name):
+    print("hellooooooo")
     if env_name in ('tictactoe'):
         from models.tictactoe.models import CustomPolicy
         return CustomPolicy
@@ -53,7 +58,9 @@ def get_network_arch(env_name):
         from models.frouge.models import CustomPolicy
         return CustomPolicy
     elif env_name in ('monopoly'):
+
         from models.monopoly.models import CustomPolicy
+        print("network check")
         return CustomPolicy
     else:
         raise Exception(f'No model architectures found for {env_name}')
