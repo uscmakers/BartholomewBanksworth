@@ -33,16 +33,16 @@ GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
 #
 while True:
     command = input("What step delay do you want to use? 0.0005 is the default. -1 to quit.")
-    if command is -1:
+    if command is "-1":
         break
-    elif command is 0:
+    elif command is "0":
         GPIO.output(EN_pin, GPIO.HIGH)
     else:
         GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
         mymotortest.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                             "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                             200, # number of steps
-                            command, # step delay [sec]
+                            int(command), # step delay [sec]
                             False, # True = print verbose output 
                             .05) # initial delay [sec]
 
