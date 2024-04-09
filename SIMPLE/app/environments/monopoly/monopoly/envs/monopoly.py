@@ -245,7 +245,7 @@ class MonopolyEnv(gym.Env):
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
-        self.action_space = gym.spaces.Discrete(28)
+        self.action_space = gym.spaces.Discrete(31)
         self.verbose = verbose
         
         # Render stuff
@@ -326,7 +326,8 @@ class MonopolyEnv(gym.Env):
     def legal_actions(self, player: Player):
         # idx 0 is do nothing
         # idx 1 - 28 is deed
-        # idx 29 is jail
+        # idx 29 is pay to GOOJ
+        # idx 30 is GOOJ card
         #each key corresponds to the position of the tiles in the legal actions array
         tiles = Tiles
         TilesIdx = {MediterraneanAvenue: 1, BalticAvenue: 2, ReadingRR: 23, OrientalAvenue: 3, VermontAvenue: 4, ConnecticutAvenue: 5,
