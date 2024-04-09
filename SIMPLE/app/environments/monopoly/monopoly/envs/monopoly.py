@@ -233,18 +233,17 @@ class MonopolyEnv(gym.Env):
         self.manual = manual
         
         # Initializes players and board
-        self.mNumPlayers = 2
+        self.n_players = 2
         self.mPlayers : List[Player] = []
         self.mTiles = []
         self.initPlayers()
         self.mTiles = Tiles
         
         # Observation Space
-        lower_range_values = np.array([[0,0,0,0]]*30).flatten()
-        upper_range_values = np.array([[39,39,39,39]]+[[999999,999999,999999,999999]]+[[6,6,6,6]]*28).flatten() #row 0 is player position, row 1 is player money
+        lower_range_values = np.array([[0,0]]*30).flatten()
+        upper_range_values = np.array([[39,39]]+[[999999,999999]]+[[6,6]]*28).flatten() #row 0 is player position, row 1 is player money
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         self.observation_space = self.observation_space
-        #self.observation_space = gym.spaces.Discrete(31)
         
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
         self.action_space = gym.spaces.Discrete(31)
@@ -257,7 +256,7 @@ class MonopolyEnv(gym.Env):
         
     def initPlayers(self):
         # initialize players and add to player list
-        for i in range(self.mNumPlayers): # humans
+        for i in range(self.n_players): # humans
             self.mPlayers.append(Player(i, True))
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
     
@@ -273,10 +272,10 @@ class MonopolyEnv(gym.Env):
         currentPlayer = self.current_player
         
         if (self.current_player_num == 0):
-            otherPlayer = self.players[1]
+            otherPlayer = self.mPlayers[1]
             otherPlayerIndex = 1
         else:
-            otherPlayer = self.players[0]
+            otherPlayer = self.mPlayers[0]
             otherPlayerIndex = 0
 
         totalBalance = 0
@@ -291,9 +290,10 @@ class MonopolyEnv(gym.Env):
         balances = balances.flatten()
 
         #player positions in a 2D array of 40 spaces
-        positions = np.zeros(shape=(2, 40))
-        positions[self.current_player_num, currentPlayer.getPlayerPosition()] = 1
-        positions[otherPlayerIndex, otherPlayer.getPlayerPosition()] = 1
+        
+        positions = np.array([0,0])
+        positions[self.current_player_num] = currentPlayer.getPlayerPosition()
+        positions[otherPlayerIndex] = otherPlayer.getPlayerPosition()
 
         positions = positions.flatten()
 
@@ -306,13 +306,17 @@ class MonopolyEnv(gym.Env):
                 propertyInfo[otherPlayerIndex, properties.mNumHouse, Tiles.index(properties)] = 1
         propertyInfo = propertyInfo.flatten()
 
-        #legal Actions        
-        la_grid = self.legal_actions(self.current_player)
+        #legal Actions     
+        """
+        continue to change observation to match observation space.
+        """   
+        la_grid = self.legal_actions
         la_grid = la_grid.flatten()
 
         #concatenate everything
 
         result = np.concatenate((balances, positions, propertyInfo, la_grid))
+        print(result.shape, balances, positions, propertyInfo, la_grid)
         return result
 
         # if self.players[self._player_numcurrent].token.number == 1:
@@ -325,7 +329,7 @@ class MonopolyEnv(gym.Env):
         # return out
 
     @property
-    def legal_actions(self, player: Player):
+    def legal_actions(self):
         # idx 0 is do nothing
         # idx 1 - 28 is deed
         # idx 29 is pay to GOOJ
@@ -339,7 +343,7 @@ class MonopolyEnv(gym.Env):
         
         # array of legal actions (i think)
         legal_actions = np.zeros(31)
-        
+        player = self.current_player
         # the position of the current player
         # each Player has an mPos member variable
         for deed in player.mDeedOwned:
@@ -408,14 +412,14 @@ class MonopolyEnv(gym.Env):
                         
     @property
     def current_player(self):
-        return self.players[self.current_player_num]
+        return self.mPlayers[self.current_player_num]
 
     def step(self, action):
         
         # assumption: action is an integer between 0 and 27 (obtained from action space of Discrete[28])
         
         #each index represents a player, so the number of indexies in reward depends on number of players
-        reward = [0] * self.mNumPlayers
+        reward = [0] * self.n_players
         
         # check move legality
         tiles = self.mTiles
@@ -463,7 +467,7 @@ class MonopolyEnv(gym.Env):
         self.done = done
 
         if not done:
-            self.current_player_num = (self.current_player_num + 1) % self.mNumPlayers
+            self.current_player_num = (self.current_player_num + 1) % self.n_players
             
         totalBalance = 0
         for player in self.mPlayers:
@@ -488,6 +492,7 @@ class MonopolyEnv(gym.Env):
         self.done = False
         
         # Convert PNG images to an MP4 video using OpenCV
+        size = (0,0)
         frames = []
         for i in range(self.mNumFrames):
             img = cv2.imread(f'frame_{i:03d}.png')
