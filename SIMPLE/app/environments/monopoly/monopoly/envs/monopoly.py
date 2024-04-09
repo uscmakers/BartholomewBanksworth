@@ -240,9 +240,11 @@ class MonopolyEnv(gym.Env):
         self.mTiles = Tiles
         
         # Observation Space
-        lower_range_values = np.array([[0,0,0,0]]*30)
-        upper_range_values = np.array([[39,39,39,39]]+[[999999,999999,999999,999999]]+[[6,6,6,6]]*28) #row 0 is player position, row 1 is player money
+        lower_range_values = np.array([[0,0,0,0]]*30).flatten()
+        upper_range_values = np.array([[39,39,39,39]]+[[999999,999999,999999,999999]]+[[6,6,6,6]]*28).flatten() #row 0 is player position, row 1 is player money
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
+        self.observation_space = self.observation_space
+        #self.observation_space = gym.spaces.Discrete(31)
         
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
         self.action_space = gym.spaces.Discrete(31)
