@@ -51,7 +51,7 @@ class Deed(Tile):
     # if (len(SetToDeedMap[self.mSet]) == CountDeedOwned(self, player)) then is a monopoly
     def CountDeedOwned(self, player: Player) -> int:
         # fix circular import
-        from environments.monopoly.monopoly.envs.monopoly import SetToDeedMap
+        from constants import SetToDeedMap, const
 
         # print("I am here")
         count = 0

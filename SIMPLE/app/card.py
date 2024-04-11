@@ -109,7 +109,7 @@ class Card:
       
     # WHAT HAPPENS WHEN A PLAYER LANDS ON A COMMUNITY CHEST OR CHANCE TILE?  
     def action(self, player : Player, playerList):
-        from environments.monopoly.monopoly.envs.monopoly import Tiles
+        from constants import Tiles, const
         print(self.mName + ".")
         oldPos = player.mPos
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
@@ -127,7 +127,7 @@ class Card:
             player.mPos = self.mFixedPosition
         elif self.mSpecial == "NextUtility":
             if player.mPos >= 12 and player.mPos < 28:
-                self.mFixedPosition = 28
+                self.mFixedPoMsition = 28
             else:
                 self.mFixedPosition = 12
             player.mPos = self.mFixedPosition
@@ -163,9 +163,9 @@ class Card:
             if self.mSpecial == "NextRailroad" or self.mSpecial == "NextUtility":
                 tile.card = True
             # physically move player to tile
-            if self.mDeltaPosition != 0:
-                player.MotorRequest(self.mDeltaPosition)
-            else:
-                player.MotorRequest((player.mPos-oldPos)%40)
+            # if self.mDeltaPosition != 0:
+            #     player.MotorRequest(self.mDeltaPosition)
+            # else:
+            #     player.MotorRequest((player.mPos-oldPos)%40)
             print(player.mPlayerName + " landed on " + tile.mTileName + "!")
             tile.action(player, (player.mPos-oldPos)%40)

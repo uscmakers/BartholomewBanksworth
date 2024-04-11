@@ -74,7 +74,6 @@ def load_model(env, name):
                 sys.exit(f'Check zoo/{env.name}/ exists and read/write permission granted to user')
             except Exception as e:
                 logger.error(e)
-                time.sleep(2)
                 
     else:
         raise Exception(f'\n{filename} not found')

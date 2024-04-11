@@ -20,8 +20,8 @@ class Property(Deed):
         self.mFiveHouseRent = mFiveHouseRent  # hotel
 
     def CalculateRent(self, rollSum, player: Player = None) -> int:
-        from environments.monopoly.monopoly.envs.monopoly import SetToDeedMap
-        
+        from constants import SetToDeedMap, const
+
         if self.mNumHouse == 1:
             return self.mOneHouseRent
         elif self.mNumHouse == 2:
@@ -38,7 +38,7 @@ class Property(Deed):
             return self.mRent
         
     def BuildHouse(self, player: Player = None) -> bool:
-        from environments.monopoly.monopoly.envs.monopoly import SetToDeedMap  
+        from constants import SetToDeedMap, const
         mCanBuild = False
         if AVAILABLE_HOUSE != 0 and len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(player) and self.mSet != "railroad" and self.mSet != "utility":
             # print("first")

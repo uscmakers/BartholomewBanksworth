@@ -240,11 +240,12 @@ class MonopolyEnv(gym.Env):
         self.mTiles = Tiles
         
         # Observation Space
-        lower_range_values = np.array([[0,0]]*30).flatten()
-        upper_range_values = np.array([[39,39]]+[[999999,999999]]+[[6,6]]*28).flatten() #row 0 is player position, row 1 is player money
+        lower_range_values = np.array([[0,0]]*30).flatten() 
+        lower_range_values = np.concatenate((lower_range_values, np.array([0]*31)))
+        upper_range_values = np.array([[39,39]]+[[999999,999999]]+([[6,6]]*28)).flatten() #row 0 is player position, row 1 is player money
+        upper_range_values = np.concatenate((upper_range_values, np.array([1]*31)))
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         self.observation_space = self.observation_space
-        
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
         self.action_space = gym.spaces.Discrete(31)
         self.verbose = verbose
@@ -278,13 +279,10 @@ class MonopolyEnv(gym.Env):
             otherPlayer = self.mPlayers[0]
             otherPlayerIndex = 0
 
-        totalBalance = 0
-        for player in self.mPlayers:
-            totalBalance += player.getBalance()
         
         balances = []
-        balances.append(currentPlayer.getBalance()/totalBalance)
-        balances.append(otherPlayer.getBalance()/totalBalance)
+        balances.append(currentPlayer.getBalance())
+        balances.append(otherPlayer.getBalance())
 
         balances = np.array(balances)
         balances = balances.flatten()
@@ -298,25 +296,23 @@ class MonopolyEnv(gym.Env):
         positions = positions.flatten()
 
         #property information
-        propertyInfo = np.zeros(shape=(2,5,40))
-
+        # propertyInfo = np.zeros(shape=(2,len(Tiles)))
+        propertyInfo = np.zeros(shape=(2,28))
         for properties in currentPlayer.mDeedOwned:
-                propertyInfo[self.current_player_num, properties.mNumHouse, Tiles.index(properties)] = 1
+            if type(properties) is Property:
+                propertyInfo[self.current_player_num, Deeds.index(properties)] = properties.mNumHouse
         for properties in otherPlayer.mDeedOwned:
-                propertyInfo[otherPlayerIndex, properties.mNumHouse, Tiles.index(properties)] = 1
+            if type(properties) is Property:
+                propertyInfo[otherPlayerIndex, Deeds.index(properties)] = properties.mNumHouse
         propertyInfo = propertyInfo.flatten()
 
-        #legal Actions     
-        """
-        continue to change observation to match observation space.
-        """   
         la_grid = self.legal_actions
         la_grid = la_grid.flatten()
 
         #concatenate everything
 
-        result = np.concatenate((balances, positions, propertyInfo, la_grid))
-        print(result.shape, balances, positions, propertyInfo, la_grid)
+        result = np.concatenate((positions, balances, propertyInfo, la_grid))
+        print(balances, positions)
         return result
 
         # if self.players[self._player_numcurrent].token.number == 1:
@@ -364,6 +360,7 @@ class MonopolyEnv(gym.Env):
                 legal_actions[idx] = 1
             else:
                 legal_actions[idx] = 0
+                print("buying " , deed.mTileName , " is illegal")
             # if deed owner is null (prperties, utilities, railroads)
             # can buy
             # 1 => can buy property
@@ -382,7 +379,7 @@ class MonopolyEnv(gym.Env):
             else:
                 legal_actions[29] = 0
             
-            if player.mBalance >= const.JAIL_FEE:
+            if player.mBalance >= JAIL_FEE:
                 legal_actions[30] = 1
             else:
                 legal_actions[30] = 0
@@ -398,7 +395,7 @@ class MonopolyEnv(gym.Env):
         
         #check each player's balance
         for playerIndex in range(num_players):
-            if (self.mPlayers[num_players].mBalance) == 0:
+            if (self.mPlayers[num_players].mBalance) <= 0:
                 numberOfPlayersBankrupt += 1
             else:
                 winningPlayer = playerIndex
@@ -475,7 +472,8 @@ class MonopolyEnv(gym.Env):
         reward = [0,0]
         for playerIndex in range(len(self.mPlayers)):
             player = self.mPlayers[playerIndex]
-            reward[playerIndex] = (player.getBalance()/totalBalance)
+            if (totalBalance != 0):
+                reward[playerIndex] = (player.getBalance()/totalBalance)
         return self.observation, reward, done, {}
 
     def reset(self):
@@ -496,9 +494,10 @@ class MonopolyEnv(gym.Env):
         frames = []
         for i in range(self.mNumFrames):
             img = cv2.imread(f'frame_{i:03d}.png')
-            height, width, layers = img.shape
-            size = (width,height)
-            frames.append(img)
+            if (img is not None):
+                height, width, layers = img.shape
+                size = (width,height)
+                frames.append(img)
 
         # Define the codec and create a VideoWriter object
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -514,6 +513,9 @@ class MonopolyEnv(gym.Env):
         # Cleanup: Remove the PNG images
         for i in range(self.mNumFrames):
             os.remove(f'frame_{i:03d}.png')
+        self.mNumFrames = 0
+
+        print("END OF GAME\n\nSTARTING NEW GAME")
          
         logger.debug(f'\n\n---- NEW GAME ----')
         return self.observation
@@ -533,7 +535,10 @@ class MonopolyEnv(gym.Env):
 # OUR FUNCTIONS START
     def turn(self, player: Player):
             while True:
-                tile, doubles, rollSum = self.roll(player) # roll dice and move player to appropriate space
+                roll = self.roll(player)
+                doubles = False
+                if (roll is not None):
+                    tile, doubles, rollSum = roll
                 # player.MotorRequest(rollSum) # physically move player to tile
                 if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
                 if (not doubles) or (player.mTurnsInJail > 0): break
@@ -541,6 +546,7 @@ class MonopolyEnv(gym.Env):
     def roll(self, player: Player): # roll dice and move player to appropriate space
         doubles = False
         dice, rollSum = self.rollDice(player)
+        print (rollSum)
         if dice[0] == dice[1]: # doubles check
             doubles = True
             # print(player.mPlayerName + " rolled doubles!")
@@ -551,13 +557,15 @@ class MonopolyEnv(gym.Env):
                 # print(player.mPlayerName + " rolled three consecutive doubles! Go to jail!")
                 return None
         if (player.mPos + rollSum) >= 40: # passed go check
-            player.mBalance += const.GO_MONEY
+            player.mBalance += GO_MONEY
             # print(player.mPlayerName + " passed go and earned $200!")
         player.mPos = (player.mPos + rollSum) % 40 # move player appropriate number of spaces
         tile = self.mTiles[player.mPos]
         return tile, doubles, rollSum
 
     def rollDice(self, player: Player): # simulates rolling two dice
+        import time
+        random.seed(time.time())
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
         # print(player.mPlayerName + " rolled " + str(sum) + "!")
