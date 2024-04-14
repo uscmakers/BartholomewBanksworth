@@ -546,10 +546,10 @@ class MonopolyEnv(gym.Env):
         print(self.current_player_num, "BALANCE:", self.observation[2:4])
         print(self.current_player_num, "PROPERTY INFO:", self.observation[4:60])
         print(self.current_player_num, "LEGAL ACTIONS:", self.observation[60:])
-        plt.clf()
-        createFrame(np.array([[1, self.mPlayers[0].getBalance(), self.mPlayers[0].getPlayerPosition()], [2, self.mPlayers[1].getBalance(), self.mPlayers[1].getPlayerPosition()]]))
-        plt.savefig(f'frame_{self.mNumFrames:03d}.png')
-        self.mNumFrames += 1
+        # plt.clf()
+        # createFrame(np.array([[1, self.mPlayers[0].getBalance(), self.mPlayers[0].getPlayerPosition()], [2, self.mPlayers[1].getBalance(), self.mPlayers[1].getPlayerPosition()]]))
+        # plt.savefig(f'frame_{self.mNumFrames:03d}.png')
+        # self.mNumFrames += 1
 
         if self.verbose:
             logger.debug(f'\nObservation: \n{self.observation}')
