@@ -14,12 +14,9 @@ class Deed(Tile):
     # WHAT HAPPENS WHEN A PLAYER LANDS ON A DEED?
     def action(self, mPlayer: Player, rollSum: int):
         if mPlayer.mIsAi: # AI, so make decisions for the player
-            if self.mOwner is None: # if the deed is unowned
-                if mPlayer.mBalance >= self.mCost: # if AI has enough money
-                    self.purchase(mPlayer)
-            elif self.mOwner == mPlayer: # deed is owned by yourself
+            if self.mOwner == mPlayer: # deed is owned by yourself
                 print("Nothing happens!")
-            else: # deed is owned by another player
+            elif self.mOwner is not None:
                 self.pay(mPlayer, rollSum)
         else: # user, so user should make decisions
             if self.mOwner is None:
@@ -61,7 +58,7 @@ class Deed(Tile):
         # print("This is count deed owned", count)
         return count
     
-    def CalculateRent(self, rollSum, player: Player = None) -> int:
+    def CalculateRent(self, rollSum, player: Player) -> int:
         pass
     
     def reset(self):

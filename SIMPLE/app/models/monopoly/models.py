@@ -9,7 +9,7 @@ from stable_baselines.common.policies import ActorCriticPolicy
 from stable_baselines.common.distributions import CategoricalProbabilityDistribution
 
 
-ACTIONS = 36
+ACTIONS = 31
 FEATURE_SIZE = 128
 DEPTH = 5
 VALUE_DEPTH = 1

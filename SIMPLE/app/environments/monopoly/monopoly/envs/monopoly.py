@@ -36,6 +36,7 @@ GO_MONEY = 200
 STARTING_BALANCE = 1500
 AVAILABLE_HOUSE = 32
 AVAILABLE_HOTEL = 12
+PROPERTY_REWARD = 100
 
 # TILES
 
@@ -291,8 +292,8 @@ class MonopolyEnv(gym.Env):
         #player positions in a 2D array of 40 spaces
         
         positions = np.array([0,0])
-        positions[self.current_player_num] = currentPlayer.getPlayerPosition()
-        positions[otherPlayerIndex] = otherPlayer.getPlayerPosition()
+        positions[0] = currentPlayer.getPlayerPosition()
+        positions[1] = otherPlayer.getPlayerPosition()
 
         positions = positions.flatten()
 
@@ -359,14 +360,13 @@ class MonopolyEnv(gym.Env):
                 else:
                     legal_actions[idx] = 0
         # check current position
-        if type(tiles[player.mPos]) is Deed:
+        if type(tiles[player.mPos]) in [Property, Railroad, Utility]:
             currDeedTile = tiles[player.mPos]
+            idx = TilesIdx[currDeedTile]
             if currDeedTile.mOwner is None:
-                idx = TilesIdx[currDeedTile]
                 legal_actions[idx] = 1
             else:
                 legal_actions[idx] = 0
-                print("buying " , deed.mTileName , " is illegal")
             # if deed owner is null (prperties, utilities, railroads)
             # can buy
             # 1 => can buy property
@@ -423,9 +423,6 @@ class MonopolyEnv(gym.Env):
         print("Ai" + str(self.current_player_num) + " is about to take action: " + str(action)) 
         if (self.observation[60+action] == 0):
             print("Using illegal action")
-            reward = [-1, 0]
-            done = False
-            return self.observation, reward, done, {}
         #each index represents a player, so the number of indexies in reward depends on number of players
         reward = [0] * self.n_players
         
@@ -477,16 +474,25 @@ class MonopolyEnv(gym.Env):
         if not done:
             self.current_player_num = (self.current_player_num + 1) % self.n_players
             
+            
+            
         totalBalance = 0
         for player in self.mPlayers:
             totalBalance += player.mBalance
+            for deed in player.mDeedOwned:
+                totalBalance += deed.mCost * PROPERTY_REWARD
+        
         reward = [0,0]
         for playerIndex in range(len(self.mPlayers)):
             player = self.mPlayers[playerIndex]
             if (totalBalance != 0):
-                reward[playerIndex] = (player.getBalance()/totalBalance)
-        np.set_printoptions(suppress=True,precision=3)
-        print(self.current_player_num, self.observation[60:])
+                reward_amount = player.getBalance()
+                for deed in player.mDeedOwned:
+                    reward_amount += deed.mCost * PROPERTY_REWARD
+                reward[playerIndex] = (reward_amount/totalBalance - 0.5)
+                
+                
+        
         return self.observation, reward, done, {}
 
     def reset(self):
@@ -535,6 +541,11 @@ class MonopolyEnv(gym.Env):
     
     def render(self, mode='human', close=False, verbose = True):
         self.turn(self.current_player)
+        np.set_printoptions(suppress=True,precision=3)
+        print(self.current_player_num, "POSITION:", self.observation[0:2])
+        print(self.current_player_num, "BALANCE:", self.observation[2:4])
+        print(self.current_player_num, "PROPERTY INFO:", self.observation[4:60])
+        print(self.current_player_num, "LEGAL ACTIONS:", self.observation[60:])
         plt.clf()
         createFrame(np.array([[1, self.mPlayers[0].getBalance(), self.mPlayers[0].getPlayerPosition()], [2, self.mPlayers[1].getBalance(), self.mPlayers[1].getPlayerPosition()]]))
         plt.savefig(f'frame_{self.mNumFrames:03d}.png')
@@ -554,7 +565,7 @@ class MonopolyEnv(gym.Env):
                 if (roll is not None):
                     tile, doubles, rollSum = roll
                 # player.MotorRequest(rollSum) # physically move player to tile
-                # if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
+                if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
                 if (not doubles) or (player.mTurnsInJail > 0): break
         
     def roll(self, player: Player): # roll dice and move player to appropriate space
@@ -562,9 +573,9 @@ class MonopolyEnv(gym.Env):
         dice, rollSum = self.rollDice(player)
         print (rollSum)
         if dice[0] == dice[1]: # doubles check
-            doubles = True
+            #doubles = True
             # print(player.mPlayerName + " rolled doubles!")
-            player.mContinuousDoubles += 1
+            #player.mContinuousDoubles += 1
             if player.mContinuousDoubles == 3: # go directly to jail after 3 consecutive doubles
                 player.mPos = 10
                 player.mTurnsInJail = 1

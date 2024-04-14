@@ -80,7 +80,11 @@ def selfplay_wrapper(env):
 
             while self.current_player_num != self.agent_player_num:
                 self.render()
-                action = self.current_agent.choose_action(self, choose_best_action = False, mask_invalid_actions = False)
+
+                # choose action for player i
+                action = self.current_agent.choose_action(self, choose_best_action = False, mask_invalid_actions = True)
+
+                # get game state after player i's turn AND player i+1's roll
                 observation, reward, done, _ = super(SelfPlayEnv, self).step(action)
                 logger.debug(f'Rewards: {reward}')
                 logger.debug(f'Done: {done}')
