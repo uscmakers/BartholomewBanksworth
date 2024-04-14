@@ -14,12 +14,12 @@ AVAILABLE_HOUSE = 32
 AVAILABLE_HOTEL = 12
 
 class Player:
-    def __init__(self, index: int, mIsAi: bool):
+    def __init__(self, index: int, mIsAi: bool, mAiName: str):
         # PLAYER INFO
         self.index = index
         self.mPos = 0
         self.mIsAi = mIsAi
-        self.mPlayerName = "AI"
+        self.mPlayerName = mAiName
         
         # MONEY INFO
         self.mBalance = STARTING_BALANCE

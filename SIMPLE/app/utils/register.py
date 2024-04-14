@@ -22,9 +22,7 @@ def get_environment(env_name):
             from frouge.envs.frouge import FlammeRougeEnv
             return FlammeRougeEnv
         elif env_name in ('monopoly'):
-            print("try block under monpoly")
             from monopoly.envs.monopoly import MonopolyEnv
-            print("checking after from before return")
             return MonopolyEnv
         else:
             print("checking else")
@@ -38,7 +36,6 @@ def get_environment(env_name):
 
 
 def get_network_arch(env_name):
-    print("hellooooooo")
     if env_name in ('tictactoe'):
         from models.tictactoe.models import CustomPolicy
         return CustomPolicy
@@ -60,7 +57,6 @@ def get_network_arch(env_name):
     elif env_name in ('monopoly'):
 
         from models.monopoly.models import CustomPolicy
-        print("network check")
         return CustomPolicy
     else:
         raise Exception(f'No model architectures found for {env_name}')
