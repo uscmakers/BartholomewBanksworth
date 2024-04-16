@@ -38,7 +38,7 @@ while True:
     elif command == "0":
         GPIO.output(EN_pin, GPIO.HIGH)
     else:
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
         GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
         mymotortest.motor_go(False, # True=Clockwise, False=Counter-Clockwise
