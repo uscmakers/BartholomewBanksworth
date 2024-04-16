@@ -19,8 +19,9 @@ class Property(Deed):
         self.mFourHouseRent = mFourHouseRent
         self.mFiveHouseRent = mFiveHouseRent  # hotel
 
-    def CalculateRent(self, rollSum, player: Player = None) -> int:
-        from constants import SetToDeedMap, const
+
+    def CalculateRent(self, rollSum, player: Player) -> int:
+        from constants import property_stuff, const
 
         if self.mNumHouse == 1:
             return self.mOneHouseRent
@@ -32,20 +33,20 @@ class Property(Deed):
             return self.mFourHouseRent
         elif self.mNumHouse == 5:
             return self.mFiveHouseRent
-        elif len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(player):
+        elif len(property_stuff.SetToDeedMap[self.mSet]) == self.CountDeedOwned(player):
             return self.mRent * 2
         else:
             return self.mRent
         
-    def BuildHouse(self, player: Player = None) -> bool:
-        from constants import SetToDeedMap, const
+    def BuildHouse(self, player: Player) -> bool:
+        from constants import property_stuff, const
         mCanBuild = False
-        if AVAILABLE_HOUSE != 0 and len(SetToDeedMap[self.mSet]) == self.CountDeedOwned(player) and self.mSet != "railroad" and self.mSet != "utility":
+        if AVAILABLE_HOUSE != 0 and len(property_stuff.SetToDeedMap[self.mSet]) == self.CountDeedOwned(player) and self.mSet != "railroad" and self.mSet != "utility":
             # print("first")
             if self.mNumHouse < 4 or (self.mNumHouse < 5 and AVAILABLE_HOTEL != 0):
                 # print("second")
                 mCanBuild = True
-                for property in SetToDeedMap[self.mSet]:
+                for property in property_stuff.SetToDeedMap[self.mSet]:
                     if self != property and (self.mNumHouse - property.mNumHouse != 0 and self.mNumHouse - property.mNumHouse != -1):
                         # print("three")
                         mCanBuild = False

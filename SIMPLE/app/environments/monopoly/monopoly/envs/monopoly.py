@@ -28,7 +28,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 import cv2
 import os
-
+from constants import property_stuff
 # CONSTANTS
 
 JAIL_FEE = 50
@@ -36,66 +36,66 @@ GO_MONEY = 200
 STARTING_BALANCE = 1500
 AVAILABLE_HOUSE = 32
 AVAILABLE_HOTEL = 12
-PROPERTY_REWARD = 100
+PROPERTY_REWARD = 1000
 
 # TILES
 
-Go = EarningSpace("Go", 200)
-IncomeTax = EarningSpace("Income Tax", -200)
-LuxuryTax = EarningSpace("Luxury Tax", -100)
-FreeParking = EarningSpace("Free Parking", 0)
-GotoJail = GoToJail("Go To Jail")
-VisitJail = Jail("Jail")
-MediterraneanAvenue = Property("Mediterranean Avenue", 60, "brown", 2, 50, 10, 30, 90, 160, 250)
-BalticAvenue = Property("Baltic Avenue", 60, "brown", 4, 50, 20, 60, 180, 320, 450)
-ReadingRR = Railroad("Reading Railroad", 200, "railroad", 25)
-OrientalAvenue = Property("Oriental Avenue", 100, "lightblue", 6, 50, 30, 90, 270, 400, 550)
-VermontAvenue = Property("Vermont Avenue", 100, "lightblue", 6, 50, 30, 90, 270, 400, 550)
-ConnecticutAvenue = Property("Connecticut Avenue", 120, "lightblue", 8, 40, 100, 300, 450, 600, 550)
-CharlesPlace = Property("St. Charles Place", 140, "pink", 10, 100, 50, 150, 450, 625, 750)
-ElectricCompany = Utility("Electric Company", 150, "utility", None)
-StatesAvenue = Property("States Avenue", 140, "pink", 10, 100, 50, 150, 450, 625, 750)
-VirginiaAvenue = Property("Virginia Avenue", 160, "pink", 12, 100, 60, 180, 500, 700, 900)
-PennsylvaniaRR = Railroad("Pennsylvania Railroad", 200, "railroad", 25)
-JamesPlace = Property("St. James Place", 180, "orange", 14, 100, 70, 200, 550, 750, 950)
-TennesseeAvenue = Property("Tennessee Avenue", 180, "orange", 14, 100, 70, 200, 550, 750, 950)
-NewYorkAvenue = Property("New York Avenue", 200, "orange", 16, 100, 80, 220, 600, 800, 1000)
-KentuckyAvenue = Property("Kentucky Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
-IndianaAvenue = Property("Indiana Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
-IllinoisAvenue = Property("Illinois Avenue", 240, "red", 20, 150, 100, 300, 750, 925, 1100)
-BoRR = Railroad("B&O Railroad", 200, "railroad", 25)
-AtlanticAvenue = Property("Atlantic Avenue", 260, "yellow", 22, 150, 110, 330, 800, 975, 1150)
-VentnorAvenue = Property("Ventnor Avenue", 260, "yellow", 22, 150, 110, 330, 800, 975, 1150)
-WaterWorks = Utility("Water Works", 150, "utility", None)
-MarvinGardens = Property("Marvin Gardens", 280, "yellow", 24, 150, 120, 360, 850, 1025, 1200)
-PacificAvenue = Property("Pacific Avenue", 300, "green", 26, 200, 130, 390, 900, 1100, 1275)
-NorthCarolinaAvenue = Property("North Carolina Avenue", 300, "green", 26, 200, 130, 390, 900, 1100, 1275)
-PennsylvaniaAvenue = Property("Pennsylvania Avenue", 320, "green", 28, 200, 150, 450, 1000, 1200, 1400)
-ShortLine = Railroad("Short Line", 200, "railroad", 25)
-ParkPlace = Property("Park Place", 350, "darkblue", 35, 175, 500, 1100, 700, 1300, 1500)
-Boardwalk = Property("Boardwalk", 400, "darkblue", 50, 150, 200, 600, 1400, 1700, 2000)
-CommunityChest = Deck("Community Chest", True)
-Chance = Deck("Chance", True)
+# Go = EarningSpace("Go", 200)
+# IncomeTax = EarningSpace("Income Tax", -200)
+# LuxuryTax = EarningSpace("Luxury Tax", -100)
+# FreeParking = EarningSpace("Free Parking", 0)
+# GotoJail = GoToJail("Go To Jail")
+# VisitJail = Jail("Jail")
+# MediterraneanAvenue = Property("Mediterranean Avenue", 60, "brown", 2, 50, 10, 30, 90, 160, 250)
+# BalticAvenue = Property("Baltic Avenue", 60, "brown", 4, 50, 20, 60, 180, 320, 450)
+# ReadingRR = Railroad("Reading Railroad", 200, "railroad", 25)
+# OrientalAvenue = Property("Oriental Avenue", 100, "lightblue", 6, 50, 30, 90, 270, 400, 550)
+# VermontAvenue = Property("Vermont Avenue", 100, "lightblue", 6, 50, 30, 90, 270, 400, 550)
+# ConnecticutAvenue = Property("Connecticut Avenue", 120, "lightblue", 8, 40, 100, 300, 450, 600, 550)
+# CharlesPlace = Property("St. Charles Place", 140, "pink", 10, 100, 50, 150, 450, 625, 750)
+# ElectricCompany = Utility("Electric Company", 150, "utility", None)
+# StatesAvenue = Property("States Avenue", 140, "pink", 10, 100, 50, 150, 450, 625, 750)
+# VirginiaAvenue = Property("Virginia Avenue", 160, "pink", 12, 100, 60, 180, 500, 700, 900)
+# PennsylvaniaRR = Railroad("Pennsylvania Railroad", 200, "railroad", 25)
+# JamesPlace = Property("St. James Place", 180, "orange", 14, 100, 70, 200, 550, 750, 950)
+# TennesseeAvenue = Property("Tennessee Avenue", 180, "orange", 14, 100, 70, 200, 550, 750, 950)
+# NewYorkAvenue = Property("New York Avenue", 200, "orange", 16, 100, 80, 220, 600, 800, 1000)
+# KentuckyAvenue = Property("Kentucky Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
+# IndianaAvenue = Property("Indiana Avenue", 220, "red", 18, 150, 90, 250, 700, 875, 1050)
+# IllinoisAvenue = Property("Illinois Avenue", 240, "red", 20, 150, 100, 300, 750, 925, 1100)
+# BoRR = Railroad("B&O Railroad", 200, "railroad", 25)
+# AtlanticAvenue = Property("Atlantic Avenue", 260, "yellow", 22, 150, 110, 330, 800, 975, 1150)
+# VentnorAvenue = Property("Ventnor Avenue", 260, "yellow", 22, 150, 110, 330, 800, 975, 1150)
+# WaterWorks = Utility("Water Works", 150, "utility", None)
+# MarvinGardens = Property("Marvin Gardens", 280, "yellow", 24, 150, 120, 360, 850, 1025, 1200)
+# PacificAvenue = Property("Pacific Avenue", 300, "green", 26, 200, 130, 390, 900, 1100, 1275)
+# NorthCarolinaAvenue = Property("North Carolina Avenue", 300, "green", 26, 200, 130, 390, 900, 1100, 1275)
+# PennsylvaniaAvenue = Property("Pennsylvania Avenue", 320, "green", 28, 200, 150, 450, 1000, 1200, 1400)
+# ShortLine = Railroad("Short Line", 200, "railroad", 25)
+# ParkPlace = Property("Park Place", 350, "darkblue", 35, 175, 500, 1100, 700, 1300, 1500)
+# Boardwalk = Property("Boardwalk", 400, "darkblue", 50, 150, 200, 600, 1400, 1700, 2000)
+# CommunityChest = Deck("Community Chest", True)
+# Chance = Deck("Chance", True)
 
-Tiles = [Go, MediterraneanAvenue, CommunityChest, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, Chance, VermontAvenue, ConnecticutAvenue, VisitJail,
-                       CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, CommunityChest, TennesseeAvenue, NewYorkAvenue, FreeParking,
-                       KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
-                       PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
+# Tiles = [Go, MediterraneanAvenue, CommunityChest, BalticAvenue, IncomeTax, ReadingRR, OrientalAvenue, Chance, VermontAvenue, ConnecticutAvenue, VisitJail,
+#                        CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, CommunityChest, TennesseeAvenue, NewYorkAvenue, FreeParking,
+#                        KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
+#                        PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
 
-Deeds = [MediterraneanAvenue, BalticAvenue, OrientalAvenue, VermontAvenue, ConnecticutAvenue, CharlesPlace, StatesAvenue, VirginiaAvenue, JamesPlace, TennesseeAvenue,
-         NewYorkAvenue, KentuckyAvenue, IndianaAvenue, IllinoisAvenue, AtlanticAvenue, VentnorAvenue, MarvinGardens, PacificAvenue,
-         NorthCarolinaAvenue, PennsylvaniaAvenue, ParkPlace, Boardwalk, ReadingRR, PennsylvaniaRR, BoRR, ShortLine, ElectricCompany, WaterWorks]
+# Deeds = [MediterraneanAvenue, BalticAvenue, OrientalAvenue, VermontAvenue, ConnecticutAvenue, CharlesPlace, StatesAvenue, VirginiaAvenue, JamesPlace, TennesseeAvenue,
+#          NewYorkAvenue, KentuckyAvenue, IndianaAvenue, IllinoisAvenue, AtlanticAvenue, VentnorAvenue, MarvinGardens, PacificAvenue,
+#          NorthCarolinaAvenue, PennsylvaniaAvenue, ParkPlace, Boardwalk, ReadingRR, PennsylvaniaRR, BoRR, ShortLine, ElectricCompany, WaterWorks]
 
-SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
-                "utility": [ElectricCompany, WaterWorks],
-                "brown": [MediterraneanAvenue, BalticAvenue],
-                "lightblue": [OrientalAvenue, VermontAvenue, ConnecticutAvenue],
-                "pink": [CharlesPlace, StatesAvenue, VirginiaAvenue],
-                "orange": [JamesPlace, TennesseeAvenue, NewYorkAvenue],
-                "red": [KentuckyAvenue, IndianaAvenue, IllinoisAvenue],
-                "yellow": [AtlanticAvenue, VentnorAvenue, MarvinGardens],
-                "green": [PacificAvenue, NorthCarolinaAvenue, PennsylvaniaAvenue],
-                "darkblue": [ParkPlace, Boardwalk]} 
+# SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
+#                 "utility": [ElectricCompany, WaterWorks],
+#                 "brown": [MediterraneanAvenue, BalticAvenue],
+#                 "lightblue": [OrientalAvenue, VermontAvenue, ConnecticutAvenue],
+#                 "pink": [CharlesPlace, StatesAvenue, VirginiaAvenue],
+#                 "orange": [JamesPlace, TennesseeAvenue, NewYorkAvenue],
+#                 "red": [KentuckyAvenue, IndianaAvenue, IllinoisAvenue],
+#                 "yellow": [AtlanticAvenue, VentnorAvenue, MarvinGardens],
+#                 "green": [PacificAvenue, NorthCarolinaAvenue, PennsylvaniaAvenue],
+#                 "darkblue": [ParkPlace, Boardwalk]} 
 
 properties_data = [
     ['Go', 'None', '0'],
@@ -190,7 +190,7 @@ def createFrame(players_data):
     
     for i in range(len(properties_data)):
         if property_table_colors[i][0] != None:
-            for j in Deeds:
+            for j in property_stuff.Deeds:
                 if isinstance(j, Deed):
                     # updating owner
                     if j.mTileName == properties_data[i][0] and j.mOwner != None and properties_data[i][1] == None:
@@ -238,10 +238,10 @@ class MonopolyEnv(gym.Env):
         self.mPlayers : List[Player] = []
         self.mTiles = []
         self.initPlayers()
-        self.mTiles = Tiles
+        self.mTiles = property_stuff.Tiles
         
         # Observation Space
-        lower_range_values = np.array([[0,0]]*2+[[-6,-6]]*28).flatten() 
+        lower_range_values = np.array([[0,0]]*30).flatten() 
         lower_range_values = np.concatenate((lower_range_values, np.array([0]*31)))
         upper_range_values = np.array([[39,39]]+[[999999,999999]]+([[6,6]]*28)).flatten() #row 0 is player position, row 1 is player money
         upper_range_values = np.concatenate((upper_range_values, np.array([1]*31)))
@@ -300,16 +300,19 @@ class MonopolyEnv(gym.Env):
         #property information
         # propertyInfo = np.zeros(shape=(2,len(Tiles)))
         propertyInfo = np.zeros(shape=(2,28))
+        
         for properties in currentPlayer.mDeedOwned:
             if (type(properties) is Property):
-                propertyInfo[self.current_player_num, Deeds.index(properties)] = properties.mNumHouse + 1
+                propertyInfo[self.current_player_num, property_stuff.Deeds.index(properties)] = properties.mNumHouse + 1
             else:
-                propertyInfo[self.current_player_num, Deeds.index(properties)] = 1
+                propertyInfo[self.current_player_num, property_stuff.Deeds.index(properties)] = 1
+                
+                
         for properties in otherPlayer.mDeedOwned:
             if (type(properties) is Property):
-                propertyInfo[otherPlayerIndex, Deeds.index(properties)] = -1 * properties.mNumHouse - 1
+                propertyInfo[otherPlayerIndex, property_stuff.Deeds.index(properties)] = properties.mNumHouse + 1
             else:
-                propertyInfo[self.current_player_num, Deeds.index(properties)] = -1
+                propertyInfo[otherPlayerIndex, property_stuff.Deeds.index(properties)] = 1
         propertyInfo = propertyInfo.flatten()
 
         la_grid = self.legal_actions
@@ -336,16 +339,16 @@ class MonopolyEnv(gym.Env):
         # idx 29 is pay to GOOJ
         # idx 30 is GOOJ card
         #each key corresponds to the position of the tiles in the legal actions array
-        tiles = Tiles
-        TilesIdx = {MediterraneanAvenue: 1, BalticAvenue: 2, ReadingRR: 23, OrientalAvenue: 3, VermontAvenue: 4, ConnecticutAvenue: 5,
-                       CharlesPlace: 6, ElectricCompany: 27, StatesAvenue: 7, VirginiaAvenue: 8, PennsylvaniaRR: 24, JamesPlace: 9, TennesseeAvenue: 10, NewYorkAvenue: 11,
-                       KentuckyAvenue: 12, IndianaAvenue: 13, IllinoisAvenue: 14, BoRR: 25, AtlanticAvenue: 15, VentnorAvenue: 16, WaterWorks: 28, MarvinGardens: 17,
-                       PacificAvenue: 18, NorthCarolinaAvenue: 19, PennsylvaniaAvenue: 24, ShortLine: 26, ParkPlace:21, Boardwalk: 22}
+        tiles = property_stuff.Tiles
+        TilesIdx = {property_stuff.MediterraneanAvenue: 1, property_stuff.BalticAvenue: 2, property_stuff.ReadingRR: 23, property_stuff.OrientalAvenue: 3, property_stuff.VermontAvenue: 4, property_stuff.ConnecticutAvenue: 5,
+                       property_stuff.CharlesPlace: 6, property_stuff.ElectricCompany: 27, property_stuff.StatesAvenue: 7, property_stuff.VirginiaAvenue: 8, property_stuff.PennsylvaniaRR: 24, property_stuff.JamesPlace: 9, property_stuff.TennesseeAvenue: 10, property_stuff.NewYorkAvenue: 11,
+                       property_stuff.KentuckyAvenue: 12, property_stuff.IndianaAvenue: 13,property_stuff.IllinoisAvenue: 14, property_stuff.BoRR: 25, property_stuff.AtlanticAvenue: 15, property_stuff.VentnorAvenue: 16, property_stuff.WaterWorks: 28, property_stuff.MarvinGardens: 17,
+                       property_stuff.PacificAvenue: 18, property_stuff.NorthCarolinaAvenue: 19, property_stuff.PennsylvaniaAvenue: 24, property_stuff.ShortLine: 26, property_stuff.ParkPlace:21, property_stuff.Boardwalk: 22}
         
         # array of legal actions (i think)
         legal_actions = np.zeros(31)
         #always allwoed to do nothing
-        legal_actions[0] = 1
+        #legal_actions[0] = 1
         player = self.current_player
         # the position of the current player
         # each Player has an mPos member variable
@@ -354,7 +357,7 @@ class MonopolyEnv(gym.Env):
             if type(deed) is Property:
                 # check if has monopoly on property
                 # if monopoly then change legal_actions to 1 for color group
-                if deed.BuildHouse():
+                if deed.BuildHouse(self.current_player):
                 # 1 over here => can build a house
                     legal_actions[idx] = 1
                 else:
@@ -389,7 +392,8 @@ class MonopolyEnv(gym.Env):
                 legal_actions[30] = 1
             else:
                 legal_actions[30] = 0
-                
+        if (len(np.where(legal_actions == 1)[0]) == 0):
+            legal_actions[0] = 1
         return np.array(legal_actions)
 
     #Adapted to our need in monopoly theoritically
@@ -423,12 +427,18 @@ class MonopolyEnv(gym.Env):
         print("Ai" + str(self.current_player_num) + " is about to take action: " + str(action)) 
         if (self.observation[60+action] == 0):
             print("Using illegal action")
+            action = 0
+            reward = [0, 0]
+            reward[self.current_player_num] = -1
+            done = False
+            self.current_player_num = (self.current_player_num + 1) % self.n_players
+            return self.observation, reward, done, {}
         #each index represents a player, so the number of indexies in reward depends on number of players
         reward = [0] * self.n_players
         
         # check move legality
         tiles = self.mTiles
-        deeds = Deeds
+        deeds = property_stuff.Deeds
         player = self.mPlayers[self.current_player_num]
         
         # JAIL STUFF
@@ -497,7 +507,7 @@ class MonopolyEnv(gym.Env):
 
     def reset(self):
         # reset self.board to empty (no properties owned)
-        for tile in Tiles:
+        for tile in property_stuff.Tiles:
             tile.reset()
             
         # reset players

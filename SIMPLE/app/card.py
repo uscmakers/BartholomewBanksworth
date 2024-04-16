@@ -109,7 +109,7 @@ class Card:
       
     # WHAT HAPPENS WHEN A PLAYER LANDS ON A COMMUNITY CHEST OR CHANCE TILE?  
     def action(self, player : Player, playerList):
-        from constants import Tiles, const
+        from constants import property_stuff, const
         print(self.mName + ".")
         oldPos = player.mPos
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
@@ -158,7 +158,7 @@ class Card:
             if player.mPos <= oldPos: # passed go check
                 player.mBalance += const.GO_MONEY
                 print(player.mPlayerName + " passed go and earned $200!")
-            tile = Tiles[player.mPos]
+            tile = property_stuff.Tiles[player.mPos]
 
             if self.mSpecial == "NextRailroad" or self.mSpecial == "NextUtility":
                 tile.card = True

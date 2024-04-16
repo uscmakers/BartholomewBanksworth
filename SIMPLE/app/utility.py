@@ -6,7 +6,7 @@ class Utility(Deed):
         super().__init__(mTileName, mCost, mSet, mRent)
         self.card = False
     
-    def CalculateRent(self, rollSum: int, player: Player = None) -> int:
+    def CalculateRent(self, rollSum: int, player: Player) -> int:
         if self.card:
             self.card = False
             return rollSum * 10

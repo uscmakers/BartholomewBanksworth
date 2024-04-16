@@ -1,5 +1,6 @@
 from tile import Tile
 from player import Player
+from abc import abstractmethod
 
 # A DEED IS A TILE THAT CAN BE PURCHASED! 
 class Deed(Tile):
@@ -48,16 +49,17 @@ class Deed(Tile):
     # if (len(SetToDeedMap[self.mSet]) == CountDeedOwned(self, player)) then is a monopoly
     def CountDeedOwned(self, player: Player) -> int:
         # fix circular import
-        from constants import SetToDeedMap, const
+        from constants import property_stuff, const
 
         # print("I am here")
         count = 0
-        for property in SetToDeedMap[self.mSet]:
+        for property in property_stuff.SetToDeedMap[self.mSet]:
             if player == property.mOwner:
                 count += 1
         # print("This is count deed owned", count)
         return count
     
+    @abstractmethod
     def CalculateRent(self, rollSum, player: Player) -> int:
         pass
     

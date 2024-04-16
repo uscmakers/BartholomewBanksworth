@@ -6,7 +6,7 @@ class Railroad(Deed):
         super().__init__(mTileName, mCost, mSet, mRent)
         self.card = False
     
-    def CalculateRent(self, rollSum,  player: Player = None) -> int:
+    def CalculateRent(self, rollSum,  player: Player) -> int:
         tempRent = 0
         if self.CountDeedOwned(player) == 1:
             tempRent = self.mRent
