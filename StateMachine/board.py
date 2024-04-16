@@ -11,6 +11,7 @@ from goToJail import GoToJail
 from jail import Jail
 from deck import Deck
 from typing import List
+from colorama import Fore, Back, Style
 import Embedded.util as util
 
 # TILES
@@ -92,25 +93,23 @@ class Board:
         for i in range(len(self.mPlayers)): 
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
             self.mPlayers[i].NamePlayer(i+1) # name each player
-        
-        # self.mPlayers[0].mDeedOwned = [MediterraneanAvenue, BalticAvenue]
-        # MediterraneanAvenue.mOwner = self.mPlayers[0]
-        # BalticAvenue.mOwner = self.mPlayers[0]
-
-        # self.mPlayers[1].mDeedOwned = [OrientalAvenue, VermontAvenue, ConnecticutAvenue]
-        # OrientalAvenue.mOwner = self.mPlayers[1]
-        # VermontAvenue.mOwner = self.mPlayers[1]
-        # ConnecticutAvenue.mOwner = self.mPlayers[1]
     
     # RUN LOOP
     
     def run(self):
         turn = 1
         while True:
-            print("Turn " + str(turn) + ":")
+            print(Style.BRIGHT)
+            print(Fore.RED + "\nTURN " + str(turn) + ":")
             player : Player
             for player in self.mPlayers:
-                print(player.mPlayerName + "'s turn:")
+                # print(Style.RESET_ALL)
+                color = None
+                if player.index % 2 == 0:
+                    color = Fore.BLUE
+                else:
+                    color = Fore.CYAN
+                print(color + "\n" + player.mPlayerName + "'s turn:")
                 if player.mTurnsInJail == 3: # out-of-jail check
                     player.mTurnsInJail = 0
                     print(player.mPlayerName + " is out of jail!")
@@ -209,7 +208,8 @@ class Board:
         self.reset()
     
     def reset(self):
-        util.makeRequest(-1, -1, -1)
+        pass
+        # util.makeRequest(-1, -1, -1)
     
     def turn(self, player: Player):
         while True:
@@ -255,17 +255,17 @@ class Board:
     
     def stats(self, player: Player): # print stats
         print(player.mPlayerName + "'s stats:")
-        print("Balance: $" + str(player.mBalance))
-        print("Properties:")
+        print("\tBalance: $" + str(player.mBalance))
+        print("\tProperties:")
         if len(player.mDeedOwned) == 0:
-            print("(None)")
+            print("\t(None)")
         else:
             d : Deed
             for d in player.mDeedOwned:
-                print(d.mTileName + " [" + d.mSet + "]")
+                print("\t" + d.mTileName + " [" + d.mSet + "]")
         
         if (player.mCJailFree + player.mCCJailFree > 0):
-            print("Get out of Jail Free cards: " + str(player.mCJailFree + player.mCCJailFree))
+            print("\tGet out of Jail Free cards: " + str(player.mCJailFree + player.mCCJailFree))
     
     def helpMenu(self): # print help menu
         print("Help menu:")
