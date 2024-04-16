@@ -44,7 +44,7 @@ while True:
         mymotortest.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                             "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                             200, # number of steps
-                            0.0005, # step delay [sec]
+                            float(command), # step delay [sec]
                             False, # True = print verbose output 
                             .05) # initial delay [sec]
         GPIO.cleanup() # clear GPIO allocations after run
