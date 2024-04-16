@@ -31,6 +31,7 @@ GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
 # Actual motor control
 ###########################
 #
+# 0.002 step delay is good when the lever is not attached
 while True:
     command = input("What step delay do you want to use? 0.0005 is the default. -1 to quit.")
     if command == "-1":
