@@ -392,8 +392,6 @@ class MonopolyEnv(gym.Env):
                 legal_actions[30] = 1
             else:
                 legal_actions[30] = 0
-        if (len(np.where(legal_actions == 1)[0]) == 0):
-            legal_actions[0] = 1
         return np.array(legal_actions)
 
     #Adapted to our need in monopoly theoritically
@@ -551,11 +549,11 @@ class MonopolyEnv(gym.Env):
     
     def render(self, mode='human', close=False, verbose = True):
         self.turn(self.current_player)
-        np.set_printoptions(suppress=True,precision=3)
-        print(self.current_player_num, "POSITION:", self.observation[0:2])
-        print(self.current_player_num, "BALANCE:", self.observation[2:4])
-        print(self.current_player_num, "PROPERTY INFO:", self.observation[4:60])
-        print(self.current_player_num, "LEGAL ACTIONS:", self.observation[60:])
+        # np.set_printoptions(suppress=True,precision=3)
+        # print(self.current_player_num, "POSITION:", self.observation[0:2])
+        # print(self.current_player_num, "BALANCE:", self.observation[2:4])
+        # print(self.current_player_num, "PROPERTY INFO:", self.observation[4:60])
+        # print(self.current_player_num, "LEGAL ACTIONS:", self.observation[60:])
         # plt.clf()
         # createFrame(np.array([[1, self.mPlayers[0].getBalance(), self.mPlayers[0].getPlayerPosition()], [2, self.mPlayers[1].getBalance(), self.mPlayers[1].getPlayerPosition()]]))
         # plt.savefig(f'frame_{self.mNumFrames:03d}.png')

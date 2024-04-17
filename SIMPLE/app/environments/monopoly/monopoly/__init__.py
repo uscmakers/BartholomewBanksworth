@@ -2,5 +2,5 @@ from gym.envs.registration import register
 
 register(
     id='Monopoly-v0',
-    entry_point='monopoly.envs:MonopolyEnv',
+    entry_point='monopoly.envs.monopoly:MonopolyEnv',
 )

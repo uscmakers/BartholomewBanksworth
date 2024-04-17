@@ -82,7 +82,7 @@ def selfplay_wrapper(env):
                 self.render()
 
                 # choose action for player i
-                action = self.current_agent.choose_action(self, choose_best_action = False, mask_invalid_actions = True)
+                action = self.current_agent.choose_action(self, choose_best_action = False, mask_invalid_actions = False)
 
                 # get game state after player i's turn AND player i+1's roll
                 observation, reward, done, _ = super(SelfPlayEnv, self).step(action)
