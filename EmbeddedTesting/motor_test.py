@@ -47,7 +47,7 @@ while True:
                             200, # number of steps
                             float(command), # step delay [sec]
                             True, # True = print verbose output 
-                            .5) # initial delay [sec]
+                            .05) # initial delay [sec]
         GPIO.cleanup() # clear GPIO allocations after run
 
 GPIO.output(EN_pin, GPIO.HIGH)
