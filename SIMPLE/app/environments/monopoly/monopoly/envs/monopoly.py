@@ -348,7 +348,7 @@ class MonopolyEnv(gym.Env):
         # array of legal actions (i think)
         legal_actions = np.zeros(31)
         #always allwoed to do nothing
-        #legal_actions[0] = 1
+        legal_actions[0] = 1
         player = self.current_player
         # the position of the current player
         # each Player has an mPos member variable
@@ -366,7 +366,7 @@ class MonopolyEnv(gym.Env):
         if type(tiles[player.mPos]) in [Property, Railroad, Utility]:
             currDeedTile = tiles[player.mPos]
             idx = TilesIdx[currDeedTile]
-            if currDeedTile.mOwner is None:
+            if currDeedTile.mOwner is None and self.current_player.mBalance > currDeedTile.mCost:
                 legal_actions[idx] = 1
             else:
                 legal_actions[idx] = 0
@@ -424,7 +424,7 @@ class MonopolyEnv(gym.Env):
         # assumption: action is an integer between 0 and 27 (obtained from action space of Discrete[28])
         #print("Ai" + str(self.current_player_num) + " is about to take action: " + str(action)) 
         if (self.observation[60+action] == 0):
-            #print("Using illegal action")
+            print("Using illegal action")
             action = 0
             reward = [0, 0]
             reward[self.current_player_num] = -1

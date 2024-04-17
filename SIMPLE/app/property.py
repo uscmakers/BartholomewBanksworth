@@ -43,7 +43,7 @@ class Property(Deed):
         mCanBuild = False
         if AVAILABLE_HOUSE != 0 and len(property_stuff.SetToDeedMap[self.mSet]) == self.CountDeedOwned(player) and self.mSet != "railroad" and self.mSet != "utility":
             # print("first")
-            if self.mNumHouse < 4 or (self.mNumHouse < 5 and AVAILABLE_HOTEL != 0):
+            if (player.mBalance > self.mHouseCost) and (self.mNumHouse < 4 or (self.mNumHouse < 5 and AVAILABLE_HOTEL != 0)):
                 # print("second")
                 mCanBuild = True
                 for property in property_stuff.SetToDeedMap[self.mSet]:
