@@ -13,6 +13,7 @@ from deck import Deck
 from typing import List
 from colorama import Fore, Back, Style
 import Embedded.util as util
+import os
 
 # TILES
 
@@ -109,7 +110,8 @@ class Board:
                     color = Fore.BLUE
                 else:
                     color = Fore.CYAN
-                print(color + "\n" + player.mPlayerName + "'s turn:")
+                print(Fore.RED + "\n" + player.mPlayerName + "'s turn:")
+                print(color)
                 if player.mTurnsInJail == 3: # out-of-jail check
                     player.mTurnsInJail = 0
                     print(player.mPlayerName + " is out of jail!")
@@ -151,7 +153,9 @@ class Board:
                         if command == "help":
                             self.helpMenu()
                         elif command == "end":
-                            if rolled: break
+                            if rolled: 
+                                # os.system('clear')
+                                break
                             print("You haven't rolled yet!")
                         elif command == "roll":
                             if rolled:
@@ -208,6 +212,7 @@ class Board:
         self.reset()
     
     def reset(self):
+        os.system('clear')
         pass
         # util.makeRequest(-1, -1, -1)
     

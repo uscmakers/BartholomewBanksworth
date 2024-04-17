@@ -1,8 +1,9 @@
 from board import Board 
 from colorama import Fore, Back, Style
+import os
 
 def main(): 
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    os.system('clear')
     print(Fore.GREEN + Style.BRIGHT + "-----------------------------------------------------------------")
     print("                      BARTHOLOMEW BANKSWORTH")
     print("-----------------------------------------------------------------\n")
