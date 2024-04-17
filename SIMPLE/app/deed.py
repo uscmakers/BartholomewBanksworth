@@ -35,7 +35,7 @@ class Deed(Tile):
         self.mOwner = mPlayer
         mPlayer.mBalance -= self.mCost
         self.mOwner.mDeedOwned.append(self)
-        #print(mPlayer.mPlayerName + " purchased " + self.mTileName + " for $" + str(self.mCost) + "!")
+        print(mPlayer.mPlayerName + " purchased " + self.mTileName + " for $" + str(self.mCost) + "!")
 
     # update pay function with rent calc functions
     def pay(self, mPlayer: Player, rollSum: int):
@@ -43,7 +43,7 @@ class Deed(Tile):
         # print("This is mRentToPay", mRentToPay, "This playerBalance", mPlayer.mBalance)
         mPlayer.mBalance -= mRentToPay
         self.mOwner.mBalance += mRentToPay
-        #print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(mRentToPay) + "!")
+        # print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(mRentToPay) + "!")
 
     # find number of deeds owned from a set
     # to check for monopoly use
