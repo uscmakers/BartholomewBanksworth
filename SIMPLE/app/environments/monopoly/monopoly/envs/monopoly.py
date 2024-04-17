@@ -422,9 +422,9 @@ class MonopolyEnv(gym.Env):
     def step(self, action):
         
         # assumption: action is an integer between 0 and 27 (obtained from action space of Discrete[28])
-        print("Ai" + str(self.current_player_num) + " is about to take action: " + str(action)) 
+        #print("Ai" + str(self.current_player_num) + " is about to take action: " + str(action)) 
         if (self.observation[60+action] == 0):
-            print("Using illegal action")
+            #print("Using illegal action")
             action = 0
             reward = [0, 0]
             reward[self.current_player_num] = -1
@@ -579,7 +579,7 @@ class MonopolyEnv(gym.Env):
     def roll(self, player: Player): # roll dice and move player to appropriate space
         doubles = False
         dice, rollSum = self.rollDice(player)
-        print (rollSum)
+        #print (rollSum)
         if dice[0] == dice[1]: # doubles check
             #doubles = True
             # print(player.mPlayerName + " rolled doubles!")

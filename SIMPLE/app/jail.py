@@ -6,7 +6,8 @@ class Jail(Tile):
         super().__init__(mTileName)
 
     def action(self, mPlayer: Player, rollSum: int):
-        print("Just visiting!")
+        #print("Just visiting!")
+        return
         
     def reset(self):
         pass

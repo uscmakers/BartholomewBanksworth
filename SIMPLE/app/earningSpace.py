@@ -8,6 +8,7 @@ class EarningSpace(Tile):
     
     def action(self, mPlayer: Player, rollSum = None):
         mPlayer.mBalance += self.earnings
+        return
         if self.earnings > 0:
             print(mPlayer.mPlayerName + " earned $" + str(self.earnings) + "!")
         elif self.earnings < 0:

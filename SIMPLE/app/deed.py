@@ -16,7 +16,8 @@ class Deed(Tile):
     def action(self, mPlayer: Player, rollSum: int):
         if mPlayer.mIsAi: # AI, so make decisions for the player
             if self.mOwner == mPlayer: # deed is owned by yourself
-                print("Nothing happens!")
+                #print("Nothing happens!")
+                return
             elif self.mOwner is not None:
                 self.pay(mPlayer, rollSum)
         else: # user, so user should make decisions
@@ -34,7 +35,7 @@ class Deed(Tile):
         self.mOwner = mPlayer
         mPlayer.mBalance -= self.mCost
         self.mOwner.mDeedOwned.append(self)
-        print(mPlayer.mPlayerName + " purchased " + self.mTileName + " for $" + str(self.mCost) + "!")
+        #print(mPlayer.mPlayerName + " purchased " + self.mTileName + " for $" + str(self.mCost) + "!")
 
     # update pay function with rent calc functions
     def pay(self, mPlayer: Player, rollSum: int):
@@ -42,7 +43,7 @@ class Deed(Tile):
         # print("This is mRentToPay", mRentToPay, "This playerBalance", mPlayer.mBalance)
         mPlayer.mBalance -= mRentToPay
         self.mOwner.mBalance += mRentToPay
-        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(mRentToPay) + "!")
+        #print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(mRentToPay) + "!")
 
     # find number of deeds owned from a set
     # to check for monopoly use
