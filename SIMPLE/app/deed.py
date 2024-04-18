@@ -14,21 +14,24 @@ class Deed(Tile):
 
     # WHAT HAPPENS WHEN A PLAYER LANDS ON A DEED?
     def action(self, mPlayer: Player, rollSum: int):
+        from constants import property_stuff, const
         if mPlayer.mIsAi: # AI, so make decisions for the player
             if self.mOwner == mPlayer: # deed is owned by yourself
                 #print("Nothing happens!")
-                return
+                pass
             elif self.mOwner is not None:
                 self.pay(mPlayer, rollSum)
         else: # user, so user should make decisions
             if self.mOwner is None:
                 choice = input("Would you like to purchase the property? (yes/no) ")
                 if choice == "yes":
-                    self.purchase(mPlayer)
+                    return (property_stuff.Deeds.index(self) + 1) # return corresponding index in legal_actions
+                    # self.purchase(mPlayer)
             elif self.mOwner == mPlayer: # deed is owned by yourself
                 print("This is your own property!")
             else: # deed is owned by another player
                 self.pay(mPlayer, rollSum)
+        return 0
                     
 
     def purchase(self, mPlayer: Player):
