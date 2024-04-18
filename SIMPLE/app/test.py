@@ -89,60 +89,61 @@ def main(args):
         action = ppo_agent.choose_action(env, choose_best_action = True, mask_invalid_actions = True)
 
       if current_player.name == 'human':
-        # action = input('\nPlease choose an action: ')
-        for i in range(len(env.llegal_actions)):
-           if (env.legal_actions[i] == 1)
-        rolled = False
-        while True:  
-            command = input("Type a command, or type help: ")
-            if command == "help":
-                env.helpMenu()
-            elif command == "end":
-                if rolled: 
-                    # os.system('clear')
-                    break
-                print("You haven't rolled yet!")
-            elif command == "roll":
-                if rolled:
-                    print("You already rolled!")
-                else:
-                    rolled = True
-                    env.turn(player)
-            elif command == "stats":
-                en.stats(player)
-            # TODO: future implementation
-            elif command == "trade":
-                pass
-            # LOGIC IS DOWN BUT NOT ABLE TO ACCESS CHILD CLASS FUNCTIONS
-            elif command == "build":
-                # pick property to build on from property list
-                count: int = 1
-                for d in player.mDeedOwned:
-                    if d.mSet != "utility" and d.mSet != "railroad":
-                        print(str(count) + ". " + str(d.mTileName)) 
-                    else:
-                        print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
-                    count += 1
-                select = int(input("Enter corresponding number to select property: "))
-                developProperty: property = player.mDeedOwned[select - 1]
-                # check if can build on selected property
-                if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
-                    # if can build, check if enough balance, then build, increment house count
-                    ans = input("Do you want to build here (y/n)? ")
-                    if ans in "Yy":
-                        developProperty.mNumHouse += 1
-                        if developProperty.mNumHouse == 5: player.mHotelOwned += 1
-                        else: player.mHouseOwned += 1
-                        print("You have built a house")
-                else:
-                    print("Cannot build a house here.")
-            elif command == "quit":
-                ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
-                if ans in "Yy":
-                    env.reset()
-                    return
-            else:
-                print("Not a valid command. Type help to see list of valid commands.")
+        action = input('\nPlease choose an action: ')
+        # for i in range(len(env.legal_actions)):
+        #    if (env.legal_actions[i] == 1):
+        #       print("Buy: " + str(env.Deeds[i]))
+        # rolled = False
+        # while True:  
+        #     command = input("Type a command, or type help: ")
+        #     if command == "help":
+        #         env.helpMenu()
+        #     elif command == "end":
+        #         if rolled: 
+        #             # os.system('clear')
+        #             break
+        #         print("You haven't rolled yet!")
+        #     elif command == "roll":
+        #         if rolled:
+        #             print("You already rolled!")
+        #         else:
+        #             rolled = True
+        #             # env.turn(player)
+        #     elif command == "stats":
+        #         env.stats(player)
+        #     # TODO: future implementation
+        #     elif command == "trade":
+        #         pass
+        #     # LOGIC IS DOWN BUT NOT ABLE TO ACCESS CHILD CLASS FUNCTIONS
+        #     elif command == "build":
+        #         # pick property to build on from property list
+        #         count: int = 1
+        #         for d in player.mDeedOwned:
+        #             if d.mSet != "utility" and d.mSet != "railroad":
+        #                 print(str(count) + ". " + str(d.mTileName)) 
+        #             else:
+        #                 print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
+        #             count += 1
+        #         select = int(input("Enter corresponding number to select property: "))
+        #         developProperty: property = player.mDeedOwned[select - 1]
+        #         # check if can build on selected property
+        #         if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
+        #             # if can build, check if enough balance, then build, increment house count
+        #             ans = input("Do you want to build here (y/n)? ")
+        #             if ans in "Yy":
+        #                 developProperty.mNumHouse += 1
+        #                 if developProperty.mNumHouse == 5: player.mHotelOwned += 1
+        #                 else: player.mHouseOwned += 1
+        #                 print("You have built a house")
+        #         else:
+        #             print("Cannot build a house here.")
+        #     elif command == "quit":
+        #         ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
+        #         if ans in "Yy":
+        #             env.reset()
+        #             return
+        #     else:
+        #         print("Not a valid command. Type help to see list of valid commands.")
         try:
           # for int actions
           action = int(action)
