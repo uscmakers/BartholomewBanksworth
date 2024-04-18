@@ -127,27 +127,30 @@ def main(args):
               # TODO: future implementation
               elif command == "build":
                   # pick property to build on from property list
-                  count: int = 1
-                  for d in player.mDeedOwned:
-                      if d.mSet != "utility" and d.mSet != "railroad":
-                          print(str(count) + ". " + str(d.mTileName)) 
-                      else:
-                          print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
-                      count += 1
-                  select = int(input("Enter corresponding number to select property: "))
-                  developProperty: property = player.mDeedOwned[select - 1]
-                  # check if can build on selected property
-                  if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
-                      # if can build, check if enough balance, then build, increment house count
-                      ans = input("Do you want to build here (y/n)? ")
-                      if ans in "Yy":
-                          # developProperty.mNumHouse += 1
-                          # if developProperty.mNumHouse == 5: player.mHotelOwned += 1
-                          # else: player.mHouseOwned += 1
-                          print("You have built a house")
-                          action = property_stuff.Deeds.index(developProperty) + 1
+                  if (not(len(player.mDeedOwned) == 0)):
+                    count: int = 1
+                    for d in player.mDeedOwned:
+                        if d.mSet != "utility" and d.mSet != "railroad":
+                            print(str(count) + ". " + str(d.mTileName)) 
+                        else:
+                            print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
+                        count += 1
+                    select = int(input("Enter corresponding number to select property: "))
+                    developProperty: property = player.mDeedOwned[select - 1]
+                    # check if can build on selected property
+                    if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
+                        # if can build, check if enough balance, then build, increment house count
+                        ans = input("Do you want to build here (y/n)? ")
+                        if ans in "Yy":
+                            # developProperty.mNumHouse += 1
+                            # if developProperty.mNumHouse == 5: player.mHotelOwned += 1
+                            # else: player.mHouseOwned += 1
+                            print("You have built a house")
+                            action = property_stuff.Deeds.index(developProperty) + 1
+                    else:
+                        print("Cannot build a house here.")
                   else:
-                      print("Cannot build a house here.")
+                     print("No properties")
               elif command == "quit":
                   ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
                   if ans in "Yy":
