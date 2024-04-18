@@ -92,88 +92,70 @@ def main(args):
       player = env.current_player
       if current_player.name == 'human':
         action = -1
-        if player.mTurnsInJail == 3: # out-of-jail check
-            player.mTurnsInJail = 0
-            print(player.mPlayerName + " is out of jail!")
-        elif player.mTurnsInJail > 0: # in-jail check
+        if player.mTurnsInJail > 0: # in-jail check
             print(player.mPlayerName + " is in jail!")
             if player.mNumJailFree > 0: # get out of jail free card
-                if player.mIsAi:
-                    # player.UseGetOutOfJailFree()
-                    action = 29
-                else:
-                    choice = input("Would you like to use your get out of jail free card? (yes/no) ")
-                    if choice == "yes":
-                        # player.UseGetOutOfJailFree()
-                        action = 29
-                    else:    
-                        player.mTurnsInJail += 1
-                        continue
+              choice = input("Would you like to use your get out of jail free card? (yes/no) ")
+              if choice == "yes":
+                  # player.UseGetOutOfJailFree()
+                  action = 29
             elif player.mBalance >= const.JAIL_FEE:
-                if player.mIsAi:
-                    # player.PayJailFee()
-                    action = 30
-                else:
-                    choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
-                    if choice == "yes":
-                        # player.PayJailFee()
-                        action = 30
-                    else:    
-                        player.mTurnsInJail += 1
-                        continue
-            else:
-                player.mTurnsInJail += 1
-                continue
-        rolled = False
-        while True:  
-            command = input("Type a command, or type help: ")
-            if command == "help":
-                env.helpMenu()
-            elif command == "end":
-                if rolled: 
-                    # os.system('clear')
-                    break
-                print("You haven't rolled yet!")
-            elif command == "roll":
-                if rolled:
-                    print("You already rolled!")
-                else:
-                    rolled = True
-                    action = env.turn(player)
-                    if action != 0: break # only allow the player to make one decision per turn (cannot build AND purchase in the same turn)
-            elif command == "stats":
-                env.stats(player)
-            # TODO: future implementation
-            elif command == "build":
-                # pick property to build on from property list
-                count: int = 1
-                for d in player.mDeedOwned:
-                    if d.mSet != "utility" and d.mSet != "railroad":
-                        print(str(count) + ". " + str(d.mTileName)) 
-                    else:
-                        print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
-                    count += 1
-                select = int(input("Enter corresponding number to select property: "))
-                developProperty: property = player.mDeedOwned[select - 1]
-                # check if can build on selected property
-                if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
-                    # if can build, check if enough balance, then build, increment house count
-                    ans = input("Do you want to build here (y/n)? ")
-                    if ans in "Yy":
-                        # developProperty.mNumHouse += 1
-                        # if developProperty.mNumHouse == 5: player.mHotelOwned += 1
-                        # else: player.mHouseOwned += 1
-                        print("You have built a house")
-                        action = property_stuff.Deeds.index(developProperty) + 1
-                else:
-                    print("Cannot build a house here.")
-            elif command == "quit":
-                ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
-                if ans in "Yy":
-                    env.reset()
-                    return
-            else:
-                print("Not a valid command. Type help to see list of valid commands.")
+              choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
+              if choice == "yes":
+                  # player.PayJailFee()
+                  action = 30
+        else:
+          rolled = False
+          while True:  
+              command = input("Type a command, or type help: ")
+              if command == "help":
+                  env.helpMenu()
+              elif command == "end":
+                  if rolled: 
+                      # os.system('clear')
+                      break
+                  print("You haven't rolled yet!")
+              elif command == "roll":
+                  if rolled:
+                      print("You already rolled!")
+                  else:
+                      rolled = True
+                      action = env.turn(player)
+                      if action != 0: break # only allow the player to make one decision per turn (cannot build AND purchase in the same turn)
+              elif command == "stats":
+                  env.stats(player)
+              # TODO: future implementation
+              elif command == "build":
+                  # pick property to build on from property list
+                  count: int = 1
+                  for d in player.mDeedOwned:
+                      if d.mSet != "utility" and d.mSet != "railroad":
+                          print(str(count) + ". " + str(d.mTileName)) 
+                      else:
+                          print(str(count) + ". " + str(d.mTileName) + " (can not build house)")
+                      count += 1
+                  select = int(input("Enter corresponding number to select property: "))
+                  developProperty: property = player.mDeedOwned[select - 1]
+                  # check if can build on selected property
+                  if player.mBalance >= developProperty.mHouseCost and developProperty.BuildHouse(player):
+                      # if can build, check if enough balance, then build, increment house count
+                      ans = input("Do you want to build here (y/n)? ")
+                      if ans in "Yy":
+                          # developProperty.mNumHouse += 1
+                          # if developProperty.mNumHouse == 5: player.mHotelOwned += 1
+                          # else: player.mHouseOwned += 1
+                          print("You have built a house")
+                          action = property_stuff.Deeds.index(developProperty) + 1
+                  else:
+                      print("Cannot build a house here.")
+              elif command == "quit":
+                  ans = input("Are you sure you want to quit the game? Your progress won't be saved. (y/n) ")
+                  if ans in "Yy":
+                      env.reset()
+                      return
+              else:
+                  print("Not a valid command. Type help to see list of valid commands.")
+        action = 0
         try:
           # for int actions
           action = int(action)
@@ -184,34 +166,6 @@ def main(args):
         logger.debug(f'\n{current_player.name} model choices')
         action = current_player.choose_action(env, choose_best_action = False, mask_invalid_actions = True)
       else: # current_player.name == 'base'
-        if player.mTurnsInJail == 3: # out-of-jail check
-            player.mTurnsInJail = 0
-            print(player.mPlayerName + " is out of jail!")
-        elif player.mTurnsInJail > 0: # in-jail check
-            print(player.mPlayerName + " is in jail!")
-            if player.mNumJailFree > 0: # get out of jail free card
-                if player.mIsAi:
-                    player.UseGetOutOfJailFree()
-                else:
-                    choice = input("Would you like to use your get out of jail free card? (yes/no) ")
-                    if choice == "yes":
-                        player.UseGetOutOfJailFree()
-                    else:    
-                        player.mTurnsInJail += 1
-                        continue
-            elif player.mBalance >= const.JAIL_FEE:
-                if player.mIsAi:
-                    player.PayJailFee()
-                else:
-                    choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
-                    if choice == "yes":
-                        player.PayJailFee()
-                    else:    
-                        player.mTurnsInJail += 1
-                        continue
-            else:
-                player.mTurnsInJail += 1
-                continue
         env.turn(env.current_player_num)
         logger.debug(f'\n{current_player.name} model choices')
         action = current_player.choose_action(env, choose_best_action = args.best, mask_invalid_actions = True)

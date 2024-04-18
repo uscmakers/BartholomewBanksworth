@@ -439,17 +439,19 @@ class MonopolyEnv(gym.Env):
         deeds = property_stuff.Deeds
         player = self.mPlayers[self.current_player_num]
         
-        # ACTION CHOOSING
+        # UPDATE JAIL
         if player.mTurnsInJail == 3: # out-of-jail check
+            print(player.mPlayerName + " is out of jail!")
             player.mTurnsInJail = 0
-        elif player.mTurnsInJail > 0: # in-jail check
-            if player.mNumJailFree > 0: # get out of jail free card
-                if action is 29:
-                    player.UseGetOutOfJailFree()
-                elif action is 30:
-                    player.PayJailFee()
-                else:
-                    player.mTurnsInJail += 1 
+        if player.mTurnsInJail > 0: # in-jail check
+            print(player.mPlayerName + " is in jail!")
+            player.mTurnsInJail += 1 
+        
+        # ACTION CHOOSING
+        if action is 29:
+            player.UseGetOutOfJailFree()
+        elif action is 30:
+            player.PayJailFee()
         
         # self.turn(player)
         
