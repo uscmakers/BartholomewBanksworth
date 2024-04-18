@@ -123,7 +123,7 @@ def main(args):
                       action = env.turn(env.current_player_num)
                       if action != 0: break # only allow the player to make one decision per turn (cannot build AND purchase in the same turn)
               elif command == "stats":
-                  env.stats(player)
+                  env.stats(env.current_player_num)
               # TODO: future implementation
               elif command == "build":
                   # pick property to build on from property list
