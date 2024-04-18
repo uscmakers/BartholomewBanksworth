@@ -606,7 +606,7 @@ class MonopolyEnv(gym.Env):
         random.seed(time.time())
         dice = (random.randint(1,6), random.randint(1,6))
         sum = dice[0] + dice[1]
-        # print(player.mPlayerName + " rolled " + str(sum) + "!")
+        print(player.mPlayerName + " rolled " + str(sum) + "!")
         return dice, sum
 
     def helpMenu(self): # print help menu
