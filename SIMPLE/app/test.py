@@ -19,7 +19,7 @@ from utils.agents import Agent
 
 import config
 
-from constants import property_stuff
+from constants import property_stuff, const
 
 def main(args):
 
@@ -89,11 +89,41 @@ def main(args):
         logger.debug(f'\nRecommendation by {ppo_agent.name}:')
         action = ppo_agent.choose_action(env, choose_best_action = True, mask_invalid_actions = True)
 
+      player = env.current_player
       if current_player.name == 'human':
         action = -1
-        # for i in range(len(env.legal_actions)):
-        #    if (env.legal_actions[i] == 1):
-        #       print("Buy: " + str(env.Deeds[i]))
+        if player.mTurnsInJail == 3: # out-of-jail check
+            player.mTurnsInJail = 0
+            print(player.mPlayerName + " is out of jail!")
+        elif player.mTurnsInJail > 0: # in-jail check
+            print(player.mPlayerName + " is in jail!")
+            if player.mNumJailFree > 0: # get out of jail free card
+                if player.mIsAi:
+                    # player.UseGetOutOfJailFree()
+                    action = 29
+                else:
+                    choice = input("Would you like to use your get out of jail free card? (yes/no) ")
+                    if choice == "yes":
+                        # player.UseGetOutOfJailFree()
+                        action = 29
+                    else:    
+                        player.mTurnsInJail += 1
+                        continue
+            elif player.mBalance >= const.JAIL_FEE:
+                if player.mIsAi:
+                    # player.PayJailFee()
+                    action = 30
+                else:
+                    choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
+                    if choice == "yes":
+                        # player.PayJailFee()
+                        action = 30
+                    else:    
+                        player.mTurnsInJail += 1
+                        continue
+            else:
+                player.mTurnsInJail += 1
+                continue
         rolled = False
         while True:  
             command = input("Type a command, or type help: ")
@@ -154,6 +184,34 @@ def main(args):
         logger.debug(f'\n{current_player.name} model choices')
         action = current_player.choose_action(env, choose_best_action = False, mask_invalid_actions = True)
       else: # current_player.name == 'base'
+        if player.mTurnsInJail == 3: # out-of-jail check
+            player.mTurnsInJail = 0
+            print(player.mPlayerName + " is out of jail!")
+        elif player.mTurnsInJail > 0: # in-jail check
+            print(player.mPlayerName + " is in jail!")
+            if player.mNumJailFree > 0: # get out of jail free card
+                if player.mIsAi:
+                    player.UseGetOutOfJailFree()
+                else:
+                    choice = input("Would you like to use your get out of jail free card? (yes/no) ")
+                    if choice == "yes":
+                        player.UseGetOutOfJailFree()
+                    else:    
+                        player.mTurnsInJail += 1
+                        continue
+            elif player.mBalance >= const.JAIL_FEE:
+                if player.mIsAi:
+                    player.PayJailFee()
+                else:
+                    choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
+                    if choice == "yes":
+                        player.PayJailFee()
+                    else:    
+                        player.mTurnsInJail += 1
+                        continue
+            else:
+                player.mTurnsInJail += 1
+                continue
         env.turn(env.current_player_num)
         logger.debug(f'\n{current_player.name} model choices')
         action = current_player.choose_action(env, choose_best_action = args.best, mask_invalid_actions = True)

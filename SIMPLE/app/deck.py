@@ -31,6 +31,7 @@ class Deck(Tile):
     def action(self, mPlayer: Player, rollSum: int):
         self.mList[self.mTop].action(mPlayer, mPlayer.mPlayerList)
         self.mTop = (self.mTop + 1) % len(self.mList)
+        return 0
         
     def reset(self):
         self.mList : List[Card] = []
