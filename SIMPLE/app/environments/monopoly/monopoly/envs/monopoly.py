@@ -608,3 +608,27 @@ class MonopolyEnv(gym.Env):
         sum = dice[0] + dice[1]
         # print(player.mPlayerName + " rolled " + str(sum) + "!")
         return dice, sum
+
+    def helpMenu(self): # print help menu
+        print("Help menu:")
+        print("roll = roll dice")
+        print("stats = see your balance and properties")
+        print("build = build houses/hotels")
+        print("end = end your turn")
+        print("quit = quit the game")
+        print("help = see this list of commands")
+        
+    def stats(self, player_num: int):
+        player = self.mPlayers[player_num]
+        print(player.mPlayerName + "'s stats:")
+        print("Balance: $" + str(player.mBalance))
+        print("Properties:")
+        if len(player.mDeedOwned) == 0:
+            print("(None)")
+        else:
+            d : Deed
+            for d in player.mDeedOwned:
+                print(d.mTileName + " [" + d.mSet + "]")
+        
+        if (player.mNumJailFree > 0):
+            print (player.mNumJailFree, "Get out of Jail free")
