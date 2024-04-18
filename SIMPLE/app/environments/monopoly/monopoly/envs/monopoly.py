@@ -434,12 +434,12 @@ class MonopolyEnv(gym.Env):
         #each index represents a player, so the number of indexies in reward depends on number of players
         reward = [0] * self.n_players
         
-        # check move legality
+        # INITIALIZATION
         tiles = self.mTiles
         deeds = property_stuff.Deeds
         player = self.mPlayers[self.current_player_num]
         
-        # JAIL STUFF
+        # ACTION CHOOSING
         if player.mTurnsInJail == 3: # out-of-jail check
             player.mTurnsInJail = 0
         elif player.mTurnsInJail > 0: # in-jail check
@@ -471,8 +471,7 @@ class MonopolyEnv(gym.Env):
         if action is 30:
             self.current_player.PayJailFee() 
         
-        # assign rewards based on current player balance (we will make this more robust later)
-
+        # DETERMINE DONE
         done = False
         for player in self.mPlayers:
             if player.mBalance < 0:
@@ -484,6 +483,7 @@ class MonopolyEnv(gym.Env):
             
             
             
+        # REWARD CALCULATION
         totalBalance = 0
         for player in self.mPlayers:
             totalBalance += player.mBalance
@@ -548,7 +548,7 @@ class MonopolyEnv(gym.Env):
         return self.observation
     
     def render(self, mode='human', close=False, verbose = True):
-        self.turn(self.current_player)
+        # self.turn(self.current_player)
         # np.set_printoptions(suppress=True,precision=3)
         # print(self.current_player_num, "POSITION:", self.observation[0:2])
         # print(self.current_player_num, "BALANCE:", self.observation[2:4])
@@ -566,15 +566,16 @@ class MonopolyEnv(gym.Env):
             logger.debug(f'\nLegal actions: {[i for i,o in enumerate(self.legal_actions) if o != 0]}')
 
 # OUR FUNCTIONS START
-    def turn(self, player: Player):
-            while True:
-                roll = self.roll(player)
-                doubles = False
-                if (roll is not None):
-                    tile, doubles, rollSum = roll
-                # player.MotorRequest(rollSum) # physically move player to tile
-                if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
-                if (not doubles) or (player.mTurnsInJail > 0): break
+    def turn(self, playerNum: int):
+        player = self.mPlayers[playerNum]
+        while True:
+            roll = self.roll(player)
+            doubles = False
+            if (roll is not None):
+                tile, doubles, rollSum = roll
+            # player.MotorRequest(rollSum) # physically move player to tile
+            if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
+            if (not doubles) or (player.mTurnsInJail > 0): break
         
     def roll(self, player: Player): # roll dice and move player to appropriate space
         doubles = False

@@ -79,6 +79,9 @@ def selfplay_wrapper(env):
             done = None
 
             while self.current_player_num != self.agent_player_num:
+                # Calling turn here instead of in render
+                super(SelfPlayEnv, self).turn(self.current_player_num)
+                
                 self.render()
 
                 # choose action for player i
