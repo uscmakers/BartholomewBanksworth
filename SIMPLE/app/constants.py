@@ -56,9 +56,9 @@ class property_stuff():
                         KentuckyAvenue, Chance, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, GotoJail,
                         PacificAvenue, NorthCarolinaAvenue, CommunityChest, PennsylvaniaAvenue, ShortLine, Chance, ParkPlace, LuxuryTax, Boardwalk]
 
-    Deeds = [MediterraneanAvenue, BalticAvenue, ReadingRR, OrientalAvenue, VermontAvenue, ConnecticutAvenue, CharlesPlace, ElectricCompany, StatesAvenue, VirginiaAvenue, PennsylvaniaRR, JamesPlace, TennesseeAvenue,
-            NewYorkAvenue, KentuckyAvenue, IndianaAvenue, IllinoisAvenue, BoRR, AtlanticAvenue, VentnorAvenue, WaterWorks, MarvinGardens, PacificAvenue,
-            NorthCarolinaAvenue, PennsylvaniaAvenue, ShortLine, ParkPlace, Boardwalk]
+    Deeds = [MediterraneanAvenue, BalticAvenue, OrientalAvenue, VermontAvenue, ConnecticutAvenue, CharlesPlace, StatesAvenue, VirginiaAvenue, JamesPlace, TennesseeAvenue,
+            NewYorkAvenue, KentuckyAvenue, IndianaAvenue, IllinoisAvenue, AtlanticAvenue, VentnorAvenue, MarvinGardens, PacificAvenue,
+            NorthCarolinaAvenue, PennsylvaniaAvenue, ParkPlace, Boardwalk, ReadingRR, PennsylvaniaRR, BoRR, ShortLine, ElectricCompany, WaterWorks]
 
     SetToDeedMap = {"railroad": [ReadingRR, PennsylvaniaRR, BoRR, ShortLine],
                     "utility": [ElectricCompany, WaterWorks],
