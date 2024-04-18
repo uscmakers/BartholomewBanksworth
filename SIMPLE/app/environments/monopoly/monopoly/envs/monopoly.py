@@ -569,13 +569,15 @@ class MonopolyEnv(gym.Env):
     def turn(self, playerNum: int):
         player = self.mPlayers[playerNum]
         while True:
-            roll = self.roll(player)
+            tile, doubles, rollSum = self.roll(player)
             doubles = False
-            if (roll is not None):
-                tile, doubles, rollSum = roll
+            # if (roll is not None):
+            #     tile, doubles, rollSum = roll
             # player.MotorRequest(rollSum) # physically move player to tile
-            if player.mTurnsInJail == 0: tile.action(player, rollSum) # execute action when land on space
+            if player.mTurnsInJail == 0: 
+                return tile.action(player, rollSum) # execute action when land on space
             if (not doubles) or (player.mTurnsInJail > 0): break
+            return 0
         
     def roll(self, player: Player): # roll dice and move player to appropriate space
         doubles = False

@@ -19,6 +19,7 @@ from utils.agents import Agent
 
 import config
 
+from constants import property_stuff
 
 def main(args):
 
@@ -89,11 +90,11 @@ def main(args):
         action = ppo_agent.choose_action(env, choose_best_action = True, mask_invalid_actions = True)
 
       if current_player.name == 'human':
-        action = input('\nPlease choose an action: ')
+        action = -1
         # for i in range(len(env.legal_actions)):
         #    if (env.legal_actions[i] == 1):
         #       print("Buy: " + str(env.Deeds[i]))
-        # rolled = False
+        rolled = False
         while True:  
             command = input("Type a command, or type help: ")
             if command == "help":
@@ -108,7 +109,8 @@ def main(args):
                     print("You already rolled!")
                 else:
                     rolled = True
-                    env.turn(player)
+                    action = env.turn(player)
+                    if action != 0: break # only allow the player to make one decision per turn (cannot build AND purchase in the same turn)
             elif command == "stats":
                 env.stats(player)
             # TODO: future implementation
@@ -128,10 +130,11 @@ def main(args):
                     # if can build, check if enough balance, then build, increment house count
                     ans = input("Do you want to build here (y/n)? ")
                     if ans in "Yy":
-                        developProperty.mNumHouse += 1
-                        if developProperty.mNumHouse == 5: player.mHotelOwned += 1
-                        else: player.mHouseOwned += 1
+                        # developProperty.mNumHouse += 1
+                        # if developProperty.mNumHouse == 5: player.mHotelOwned += 1
+                        # else: player.mHouseOwned += 1
                         print("You have built a house")
+                        action = property_stuff.Deeds.index(developProperty) + 1
                 else:
                     print("Cannot build a house here.")
             elif command == "quit":
