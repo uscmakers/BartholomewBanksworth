@@ -14,6 +14,3 @@ def main():
 
 if __name__=="__main__": 
     main()
-
-# TEST RPI STUFF
-# HI
