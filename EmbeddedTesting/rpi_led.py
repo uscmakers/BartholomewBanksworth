@@ -107,8 +107,9 @@ if __name__ == '__main__':
             # theaterChase(strip, Color(  0,   0, 127))  # Blue theater chase
             print ('Rainbow animations.')
             rainbow(strip)
-            rainbowCycle(strip)
-            theaterChaseRainbow(strip)
+            print('Rainbow done')
+            # rainbowCycle(strip)
+            # theaterChaseRainbow(strip)
 
     except KeyboardInterrupt:
         if args.clear:
