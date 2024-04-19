@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 #define GPIO pins
-magnet = 18 # Step GPIO Pin
+magnet = 6 # Step GPIO Pin
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
 GPIO.setmode(GPIO.BCM)
