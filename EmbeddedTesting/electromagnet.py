@@ -14,7 +14,7 @@ GPIO.setup(magnet,GPIO.OUT) # set enable pin as output
 #
 GPIO.output(magnet, GPIO.LOW)
 
-# while True:
-#     time.sleep(5)
+while True:
+    time.sleep(5)
 
 GPIO.cleanup() # clear GPIO allocations after run
