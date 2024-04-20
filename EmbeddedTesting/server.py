@@ -166,7 +166,7 @@ def get_mail_route(mail_id: str):
     res.status_code = 200 # Status code for "ok"
     return res
 
-@app.route('/mail/inbox/<recipient>', methods=['GET'])
+@app.route('/mail/motor', methods=['GET'])
 def get_inbox_route(recipient: str):
     """
     Summary: Gets all mail entries for a recipient from the json file
@@ -177,6 +177,7 @@ def get_inbox_route(recipient: str):
     Returns:
         list: A list of dictionaries representing the mail entries
     """
+    print("Moving motor!")
     res = jsonify(get_inbox(recipient))
     res.status_code = 200
     return res
