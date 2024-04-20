@@ -151,7 +151,7 @@ def delete_mail_route(mail_id: str):
     res.status_code = 200
     return res
 
-@app.route('/mail/<mail_id>', methods=['GET'])
+@app.route('/mail/electromagnet', methods=['GET'])
 def get_mail_route(mail_id: str):
     """
     Summary: Gets a mail entry from the json file

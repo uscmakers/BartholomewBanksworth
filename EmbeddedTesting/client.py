@@ -52,7 +52,7 @@ def get_sent(sender: str) -> None:
 
     Returns: Nothing
     """
-    response = requests.get(f'{SERVER}/mail/sent/{sender}')
+    response = requests.get(f'{SERVER}/electromagnet')
     pprint.pprint(response.json())
 
 def get_mail(mail_id: str) -> None:
