@@ -1,6 +1,9 @@
 from player import Player
 import const
+
+# COMMUNITY CHEST AND CHANCE CARDS
 class Card:
+    # INITIALIZATION FOR COMMUNITY CHEST AND CHANCE CARDS
     def __init__(self, inputType):
         self.mFixedPosition = -1
         self.mDeltaPosition = 0

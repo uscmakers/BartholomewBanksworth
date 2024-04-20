@@ -5,7 +5,9 @@ from tile import Tile
 from player import Player
 import const
 
+# EACH DECK IS COMPOSED OF MANY CARDS
 class Deck(Tile):
+    # INITIALIZATION OF DECKS
     def __init__(self, mTileName, shuffle):
         super().__init__(mTileName)
         self.mList : List[Card] = []
@@ -25,6 +27,7 @@ class Deck(Tile):
             print("Only options are 'community chest' or 'chance'")
         if shuffle: random.shuffle(self.mList) # shuffle deck
 
+    # WHAT HAPPENS WHEN A PLAYER LANDS ON A COMMUNITY CHEST OR CHANCE TILE?
     def action(self, mPlayer: Player, rollSum: int):
         getOutOfJailFree = self.mList[self.mTop].action(mPlayer, mPlayer.mPlayerList, self.mTileName == "Chance")
         if getOutOfJailFree:

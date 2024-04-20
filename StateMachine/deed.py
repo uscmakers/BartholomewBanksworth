@@ -2,6 +2,7 @@ from tile import Tile
 from player import Player
 import board as board
 
+# A DEED IS A TILE THAT CAN BE PURCHASED! 
 class Deed(Tile):
     def __init__(self, mTileName, mCost, mSet, mRent):
         super().__init__(mTileName)
@@ -11,6 +12,7 @@ class Deed(Tile):
         # TODO: add rent calculate function
         self.mRent = mRent
 
+    # WHAT HAPPENS WHEN A PLAYER LANDS ON A DEED?
     def action(self, mPlayer: Player, rollSum: int):
         # from board import inputValidation
         # import board
