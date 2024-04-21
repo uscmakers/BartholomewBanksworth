@@ -1,35 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>README</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  h2 {
-    font-size: 20px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  code {
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
-  }
-</style>
-</head>
+
 <body>
 
 <h1>TO RUN CODE IN StateMachine:</h1>
