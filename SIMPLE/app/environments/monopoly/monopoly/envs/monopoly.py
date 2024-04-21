@@ -234,6 +234,8 @@ class MonopolyEnv(gym.Env):
         self.manual = manual
         
         # Initializes players and board
+        self.n_players = -1
+        self.player_type_list = []
         self.mPlayers : List[Player] = []
         self.mTiles = []
         self.initPlayers()
