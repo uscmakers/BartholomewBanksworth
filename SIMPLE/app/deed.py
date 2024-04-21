@@ -15,6 +15,7 @@ class Deed(Tile):
     # WHAT HAPPENS WHEN A PLAYER LANDS ON A DEED?
     def action(self, mPlayer: Player, rollSum: int):
         from constants import property_stuff, const
+        print("In deed action. mPlayer.mIsAi: ", mPlayer.mIsAi)
         if mPlayer.mIsAi: # AI, so make decisions for the player
             if self.mOwner == mPlayer: # deed is owned by yourself
                 #print("Nothing happens!")

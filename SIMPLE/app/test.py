@@ -120,7 +120,6 @@ def main(args):
                       print("You already rolled!")
                   else:
                       rolled = True
-                      print("Calling env.turn. This is good!")
                       action = env.turn(env.current_player_num)
                       if action != 0: break # only allow the player to make one decision per turn (cannot build AND purchase in the same turn)
               elif command == "stats":
