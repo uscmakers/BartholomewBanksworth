@@ -3,7 +3,7 @@
 
 <body>
 
-<h1>TO RUN CODE IN StateMachine:</h1>
+<h1>To run code in StateMachine:</h1>
 
 <ol>
   <li>
@@ -13,7 +13,7 @@
   </li>
 </ol>
 
-<h1>TO RUN CODE IN SIMPLEv1:</h1>
+<h1>To run code in SIMPLEv1:</h1>
 
 <ol>
   <li>Install Docker and Docker Compose</li>
