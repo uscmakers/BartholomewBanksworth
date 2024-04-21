@@ -234,7 +234,6 @@ class MonopolyEnv(gym.Env):
         self.manual = manual
         
         # Initializes players and board
-        self.n_players = 2
         self.mPlayers : List[Player] = []
         self.mTiles = []
         self.initPlayers()
@@ -259,7 +258,7 @@ class MonopolyEnv(gym.Env):
     def initPlayers(self):
         # initialize players and add to player list
         for i in range(self.n_players): # humans
-            self.mPlayers.append(Player(i, True, "Ai"+str(i)))
+            self.mPlayers.append(Player(i, self.player_type_list[i], "Ai"+str(i)))
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
     
     @property
