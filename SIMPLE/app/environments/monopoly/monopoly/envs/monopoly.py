@@ -262,7 +262,7 @@ class MonopolyEnv(gym.Env):
         # initialize players and add to player list
         self.mPlayers.append(Player(0, True, "Bartholomew Banksworth"))
         for i in range(1, self.n_players): # humans
-            mPlayerName = input("Enter Player", i, "name: ")
+            mPlayerName = input("Enter Player " + str(i) + " name: ")
             self.mPlayers.append(Player(i, False, mPlayerName))
         for i in range(0, self.n_players):
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
