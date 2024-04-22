@@ -47,24 +47,15 @@ def main(args):
   agents = []
 
   #load the agents
-  env.n_players = len(args.agents)
-  # if len(args.agents) != env.n_players:
-  #   raise Exception(f'{len(args.agents)} players specified but this is a {env.n_players} player game!')
+  if len(args.agents) != env.n_players:
+    raise Exception(f'{len(args.agents)} players specified but this is a {env.n_players} player game!')
 
-  env.player_type_list = []
-  for i, agent in enumerate(args.agents):
-    if agent == 'human':
-      agent_obj = Agent('human')
-      env.player_type_list.append(False)
-    elif agent == 'rules':
-      agent_obj = Agent('rules')
-    elif agent == 'base':
-      base_model = load_model(env, 'base.zip')
-      agent_obj = Agent('base', base_model)  
-      env.player_type_list.append(True)
+  for i, player in enumerate(env.mPlayers):
+    if player.mIsAi:
+      ppo_model = load_model(env, 'base.zip')
+      agent_obj = Agent('base', ppo_model)
     else:
-      ppo_model = load_model(env, f'{agent}.zip')
-      agent_obj = Agent(agent, ppo_model)
+      agent_obj = Agent('human')
     agents.append(agent_obj)
     total_rewards[agent_obj.id] = 0
   
