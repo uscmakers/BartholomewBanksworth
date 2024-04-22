@@ -47,8 +47,8 @@ def main(args):
   agents = []
 
   #load the agents
-  if len(args.agents) != env.n_players:
-    raise Exception(f'{len(args.agents)} players specified but this is a {env.n_players} player game!')
+  # if len(args.agents) != env.n_players:
+  #   raise Exception(f'{len(args.agents)} players specified but this is a {env.n_players} player game!')
 
   for i, player in enumerate(env.mPlayers):
     if player.mIsAi:
