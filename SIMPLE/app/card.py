@@ -155,7 +155,7 @@ class Card:
             player.mBalance -= cost
             print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
         if self.mSpecial != "Jail" and (self.mFixedPosition != -1 or self.mDeltaPosition != 0):
-            if player.mPos <= oldPos: # passed go check
+            if player.mPos <= oldPos and self.mDeltaPosition >= 0: # passed go check
                 player.mBalance += const.GO_MONEY
                 print(player.mPlayerName + " passed go and earned $200!")
             tile = property_stuff.Tiles[player.mPos]
