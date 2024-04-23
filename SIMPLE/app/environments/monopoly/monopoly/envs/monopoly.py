@@ -244,9 +244,10 @@ class MonopolyEnv(gym.Env):
         self.mTiles = property_stuff.Tiles
         
         # Observation Space
-        lower_range_values = np.array([[0]*self.n_players]*61).flatten()
+        lower_range_values = np.array([[0]*self.n_players]*30).flatten()
+        lower_range_values = np.concatenate((lower_range_values, np.array([[0]]*31).flatten()))
         upper_range_values = np.array([[39]*self.n_players]+[[999999]*self.n_players]+([[6]*self.n_players]*28)).flatten() #row 0 is player position, row 1 is player money
-        upper_range_values = np.concatenate((upper_range_values, np.array([[1]*self.n_players]*31).flatten()))
+        upper_range_values = np.concatenate((upper_range_values, np.array([[1]]*31).flatten()))
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         self.observation_space = self.observation_space
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
@@ -302,6 +303,7 @@ class MonopolyEnv(gym.Env):
         #property information
         # propertyInfo = np.zeros(shape=(2,len(Tiles)))
         propertyInfo = np.zeros(shape=(self.n_players,28))
+
         for properties in currentPlayer.mDeedOwned:
                 if (type(properties) is Property):
                     propertyInfo[self.current_player_num, property_stuff.Deeds.index(properties)] = properties.mNumHouse + 1
@@ -321,7 +323,7 @@ class MonopolyEnv(gym.Env):
         la_grid = la_grid.flatten()
 
         #concatenate everything
-
+        print(positions.shape, balances.shape, propertyInfo.shape, la_grid.shape)
         result = np.concatenate((positions, balances, propertyInfo, la_grid))
         return result
 
