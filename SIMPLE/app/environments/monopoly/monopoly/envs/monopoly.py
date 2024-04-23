@@ -260,11 +260,13 @@ class MonopolyEnv(gym.Env):
         self.mNumFrames = 0
         
     def initPlayers(self):
-        # initialize players and add to player list
-        self.mPlayers.append(Player(0, True, "Bartholomew Banksworth"))
-        for i in range(1, self.n_players): # humans
-            mPlayerName = input("Enter Player " + str(i) + " name: ")
-            self.mPlayers.append(Player(i, False, mPlayerName))
+        # # initialize players and add to player list
+        # self.mPlayers.append(Player(0, True, "Bartholomew Banksworth"))
+        # for i in range(1, self.n_players): # humans
+        #     mPlayerName = input("Enter Player " + str(i) + " name: ")
+        #     self.mPlayers.append(Player(i, False, mPlayerName))
+        self.mPlayers.append(Player(0, True, "AI1"))
+        self.mPlayers.append(Player(1, True, "AI2"))
         for i in range(0, self.n_players):
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
     
@@ -323,7 +325,6 @@ class MonopolyEnv(gym.Env):
         la_grid = la_grid.flatten()
 
         #concatenate everything
-        print(positions.shape, balances.shape, propertyInfo.shape, la_grid.shape)
         result = np.concatenate((positions, balances, propertyInfo, la_grid))
         return result
 
