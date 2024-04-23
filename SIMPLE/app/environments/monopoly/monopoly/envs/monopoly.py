@@ -497,7 +497,7 @@ class MonopolyEnv(gym.Env):
             for deed in player.mDeedOwned:
                 totalBalance += deed.mCost * PROPERTY_REWARD
         
-        reward = [0,0]
+        reward = np.zeros(len(self.mPlayers))
         for playerIndex in range(len(self.mPlayers)):
             player = self.mPlayers[playerIndex]
             if (totalBalance != 0):
