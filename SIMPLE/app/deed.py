@@ -23,8 +23,10 @@ class Deed(Tile):
                 self.pay(mPlayer, rollSum)
         else: # user, so user should make decisions
             if self.mOwner is None:
-                choice = input("Would you like to purchase the property? (yes/no) ")
+                choice = input("Would you like to purchase " + self.mTileName + " (yes/no) ")
                 if choice == "yes":
+                    print("property purchsed")
+                    self.purchase(mPlayer)
                     return (property_stuff.Deeds.index(self) + 1) # return corresponding index in legal_actions
                     # self.purchase(mPlayer)
             elif self.mOwner == mPlayer: # deed is owned by yourself

@@ -234,8 +234,9 @@ class MonopolyEnv(gym.Env):
         self.manual = manual
         
         # Initializes players and board
-        self.n_players = int(input("How many players want to face Bartholomew Banksworth? "))
-        self.n_players += 1
+        # self.n_players = int(input("How many players want to face Bartholomew Banksworth? "))
+        # self.n_players += 1
+        self.n_players = 2
         self.player_type_list = []
         self.mPlayers : List[Player] = []
         self.mTiles = []
@@ -243,10 +244,9 @@ class MonopolyEnv(gym.Env):
         self.mTiles = property_stuff.Tiles
         
         # Observation Space
-        lower_range_values = np.array([[0,0]]*30).flatten() 
-        lower_range_values = np.concatenate((lower_range_values, np.array([0]*31)))
-        upper_range_values = np.array([[39,39]]+[[999999,999999]]+([[6,6]]*28)).flatten() #row 0 is player position, row 1 is player money
-        upper_range_values = np.concatenate((upper_range_values, np.array([1]*31)))
+        lower_range_values = np.array([[0]*self.n_players]*61).flatten()
+        upper_range_values = np.array([[39]*self.n_players]+[[999999]*self.n_players]+([[6]*self.n_players]*28)).flatten() #row 0 is player position, row 1 is player money
+        upper_range_values = np.concatenate((upper_range_values, np.array([[1]*self.n_players]*31).flatten()))
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         self.observation_space = self.observation_space
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
@@ -277,47 +277,44 @@ class MonopolyEnv(gym.Env):
 
         #the balances of players represented between 0 - 1
         currentPlayer = self.current_player
-        
-        
-        if (self.current_player_num == 0):
-            otherPlayer = self.mPlayers[1]
-            otherPlayerIndex = 1
-        else:
-            otherPlayer = self.mPlayers[0]
-            otherPlayerIndex = 0
 
         
         balances = []
         balances.append(currentPlayer.getBalance())
-        balances.append(otherPlayer.getBalance())
+        for player_num in range(self.n_players-1):
+            player_num = (player_num + self.current_player_num + 1)%self.n_players
+            balances.append(self.mPlayers[player_num].getBalance())
 
         balances = np.array(balances)
         balances = balances.flatten()
 
         #player positions in a 2D array of 40 spaces
         
-        positions = np.array([0,0])
+        positions = np.array([0] * self.n_players)
         positions[0] = currentPlayer.getPlayerPosition()
-        positions[1] = otherPlayer.getPlayerPosition()
-
+        
+        for player_num in range(self.n_players-1):
+            player_num = (player_num + self.current_player_num + 1)%self.n_players
+            positions[player_num] = self.mPlayers[player_num].getPlayerPosition()
+            
         positions = positions.flatten()
 
         #property information
         # propertyInfo = np.zeros(shape=(2,len(Tiles)))
-        propertyInfo = np.zeros(shape=(2,28))
-        
+        propertyInfo = np.zeros(shape=(self.n_players,28))
         for properties in currentPlayer.mDeedOwned:
-            if (type(properties) is Property):
-                propertyInfo[self.current_player_num, property_stuff.Deeds.index(properties)] = properties.mNumHouse + 1
-            else:
-                propertyInfo[self.current_player_num, property_stuff.Deeds.index(properties)] = 1
-                
-                
-        for properties in otherPlayer.mDeedOwned:
-            if (type(properties) is Property):
-                propertyInfo[otherPlayerIndex, property_stuff.Deeds.index(properties)] = properties.mNumHouse + 1
-            else:
-                propertyInfo[otherPlayerIndex, property_stuff.Deeds.index(properties)] = 1
+                if (type(properties) is Property):
+                    propertyInfo[self.current_player_num, property_stuff.Deeds.index(properties)] = properties.mNumHouse + 1
+                else:
+                    propertyInfo[self.current_player_num, property_stuff.Deeds.index(properties)] = 1
+
+        for player_num in range(self.n_players-1):
+            player_num = (player_num + self.current_player_num + 1)%self.n_players
+            for properties in self.mPlayers[player_num].mDeedOwned:
+                if (type(properties) is Property):
+                    propertyInfo[player_num, property_stuff.Deeds.index(properties)] = properties.mNumHouse + 1
+                else:
+                    propertyInfo[player_num, property_stuff.Deeds.index(properties)] = 1
         propertyInfo = propertyInfo.flatten()
 
         la_grid = self.legal_actions
@@ -624,7 +621,7 @@ class MonopolyEnv(gym.Env):
         print("help = see this list of commands")
         
     def stats(self, player_num: int):
-        player = self.mPlayers[player_num]
+        player = self.current_player
         print(player.mPlayerName + "'s stats:")
         print("Balance: $" + str(player.mBalance))
         print("Properties:")
