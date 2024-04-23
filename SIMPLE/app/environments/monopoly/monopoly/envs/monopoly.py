@@ -479,13 +479,12 @@ class MonopolyEnv(gym.Env):
         done = False
         for player in self.mPlayers:
             if player.mBalance < 0:
+                print("Done is True for a player!")
                 done = True
         self.done = done
 
         if not done:
             self.current_player_num = (self.current_player_num + 1) % self.n_players
-            
-            
             
         # REWARD CALCULATION
         totalBalance = 0
