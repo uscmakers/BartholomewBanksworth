@@ -42,7 +42,6 @@ def electromagnetOn(num: int):
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(magnets[num],GPIO.OUT) # set enable pin as output
     GPIO.output(magnets[num], GPIO.LOW)
-    GPIO.cleanup()
 
 def electromagnetOff(num: int):
     print("Turning electromagnet off!")
