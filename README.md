@@ -35,4 +35,17 @@
 </body>
 </html>
 
-test
+To run code in StateMachinePhysicalAIv2:
+
+Install Docker and Docker Compose
+cd StateMachinePhysicalAIv2
+docker-compose up -d
+bash ./scripts/install_env.sh monopoly
+for 2 players: docker-compose exec app python3 test.py -g 1 -a base2 human -e monopoly
+for 3 players: docker-compose exec app python3 test.py -g 1 -a base3 base3 human -e monopoly
+
+Also,
+SSH into a Raspberry Pi
+git clone
+cd BartholomewBanksworth/StateMachinePhysicalAIv2/app/Embedded
+python3 server.py
