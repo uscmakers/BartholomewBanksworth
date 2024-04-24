@@ -38,12 +38,14 @@ def turnMotor(numSteps: int, clockwise: bool):
     GPIO.cleanup()
     
 def electromagnetOn(num: int):
+    print("Turning electromagnet on!")
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(magnets[num],GPIO.OUT) # set enable pin as output
     GPIO.output(magnets[num], GPIO.LOW)
     GPIO.cleanup()
 
 def electromagnetOff(num: int):
+    print("Turning electromagnet off!")
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(magnets[num],GPIO.OUT) # set enable pin as output
     GPIO.output(magnets[num], GPIO.HIGH)
