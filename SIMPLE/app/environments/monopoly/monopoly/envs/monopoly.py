@@ -234,9 +234,9 @@ class MonopolyEnv(gym.Env):
         self.manual = manual
         
         # Initializes players and board
-        # self.n_players = int(input("How many players want to face Bartholomew Banksworth? "))
-        # self.n_players += 1
-        self.n_players = 3
+        self.n_players = int(input("How many players want to face Bartholomew Banksworth? "))
+        self.n_players += 1
+        # self.n_players = 3
         self.player_type_list = []
         self.mPlayers : List[Player] = []
         self.mTiles = []
@@ -264,13 +264,13 @@ class MonopolyEnv(gym.Env):
         
     def initPlayers(self):
         # # initialize players and add to player list
-        # self.mPlayers.append(Player(0, True, "Bartholomew Banksworth"))
-        # for i in range(1, self.n_players): # humans
-        #     mPlayerName = input("Enter Player " + str(i) + " name: ")
-        #     self.mPlayers.append(Player(i, False, mPlayerName))
-        self.mPlayers.append(Player(0, True, "AI1"))
-        self.mPlayers.append(Player(1, True, "AI2"))
-        self.mPlayers.append(Player(1, True, "AI3"))
+        self.mPlayers.append(Player(0, True, "Bartholomew Banksworth"))
+        for i in range(1, self.n_players): # humans
+            mPlayerName = input("Enter Player " + str(i) + " name: ")
+            self.mPlayers.append(Player(i, False, mPlayerName))
+        # self.mPlayers.append(Player(0, True, "AI1"))
+        # self.mPlayers.append(Player(1, True, "AI2"))
+        # self.mPlayers.append(Player(1, True, "AI3"))
         for i in range(0, self.n_players):
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
     
@@ -464,9 +464,9 @@ class MonopolyEnv(gym.Env):
         # elif action is 30:
         #     player.PayJailFee()
         
-        # if ((self.current_player_num+1)%self.n_players == 1):
-        #     input("\nPress enter to roll!")
-        self.turn((self.current_player_num+1)%self.n_players)
+        if ((self.current_player_num+1)%self.n_players == 1):
+            input("\nPress enter to roll!")
+            self.turn((self.current_player_num+1)%self.n_players)
         
         if 1 <= action <= 28:
             if deeds[action-1].mOwner is None:
