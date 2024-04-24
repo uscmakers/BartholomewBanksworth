@@ -110,7 +110,7 @@ class Card:
     # WHAT HAPPENS WHEN A PLAYER LANDS ON A COMMUNITY CHEST OR CHANCE TILE?  
     def action(self, player : Player, playerList):
         from constants import property_stuff, const
-        print(self.mName + ".")
+        #print(self.mName + ".")
         oldPos = player.mPos
         if self.mFixedPosition != -1: player.mPos = self.mFixedPosition
         player.mPos += self.mDeltaPosition
@@ -134,7 +134,7 @@ class Card:
         elif self.mSpecial == "25 and 100":
             cost = player.mHotelOwned * 100 + player.mHouseOwned * 25
             player.mBalance -= cost
-            print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
+            #print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
         elif self.mSpecial == "Chairman":
             for currPlayer in playerList:
                 if currPlayer is not player:
@@ -153,11 +153,11 @@ class Card:
         elif self.mSpecial == "40 and 115":
             cost = player.mHotelOwned * 115 + player.mHouseOwned * 40
             player.mBalance -= cost
-            print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
+            #print(player.mPlayerName + " had to pay $" + str(cost) + " to the bank.")
         if self.mSpecial != "Jail" and (self.mFixedPosition != -1 or self.mDeltaPosition != 0):
             if player.mPos <= oldPos and self.mDeltaPosition >= 0: # passed go check
                 player.mBalance += const.GO_MONEY
-                print(player.mPlayerName + " passed go and earned $200!")
+                #print(player.mPlayerName + " passed go and earned $200!")
             tile = property_stuff.Tiles[player.mPos]
 
             if self.mSpecial == "NextRailroad" or self.mSpecial == "NextUtility":
@@ -167,5 +167,5 @@ class Card:
             #     player.MotorRequest(self.mDeltaPosition)
             # else:
             #     player.MotorRequest((player.mPos-oldPos)%40)
-            print(player.mPlayerName + " landed on " + tile.mTileName + "!")
+            ##print(player.mPlayerName + " landed on " + tile.mTileName + "!")
             tile.action(player, (player.mPos-oldPos)%40)
