@@ -22,7 +22,7 @@ def process_json(move_data):
     if player == -1:
         rotation = 5*motorPos
         print("Reset Rotation: ", rotation) # line for debugging
-        turnMotor(rotation, False)
+        turnMotor(rotation, True)
         return
     # Move the motor to the initial pos of the player
     rotation = 5*(currPos - deltaPos - motorPos)
@@ -31,18 +31,18 @@ def process_json(move_data):
     print("Pick-up Rotation: ", rotation) # line for debugging
     # going to the piece (currPos - deltaPos)
     if rotation > 0:
-        turnMotor(rotation, True)
+        turnMotor(rotation, False)
     else:
-        turnMotor(-rotation, False)
+        turnMotor(-rotation, True)
     moveRot = 5*deltaPos
     print("Move Rotation: ", moveRot) # line for debugging
     electromagnetOn(player)
     time.sleep(0.5)
     # Move player here. going to currPos
     if deltaPos > 0:
-        turnMotor(moveRot, True)
+        turnMotor(moveRot, False)
     else:
-        turnMotor(-moveRot, False)
+        turnMotor(-moveRot, True)
     motorPos = currPos
     print("Final Motor Position: ", motorPos) # line for debugging
     electromagnetOff(player)
