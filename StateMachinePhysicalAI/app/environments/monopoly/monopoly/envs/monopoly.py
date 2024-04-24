@@ -576,7 +576,7 @@ class MonopolyEnv(gym.Env):
             doubles = False
             # if (roll is not None):
             #     tile, doubles, rollSum = roll
-            # player.MotorRequest(rollSum) # physically move player to tile
+            player.MotorRequest(rollSum) # physically move player to tile
             if player.mTurnsInJail == 0: 
                 return tile.action(player, rollSum) # execute action when land on space
             if (not doubles) or (player.mTurnsInJail > 0): break
