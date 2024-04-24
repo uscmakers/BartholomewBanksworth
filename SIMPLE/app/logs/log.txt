@@ -1,0 +1,55 @@
+Logging to logs
+Loading best_model2.zip
+Loading base2.zip
+
+Playing 50 games...
+Played 1 games: {'best_model2_qnzjl': 5.454437218158908, 'base2_jfyww': -5.454437218158909}
+Played 2 games: {'best_model2_qnzjl': 17.297436388749833, 'base2_jfyww': -17.297436388749826}
+Played 3 games: {'best_model2_qnzjl': 24.016727242686336, 'base2_jfyww': -24.01672724268633}
+Played 4 games: {'best_model2_qnzjl': 56.290546364153926, 'base2_jfyww': -56.290546364153926}
+Played 5 games: {'best_model2_qnzjl': 67.04150645627922, 'base2_jfyww': -67.04150645627922}
+Played 6 games: {'best_model2_qnzjl': 56.50469686837155, 'base2_jfyww': -56.50469686837155}
+Played 7 games: {'best_model2_qnzjl': 49.665750174167194, 'base2_jfyww': -49.66575017416718}
+Played 8 games: {'best_model2_qnzjl': 61.525402392982784, 'base2_jfyww': -61.52540239298277}
+Played 9 games: {'best_model2_qnzjl': 65.48301948916172, 'base2_jfyww': -65.48301948916172}
+Played 10 games: {'best_model2_qnzjl': 73.26123598347593, 'base2_jfyww': -73.26123598347591}
+Played 11 games: {'best_model2_qnzjl': 57.16197223332605, 'base2_jfyww': -57.161972233326054}
+Played 12 games: {'best_model2_qnzjl': 52.4978644916364, 'base2_jfyww': -52.49786449163641}
+Played 13 games: {'best_model2_qnzjl': 38.219648084301106, 'base2_jfyww': -38.21964808430112}
+Played 14 games: {'best_model2_qnzjl': 44.35892039800344, 'base2_jfyww': -44.358920398003455}
+Played 15 games: {'best_model2_qnzjl': 21.749633902492395, 'base2_jfyww': -21.74963390249241}
+Played 16 games: {'best_model2_qnzjl': 1.808920587963039, 'base2_jfyww': -1.8089205879630526}
+Played 17 games: {'best_model2_qnzjl': 45.85201858049599, 'base2_jfyww': -45.852018580496}
+Played 18 games: {'best_model2_qnzjl': 45.122552644743834, 'base2_jfyww': -45.12255264474385}
+Played 19 games: {'best_model2_qnzjl': 45.285533632217174, 'base2_jfyww': -45.28553363221719}
+Played 20 games: {'best_model2_qnzjl': 78.72229210898332, 'base2_jfyww': -78.72229210898335}
+Played 21 games: {'best_model2_qnzjl': 94.2647321953445, 'base2_jfyww': -94.26473219534452}
+Played 22 games: {'best_model2_qnzjl': 112.06169127103048, 'base2_jfyww': -112.06169127103051}
+Played 23 games: {'best_model2_qnzjl': 120.15470910703807, 'base2_jfyww': -120.1547091070381}
+Played 24 games: {'best_model2_qnzjl': 133.72716608423957, 'base2_jfyww': -133.72716608423963}
+Played 25 games: {'best_model2_qnzjl': 139.54227669177993, 'base2_jfyww': -139.54227669178}
+Played 26 games: {'best_model2_qnzjl': 139.8040500108311, 'base2_jfyww': -139.80405001083116}
+Played 27 games: {'best_model2_qnzjl': 141.48489417852724, 'base2_jfyww': -141.4848941785273}
+Played 28 games: {'best_model2_qnzjl': 163.65196689201755, 'base2_jfyww': -163.65196689201767}
+Played 29 games: {'best_model2_qnzjl': 168.450452110378, 'base2_jfyww': -168.45045211037814}
+Played 30 games: {'best_model2_qnzjl': 148.42990020824985, 'base2_jfyww': -148.42990020825002}
+Played 31 games: {'best_model2_qnzjl': 150.94911147564125, 'base2_jfyww': -150.94911147564142}
+Played 32 games: {'best_model2_qnzjl': 158.86649928150715, 'base2_jfyww': -158.86649928150734}
+Played 33 games: {'best_model2_qnzjl': 134.90616137295032, 'base2_jfyww': -134.90616137295052}
+Played 34 games: {'best_model2_qnzjl': 123.51049740964882, 'base2_jfyww': -123.51049740964902}
+Played 35 games: {'best_model2_qnzjl': 122.59566054273992, 'base2_jfyww': -122.59566054274012}
+Played 36 games: {'best_model2_qnzjl': 126.6210517734988, 'base2_jfyww': -126.621051773499}
+Played 37 games: {'best_model2_qnzjl': 160.23669587743439, 'base2_jfyww': -160.23669587743458}
+Played 38 games: {'best_model2_qnzjl': 166.62411798342703, 'base2_jfyww': -166.62411798342723}
+Played 39 games: {'best_model2_qnzjl': 186.06433248398542, 'base2_jfyww': -186.06433248398562}
+Played 40 games: {'best_model2_qnzjl': 221.6168931848305, 'base2_jfyww': -221.6168931848307}
+Played 41 games: {'best_model2_qnzjl': 242.44168517780875, 'base2_jfyww': -242.44168517780895}
+Played 42 games: {'best_model2_qnzjl': 247.72573140218262, 'base2_jfyww': -247.72573140218282}
+Played 43 games: {'best_model2_qnzjl': 242.40942360970402, 'base2_jfyww': -242.40942360970422}
+Played 44 games: {'best_model2_qnzjl': 273.17444169258323, 'base2_jfyww': -273.17444169258346}
+Played 45 games: {'best_model2_qnzjl': 300.0504730708457, 'base2_jfyww': -300.05047307084595}
+Played 46 games: {'best_model2_qnzjl': 286.08117856032595, 'base2_jfyww': -286.08117856032624}
+Played 47 games: {'best_model2_qnzjl': 283.5109655806381, 'base2_jfyww': -283.5109655806384}
+Played 48 games: {'best_model2_qnzjl': 268.3518130849042, 'base2_jfyww': -268.35181308490445}
+Played 49 games: {'best_model2_qnzjl': 269.0339836506159, 'base2_jfyww': -269.0339836506161}
+Played 50 games: {'best_model2_qnzjl': 282.55949953985686, 'base2_jfyww': -282.5594995398571}
