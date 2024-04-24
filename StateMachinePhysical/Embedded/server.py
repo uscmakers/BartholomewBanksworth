@@ -46,6 +46,7 @@ def process_json(move_data):
     motorPos = currPos
     print("Final Motor Position: ", motorPos) # line for debugging
     electromagnetOff(player)
+    cleanup()
     time.sleep(0.5)
 
 # Move motor route
