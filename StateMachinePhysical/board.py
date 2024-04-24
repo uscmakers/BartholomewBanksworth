@@ -12,6 +12,7 @@ from jail import Jail
 from deck import Deck
 from typing import List
 from colorama import Fore, Back, Style
+import Embedded.util as util
 import os
 
 # TILES
