@@ -48,7 +48,7 @@ class Deed(Tile):
         # print("This is mRentToPay", mRentToPay, "This playerBalance", mPlayer.mBalance)
         mPlayer.mBalance -= mRentToPay
         self.mOwner.mBalance += mRentToPay
-        # print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(mRentToPay) + "!")
+        print(mPlayer.mPlayerName + " paid " + self.mOwner.mPlayerName + " $" + str(mRentToPay) + "!")
 
     # find number of deeds owned from a set
     # to check for monopoly use

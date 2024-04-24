@@ -100,7 +100,7 @@ def main(args):
                   # player.PayJailFee()
                   action = 30
         else:
-          rolled = False
+          rolled = True
           while True:  
               command = input("Type a command, or type help: ")
               if command == "help":

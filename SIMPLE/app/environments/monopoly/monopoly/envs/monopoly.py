@@ -242,6 +242,7 @@ class MonopolyEnv(gym.Env):
         self.mTiles = []
         self.initPlayers()
         self.mTiles = property_stuff.Tiles
+        self.n_turns = 0
         
         # Observation Space
         lower_range_values = np.array([[0]*self.n_players]*30).flatten()
@@ -428,14 +429,14 @@ class MonopolyEnv(gym.Env):
         
         # assumption: action is an integer between 0 and 27 (obtained from action space of Discrete[28])
         #print("Ai" + str(self.current_player_num) + " is about to take action: " + str(action)) 
-        if (self.observation[60+action] == 0):
-            # print("Using illegal action")
-            action = 0
-            reward = [0, 0]
-            reward[self.current_player_num] = -1
-            done = False
-            self.current_player_num = (self.current_player_num + 1) % self.n_players
-            return self.observation, reward, done, {}
+        # if (self.observation[60+action] == 0):
+        #     # print("Using illegal action")
+        #     action = 0
+        #     reward = [0, 0]
+        #     reward[self.current_player_num] = -1
+        #     done = False
+        #     self.current_player_num = (self.current_player_num + 1) % self.n_players
+        #     return self.observation, reward, done, {}
         #each index represents a player, so the number of indexies in reward depends on number of players
         reward = [0] * self.n_players
         
@@ -458,7 +459,9 @@ class MonopolyEnv(gym.Env):
         elif action is 30:
             player.PayJailFee()
         
-        # self.turn(player)
+        #if ((self.current_player_num+1)%2 == 1):
+            #input("\nPress enter to roll!")
+        self.turn((self.current_player_num+1)%2)
         
         if 1 <= action <= 28:
             if deeds[action-1].mOwner is None:
@@ -506,7 +509,11 @@ class MonopolyEnv(gym.Env):
                 reward[playerIndex] = (reward_amount/totalBalance - 0.5)
                 
                 
-        
+        #self.current_player_num = (self.current_player_num + 1) % self.n_players
+        self.n_turns += 1
+        if (self.n_turns > 400):
+            print("Played over 300 turns! Resetting!")
+            done = True
         return self.observation, reward, done, {}
 
     def reset(self):
@@ -517,7 +524,8 @@ class MonopolyEnv(gym.Env):
         # reset players
         for player in self.mPlayers:
             player.reset()
-        
+            
+        self.n_turns = 0
         self.current_player_num = 0
         
         self.done = False
@@ -583,6 +591,7 @@ class MonopolyEnv(gym.Env):
             if player.mTurnsInJail == 0: 
                 return tile.action(player, rollSum) # execute action when land on space
             if (not doubles) or (player.mTurnsInJail > 0): break
+            
             return 0
         
     def roll(self, player: Player): # roll dice and move player to appropriate space

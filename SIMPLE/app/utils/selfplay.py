@@ -80,7 +80,7 @@ def selfplay_wrapper(env):
 
             while self.current_player_num != self.agent_player_num:
                 # Calling turn here instead of in render
-                super(SelfPlayEnv, self).turn(self.current_player_num)
+                #super(SelfPlayEnv, self).turn(self.current_player_num)
                 
                 self.render()
 
