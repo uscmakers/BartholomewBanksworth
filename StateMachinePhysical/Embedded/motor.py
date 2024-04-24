@@ -18,12 +18,12 @@ magnets = [magnet1, magnet2, magnet3, magnet4]
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(magnet1,GPIO.OUT) # set enable pin as output for magnet 1
-GPIO.setup(magnet2,GPIO.OUT) # set enable pin as output for magnet 2
+# GPIO.setup(magnet1,GPIO.OUT) # set enable pin as output for magnet 1
+# GPIO.setup(magnet2,GPIO.OUT) # set enable pin as output for magnet 2
 
 # Declare a instance of class pass GPIO pins numbers and the motor type
 mymotortest = RpiMotorLib.A4988Nema(direction, step, (21,21,21), "DRV8825")
-GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
+# GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
 
 def turnMotor(numSteps: int, clockwise: bool):
     GPIO.setmode(GPIO.BCM)
