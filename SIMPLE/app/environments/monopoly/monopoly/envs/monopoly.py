@@ -36,7 +36,7 @@ GO_MONEY = 200
 STARTING_BALANCE = 1500
 AVAILABLE_HOUSE = 32
 AVAILABLE_HOTEL = 12
-PROPERTY_REWARD = 1000
+PROPERTY_REWARD = 50
 
 # TILES
 
@@ -236,7 +236,7 @@ class MonopolyEnv(gym.Env):
         # Initializes players and board
         # self.n_players = int(input("How many players want to face Bartholomew Banksworth? "))
         # self.n_players += 1
-        self.n_players = 2
+        self.n_players = 3
         self.player_type_list = []
         self.mPlayers : List[Player] = []
         self.mTiles = []
@@ -247,8 +247,10 @@ class MonopolyEnv(gym.Env):
         # Observation Space
         lower_range_values = np.array([[0]*self.n_players]*30).flatten()
         lower_range_values = np.concatenate((lower_range_values, np.array([[0]]*31).flatten()))
+        lower_range_values = np.concatenate((lower_range_values, np.array([0])))
         upper_range_values = np.array([[39]*self.n_players]+[[999999]*self.n_players]+([[6]*self.n_players]*28)).flatten() #row 0 is player position, row 1 is player money
         upper_range_values = np.concatenate((upper_range_values, np.array([[1]]*31).flatten()))
+        upper_range_values = np.concatenate((upper_range_values, np.array([300])))
         self.observation_space = gym.spaces.Box(low=lower_range_values, high=upper_range_values)
         self.observation_space = self.observation_space
         # Action Space, where each discrete option corresponds to one deed (purchasable property)
@@ -268,6 +270,7 @@ class MonopolyEnv(gym.Env):
         #     self.mPlayers.append(Player(i, False, mPlayerName))
         self.mPlayers.append(Player(0, True, "AI1"))
         self.mPlayers.append(Player(1, True, "AI2"))
+        self.mPlayers.append(Player(1, True, "AI3"))
         for i in range(0, self.n_players):
             self.mPlayers[i].InitPlayerList(self.mPlayers) # each player has access to list of players
     
@@ -325,8 +328,10 @@ class MonopolyEnv(gym.Env):
         la_grid = self.legal_actions
         la_grid = la_grid.flatten()
 
+        turn_number = np.array([self.n_turns])
+        
         #concatenate everything
-        result = np.concatenate((positions, balances, propertyInfo, la_grid))
+        result = np.concatenate((positions, balances, propertyInfo, turn_number, la_grid))
         return result
 
         # if self.players[self._player_numcurrent].token.number == 1:
@@ -454,14 +459,14 @@ class MonopolyEnv(gym.Env):
             player.mTurnsInJail += 1 
         
         # ACTION CHOOSING
-        if action is 29:
-            player.UseGetOutOfJailFree()
-        elif action is 30:
-            player.PayJailFee()
+        # if action is 29:
+        #     player.UseGetOutOfJailFree()
+        # elif action is 30:
+        #     player.PayJailFee()
         
-        #if ((self.current_player_num+1)%2 == 1):
-            #input("\nPress enter to roll!")
-        self.turn((self.current_player_num+1)%2)
+        # if ((self.current_player_num+1)%self.n_players == 1):
+        #     input("\nPress enter to roll!")
+        self.turn((self.current_player_num+1)%self.n_players)
         
         if 1 <= action <= 28:
             if deeds[action-1].mOwner is None:

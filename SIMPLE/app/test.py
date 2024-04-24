@@ -50,12 +50,17 @@ def main(args):
   # if len(args.agents) != env.n_players:
   #   raise Exception(f'{len(args.agents)} players specified but this is a {env.n_players} player game!')
 
-  for i, player in enumerate(env.mPlayers):
-    if player.mIsAi:
-      ppo_model = load_model(env, 'base.zip')
-      agent_obj = Agent('base', ppo_model)
-    else:
+  for i, agent in enumerate(args.agents):
+    if agent == 'human':
       agent_obj = Agent('human')
+    elif agent == 'rules':
+      agent_obj = Agent('rules')
+    elif agent == 'base':
+      base_model = load_model(env, 'base.zip')
+      agent_obj = Agent('base', base_model)   
+    else:
+      ppo_model = load_model(env, f'{agent}.zip')
+      agent_obj = Agent(agent, ppo_model)
     agents.append(agent_obj)
     total_rewards[agent_obj.id] = 0
   
@@ -98,6 +103,7 @@ def main(args):
               choice = input("Would you like to pay the $" + str(const.JAIL_FEE) + " jail fee? (yes/no) ")
               if choice == "yes":
                   # player.PayJailFee()
+                  #print("made it here!")
                   action = 30
         else:
           rolled = True
@@ -153,7 +159,6 @@ def main(args):
                       return
               else:
                   print("Not a valid command. Type help to see list of valid commands.")
-        action = 0
         try:
           # for int actions
           action = int(action)
