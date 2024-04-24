@@ -28,18 +28,23 @@ GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
 def turnMotor(numSteps: int, clockwise: bool):
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(EN_pin,GPIO.OUT) # set enable pin as output
+    GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
     mymotortest.motor_go(clockwise, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                      numSteps, # number of steps
                      .02, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
+    GPIO.cleanup()
     
 def electromagnetOn(num: int):
-    GPIO.output(magnets[num], GPIO.HIGH)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(magnets[num],GPIO.OUT) # set enable pin as output
+    GPIO.output(magnets[num], GPIO.LOW)
+    GPIO.cleanup()
 
 def electromagnetOff(num: int):
-    GPIO.output(magnets[num], GPIO.LOW)
-    
-def cleanup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(magnets[num],GPIO.OUT) # set enable pin as output
+    GPIO.output(magnets[num], GPIO.HIGH)
     GPIO.cleanup()
