@@ -12,14 +12,14 @@ class Deck(Tile):
         self.mList : List[Card] = []
         self.mTop = 0
         self.mDeckType = mTileName
-        if self.mTileName == "Chance":
+        if self.mTileName == "Pooja":
             for num in range(15):
                 card = Card(num)
                 self.mList.append(card)
             # Another railroad card
             card = Card(3)
             self.mList.append(card)
-        elif self.mTileName == "Community Chest":
+        elif self.mTileName == "Isaac":
             for num in range(12, 28):
                 card = Card(num)
                 self.mList.append(card)
@@ -36,18 +36,18 @@ class Deck(Tile):
     def reset(self):
         self.mList : List[Card] = []
         self.mTop = 0
-        if self.mDeckType == "Chance":
+        if self.mDeckType == "Pooja":
             for num in range(15):
                 card = Card(num)
                 self.mList.append(card)
             # Another railroad card
             card = Card(3)
             self.mList.append(card)
-        elif self.mDeckType == "Community Chest":
+        elif self.mDeckType == "Isaac":
             for num in range(12, 28):
                 card = Card(num)
                 self.mList.append(card)
-        else:
-            print("Only options are 'community chest' or 'chance'")
+        # else:
+        #     print("Only options are 'community chest' or 'chance'")
         random.shuffle(self.mList) # shuffle deck
             
