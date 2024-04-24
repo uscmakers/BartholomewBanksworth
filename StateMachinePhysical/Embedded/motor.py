@@ -3,15 +3,15 @@ from RpiMotorLib import RpiMotorLib
 import time
 
 #define GPIO pins
-direction = 22 # Direction (DIR) GPIO Pin
-step = 23 # Step GPIO Pin
-EN_pin = 24 # enable pin (LOW to enable)
+direction = 26 # Direction (DIR) GPIO Pin
+step = 20 # Step GPIO Pin
+EN_pin = 21 # enable pin (LOW to enable)
 
 #define GPIO pins
-magnet1 = 12 #  GPIO Pin for magnet 1
-magnet2 = 13 #  GPIO pin for magnet 2
-magnet3 = 18 #  GPIO pin for magnet 3
-magnet4 = 19 #  GPIO pin for magnet 4
+magnet1 = 25 #  GPIO Pin for magnet 1
+magnet2 = 6 #  GPIO pin for magnet 2
+magnet3 = 5 #  GPIO pin for magnet 3
+magnet4 = 17 #  GPIO pin for magnet 4
 
 #define map from player number to magent GPIO pins
 magnets = [magnet1, magnet2, magnet3, magnet4]
@@ -29,7 +29,7 @@ def turnMotor(numSteps: int, clockwise: bool):
     mymotortest.motor_go(clockwise, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                      numSteps, # number of steps
-                     .0005, # step delay [sec]
+                     .02, # step delay [sec]
                      True, # True = print verbose output 
                      .05) # initial delay [sec]
     

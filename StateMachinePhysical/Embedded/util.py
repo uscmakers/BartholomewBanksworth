@@ -1,7 +1,7 @@
 import json
 import requests
 
-SERVER = 'http://172.20.10.11:5000' # 'http://172.20.10.3:5000'
+SERVER = 'http://172.20.10.4:5000'
 
 def makeRequest(player: int, deltaPos: int, currPos: int):
     data = {

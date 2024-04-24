@@ -3,9 +3,9 @@ from RpiMotorLib import RpiMotorLib
 import time
 
 #define GPIO pins
-direction = 22 # Direction (DIR) GPIO Pin
-step = 23 # Step GPIO Pin
-EN_pin = 24 # enable pin (LOW to enable)
+direction = 26 # Direction (DIR) GPIO Pin
+step = 20 # Step GPIO Pin
+EN_pin = 21 # enable pin (LOW to enable)
 
 #define GPIO pins
 magnet1 = 12 #  GPIO Pin for magnet 1

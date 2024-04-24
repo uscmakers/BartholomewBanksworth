@@ -61,5 +61,4 @@ class Player:
         print(self.mPlayerName + " used their get out of jail free card!")
         
     def MotorRequest(self, deltaPos: int):
-        pass
-    #     util.makeRequest(self.index, deltaPos, self.mPos)
+        util.makeRequest(self.index, deltaPos, self.mPos)

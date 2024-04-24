@@ -213,8 +213,7 @@ class Board:
     
     def reset(self):
         os.system('clear')
-        pass
-        # util.makeRequest(-1, -1, -1)
+        util.makeRequest(-1, -1, -1)
     
     def turn(self, player: Player):
         while True:
