@@ -17,25 +17,24 @@ def process_json(move_data):
     player = move_data['player'] # player number (0 - 3)
     deltaPos = move_data['deltaPos'] # change (dice roll) in player position (1 - 12)
     currPos = move_data['currPos']  # current player position - after delta position is applied (1 - 40)
-    print("This is data: ", move_data) # line for debugging
-    print("Current Motor Position: ", motorPos) # line for debugging
+    print("[MOTOR] Current Motor Position: ", motorPos) # line for debugging
     if player == -1:
         rotation = 5*motorPos
-        print("Reset Rotation: ", rotation) # line for debugging
+        print("[MOTOR] Reset Rotation: ", rotation) # line for debugging
         turnMotor(rotation, True)
         return
     # Move the motor to the initial pos of the player
     rotation = 5*(currPos - deltaPos - motorPos)
     if rotation >= 200: rotation %= 40
     elif rotation <= -200: rotation %= -40
-    print("Pick-up Rotation: ", rotation) # line for debugging
+    print("[MOTOR] Pick-up Rotation: ", rotation) # line for debugging
     # going to the piece (currPos - deltaPos)
     if rotation > 0:
         turnMotor(rotation, False)
     else:
         turnMotor(-rotation, True)
     moveRot = 5*deltaPos
-    print("Move Rotation: ", moveRot) # line for debugging
+    print("[MOTOR] Move Rotation: ", moveRot) # line for debugging
     electromagnetOn(player)
     time.sleep(0.5)
     # Move player here. going to currPos
@@ -44,7 +43,7 @@ def process_json(move_data):
     else:
         turnMotor(-moveRot, True)
     motorPos = currPos
-    print("Final Motor Position: ", motorPos) # line for debugging
+    print("[MOTOR] Final Motor Position: ", motorPos) # line for debugging
     electromagnetOff(player)
     time.sleep(0.5)
 
@@ -52,8 +51,6 @@ def process_json(move_data):
 @app.route('/move', methods=['POST'])
 def move_one():
     received = request.get_json()
-    print(received, ":::")
-    print(type(received))
     process_json(received)
     res = jsonify({})
     res.status_code = 201 # Status code for "created"
