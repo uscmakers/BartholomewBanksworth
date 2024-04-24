@@ -1,0 +1,10 @@
+setup.py
+sushigo/__init__.py
+sushigo.egg-info/PKG-INFO
+sushigo.egg-info/SOURCES.txt
+sushigo.egg-info/dependency_links.txt
+sushigo.egg-info/requires.txt
+sushigo.egg-info/top_level.txt
+sushigo/envs/__init__.py
+sushigo/envs/classes.py
+sushigo/envs/sushigo.py
