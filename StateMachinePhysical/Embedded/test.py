@@ -39,4 +39,4 @@ def turnMotor(numSteps: int, clockwise: bool, delay: float):
     
 while True:
     delay = float(input("Choose a step delay: "))
-    turnMotor(50, True, delay)
+    turnMotor(200, True, delay)
